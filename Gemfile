@@ -42,6 +42,16 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem "devise"             # Autenticação de usuários
+gem "pundit"             # Controle de permissões
+gem "simple_form"        # Formulários mais fáceis
+gem "cloudinary"         # Upload de imagens
+gem "stripe"             # Pagamentos via Stripe
+gem "paypal-sdk-rest", "~> 1.7" # Pagamentos via PayPal
+gem "prawn", "~> 2.5"    # Gerar PDFs para faturas
+gem "prawn-table", "~> 0.2.2" # Tabelas em PDFs
+gem "faker"              # Gerar dados fake para testes
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
