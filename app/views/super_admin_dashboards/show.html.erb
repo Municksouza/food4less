@@ -1,0 +1,88 @@
+<h1>Super Admin Dashboard</h1>
+
+<!-- User Management -->
+<h2>Manage Users</h2>
+<table>
+  <tr><th>Email</th><th>Role</th><th>Actions</th></tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.email %></td>
+      <td><%= user.role %></td>
+      <td>
+        <%= link_to "Edit", edit_user_path(user), class: "btn btn-warning btn-sm" %>
+        <%= link_to "Delete", user_path(user), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- Business Management -->
+<h2>Registered Businesses</h2>
+<%= link_to "Add Business", new_business_path, class: "btn btn-primary" %>
+<ul>
+  <% @businesses.each do |business| %>
+    <li>
+      <%= business.name %> - <%= business.address %>
+      <%= link_to "Edit", edit_business_path(business), class: "btn btn-warning btn-sm" %>
+      <%= link_to "Delete", business_path(business), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Store Management -->
+<h2>Registered Stores</h2>
+<%= link_to "Add Store", new_store_path, class: "btn btn-primary" %>
+<ul>
+  <% @stores.each do |store| %>
+    <li>
+      <%= store.name %> - <%= store.phone %>
+      <%= link_to "Edit", edit_store_path(store), class: "btn btn-warning btn-sm" %>
+      <%= link_to "Delete", store_path(store), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger btn-sm" %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Order Management -->
+<h2>Orders</h2>
+<ul>
+  <% @orders.each do |order| %>
+    <li>
+      Order #<%= order.id %> - Customer: <%= order.customer.email %> - Status: <%= order.status %>
+      <%= link_to "View Details", order_path(order), class: "btn btn-info btn-sm" %>
+      <% if order.status == "pending" %>
+        <%= link_to "Approve", approve_order_path(order), method: :patch, class: "btn btn-success btn-sm" %>
+        <%= link_to "Reject", reject_order_path(order), method: :patch, class: "btn btn-danger btn-sm" %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<!-- Payment Management -->
+<h2>Payments</h2>
+<table>
+  <tr><th>ID</th><th>Order</th><th>Method</th><th>Status</th><th>Actions</th></tr>
+  <% @payments.each do |payment| %>
+    <tr>
+      <td><%= payment.id %></td>
+      <td><%= payment.order.id %></td>
+      <td><%= payment.payment_method %></td>
+      <td><%= payment.status %></td>
+      <td>
+        <% if payment.status == "paid" %>
+          <%= link_to "Refund", refund_payment_path(payment), method: :patch, class: "btn btn-warning btn-sm" %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<!-- Invoice Generation -->
+<h2>Invoices</h2>
+<ul>
+  <% @orders.each do |order| %>
+    <li>
+      Order #<%= order.id %> - Customer: <%= order.customer.email %>
+      <%= link_to "Generate Invoice", generate_invoice_path(order), class: "btn btn-secondary btn-sm" %>
+    </li>
+  <% end %>
+</ul>

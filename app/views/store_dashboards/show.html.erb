@@ -1,0 +1,15 @@
+<h1>Painel do Store Manager</h1>
+
+    <h2>Produtos da Loja</h2>
+    <ul>
+      <% @products.each do |product| %>
+        <li><%= product.name %> - R$<%= product.price %></li>
+      <% end %>
+    </ul>
+    
+    <h2>Pedidos Recebidos</h2>
+    <ul>
+      <% @orders.each do |order| %>
+        <li>Pedido #<%= order.id %> - Cliente: <%= order.customer.email %></li>
+      <% end %>
+    </ul>

@@ -1,0 +1,2 @@
+module BusinessDashboardsHelper
+end

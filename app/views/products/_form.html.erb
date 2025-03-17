@@ -1,0 +1,11 @@
+<%= simple_form_for @product, html: { multipart: true } do |f| %>
+    <%= f.input :name, label: "Nome do Produto" %>
+    <%= f.input :description, as: :text, label: "Descrição" %>
+    <%= f.input :price, as: :decimal, step: 0.01, label: "Preço Atual" %>
+    <%= f.input :old_price, as: :decimal, step: 0.01, label: "Preço Anterior" %>
+    <%= f.input :stock, as: :integer, label: "Estoque" %>
+  
+    <%= f.input :images, as: :file, label: "Imagens do Produto", input_html: { multiple: true } %>
+  
+    <%= f.submit "Salvar Produto", class: "btn btn-primary" %>
+  <% end %>
