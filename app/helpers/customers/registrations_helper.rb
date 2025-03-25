@@ -1,0 +1,2 @@
+module Customers::RegistrationsHelper
+end

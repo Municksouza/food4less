@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    
+    <!-- Logo -->
+    <%= link_to root_path, class: "navbar-brand" do %>
+      <%= image_tag "logo.food.png", class: "logo-nav ms-3", alt: "Food4Less Logo" %>
+    <% end %>
+
+    <!-- Botão do Navbar (Mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Itens do Navbar -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+
+        <!-- Link Home -->
+        <li class="nav-item me-3">
+          <%= link_to "Home", root_path, class: "nav-link" %>
+        </li>
+
+        <!-- Se o usuário está logado -->
+        <% if user_signed_in? %>
+          <% if current_user.business_admin? %>
+            <li class="nav-item">
+              <%= link_to "Business Dashboard", business_dashboard_path, class: "nav-link" %>
+            </li>
+          <% elsif current_user.store_manager? %>
+            <li class="nav-item">
+              <%= link_to "Store Dashboard", store_dashboard_path, class: "nav-link" %>
+            </li>
+          <% elsif current_user.customer? %>
+            <li class="nav-item">
+              <%= link_to "Customer Dashboard", customer_dashboard_path, class: "nav-link" %>
+            </li>
+          <% end %>
+
+          <!-- User Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" 
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <img class="avatar rounded-circle me-2" 
+                src="<%= current_user.photo.attached? ? cl_image_path(current_user.photo.key) : asset_path('default-user.png') %>" 
+                alt="User Avatar" width="32" height="32">
+              <span>Profile</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><%= link_to "Profile", edit_user_registration_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item text-danger" %></li>
+            </ul>
+          </li>
+
+        <% else %>
+          <!-- Login Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="loginDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Login
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loginDropdown">
+              <li><%= link_to "Login as Customer", new_user_session_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Login as Business Admin", new_business_admin_session_path, class: "dropdown-item" %></li>
+            </ul>
+          </li>
+
+          <!-- Sign-up Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="signupDropdown" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Sign-up
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="signupDropdown">
+              <li><%= link_to "Customer Sign-up", new_customer_registration_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Business Registration", new_business_admin_registration_path, class: "dropdown-item" %></li>
+            </ul>
+          </li>
+        <% end %>
+
+      </ul>
+    </div>
+  </div>
+</nav>

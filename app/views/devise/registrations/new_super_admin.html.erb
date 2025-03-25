@@ -1,0 +1,11 @@
+<h2>Create a Super Admin</h2>
+
+<%= simple_form_for(@super_admin, url: super_admins_path) do |f| %>
+  <%= f.input :name, label: "Full Name" %>
+  <%= f.input :email, label: "Email Address" %>
+  <%= f.input :phone, label: "Phone Number" %>
+  <%= f.input :password, label: "Password" %>
+  <%= f.input :password_confirmation, label: "Confirm Password" %>
+
+  <%= f.submit "Create Super Admin", class: "btn btn-primary" %>
+<% end %>

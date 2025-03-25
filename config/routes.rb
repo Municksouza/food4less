@@ -6,18 +6,31 @@ Rails.application.routes.draw do
     sessions: "users/sessions",
     registrations: "users/registrations"
   }
+  
+  # Devise Authentication
+  devise_for :business_admins, controllers: { sessions: "business_admins/sessions", registrations: "business_admins/registrations" }
+  devise_for :customers, controllers: { sessions: "customers/sessions", registrations: "customers/registrations" }
+  devise_for :store_managers, controllers: { sessions: "store_managers/sessions" }, skip: [:registrations]
+  devise_for :super_admins, controllers: { sessions: "super_admins/sessions", registrations: "super_admins/registrations" }
 
-  # Super Admin Dashboard (Full Access)
-  authenticate :user, ->(u) { u.super_admin? } do
-    resource :super_admin_dashboard, only: [:show]
-    resources :users, only: [:index, :edit, :update, :destroy] # Manage Users
-    resources :businesses, only: [:index, :destroy] # Manage Businesses
-    resources :stores, only: [:index, :destroy] # Manage Stores
-    resources :orders, only: [:index, :destroy] # Manage Orders
-    resources :payments, only: [:index, :destroy] # Manage Payments
+  # Users - Perfil e Edição
+  resources :users, only: [:index, :edit, :update, :destroy] do
+    collection do
+      get "edit_profile", to: "users#edit"
+    end
   end
 
-  # Business Admin (Manage Businesses & Stores)
+  # Super Admin Dashboard (Acesso Completo)
+  authenticate :user, ->(u) { u.super_admin? } do
+    resource :super_admin_dashboard, only: [:show]
+    resources :users, only: [:index, :edit, :update, :destroy]
+    resources :businesses, only: [:index, :destroy]
+    resources :stores, only: [:index, :destroy]
+    resources :orders, only: [:index, :destroy]
+    resources :payments, only: [:index, :destroy]
+  end
+
+  # Business Admin (Gerencia Negócios e Lojas)
   authenticate :user, ->(u) { u.business_admin? } do
     resource :business_dashboard, only: [:show]
     resources :businesses do
@@ -25,7 +38,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # Store Manager (Manage Stores, Products & Orders)
+  # Store Manager (Gerencia Loja, Produtos, Pedidos e Pagamentos)
   authenticate :user, ->(u) { u.store_manager? } do
     resource :store_dashboard, only: [:show]
     resources :stores do
@@ -36,22 +49,37 @@ Rails.application.routes.draw do
           patch :reject
         end
       end
+      resources :payments, only: [:index] # Visualizar Pagamentos
+      resources :customers, only: [:index, :show] # Perfil de Clientes
     end
+    get "pending_orders", to: "orders#pending"
+    get "store_payments", to: "payments#store_index"
   end
 
-  # Customer (Manage Orders)
+  # Customers (Pedidos, Carrinho e Perfil)
   authenticate :user, ->(u) { u.customer? } do
     resource :customer_dashboard, only: [:show]
     resources :orders, only: [:index, :show, :create]
+    resources :payments, only: [:index, :create] # Métodos de Pagamento
+    get "cart", to: "carts#show"
+    get "order_history", to: "orders#history"
+    get "saved_payments", to: "payments#saved"
+    get "receipts", to: "receipts#index"
   end
 
-  # Payments (Refunds)
-  resources :payments, only: [:index] do
+  # Pagamentos (Reembolsos)
+  resources :payments, only: [:index, :create] do
     member do
       patch :refund
     end
   end
 
-  # Health Check for Uptime Monitors
-  get "up" => "rails/health#show", as: :rails_health_check
+  # Carrinho de Compras
+  resources :carts, only: [:show, :update, :destroy]
+
+  # Pedidos Pendentes
+  get "pending_orders", to: "orders#pending"
+
+  # Health Check
+  get "up", to: "rails/health#show", as: :rails_health_check
 end

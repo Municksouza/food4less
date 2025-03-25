@@ -1,2 +1,12 @@
-<h1>Stores#new</h1>
-<p>Find me in app/views/stores/new.html.erb</p>
+<h2>Create a New Store</h2>
+
+<%= simple_form_for(@store) do |f| %>
+  <%= f.input :name, label: "Store Name" %>
+  <%= f.input :email, label: "Manager Email" %>
+  <%= f.input :phone, label: "Phone Number" %>
+  <%= f.input :address, label: "Store Address" %>
+  <%= f.input :zip_code, label: "ZIP Code" %>
+  <%= f.input :logo, as: :file, label: "Store Logo" %>
+
+  <%= f.submit "Create Store", class: "btn btn-primary" %>
+<% end %>

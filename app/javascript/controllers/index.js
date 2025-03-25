@@ -1,4 +1,11 @@
-// Import and register all your controllers from the importmap via controllers/**/*_controller
-import { application } from "controllers/application"
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
-eagerLoadControllersFrom("controllers", application)
+import { application } from "./application";
+
+// Importa manualmente os controllers necessários
+import HelloController from "./hello_controller.js";
+import ToggleController from "./toggle_controller.js";
+
+// Registra controllers
+application.register("hello", HelloController);
+application.register("toggle", ToggleController);
+
+console.log("✅ Todos os controllers foram carregados corretamente!");
