@@ -6,13 +6,12 @@
   <div class="form-inputs">
     <%= f.input :name, label: "Business Name", required: true %>
     <%= f.input :address, label: "Business Address", required: true %>
-    <%= f.input :zip_code, label: "ZIP Code (Canada)", required: true %>
+    <%= f.input :zip_code, label: "ZIP Code", required: true %>
     <%= f.input :phone, label: "Phone Number", required: true %>
     <%= f.input :email, label: "Email Address", required: true %>
     <%= f.input :password, label: "Password", required: true %>
     <%= f.input :password_confirmation, label: "Confirm Password", required: true %>
-    <!-- Se desejar permitir upload do logo do Business, descomente a linha abaixo -->
-    <!-- <%= f.input :logo, as: :file, label: "Business Logo (optional)" %> -->
+    <%= f.input :logo, as: :file, label: "Business Logo (optional)" %>
   </div>
 
   <div class="form-actions">

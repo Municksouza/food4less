@@ -1,12 +1,21 @@
-<h2>Create a New Store</h2>
+<%= simple_form_for @store, html: { multipart: true } do |f| %>
+  <%= f.error_notification %>
 
-<%= simple_form_for(@store) do |f| %>
-  <%= f.input :name, label: "Store Name" %>
-  <%= f.input :email, label: "Manager Email" %>
-  <%= f.input :phone, label: "Phone Number" %>
-  <%= f.input :address, label: "Store Address" %>
-  <%= f.input :zip_code, label: "ZIP Code" %>
-  <%= f.input :logo, as: :file, label: "Store Logo" %>
+  <div class="form-inputs">
+    <%= f.input :name, label: "Nome da Loja", required: true %>
+    <%= f.input :email, label: "E-mail da Loja", required: true %>
+    <%= f.input :phone, label: "Telefone da Loja", required: true %>
+    <%= f.input :address, label: "Endereço da Loja", required: true %>
+    <%= f.input :zip_code, label: "CEP da Loja", required: true %>
+    <%= f.input :description, label: "Descrição da Loja", as: :text, required: true %>
+    <%= f.input :logo, as: :file, label: "Logo da Loja (obrigatório)", required: true %>
+  </div>
 
-  <%= f.submit "Create Store", class: "btn btn-primary" %>
+  <div class="form-inputs">
+    <%= f.input :store_manager_recipient_email, label: "E-mail para envio das credenciais do Store Manager", as: :email, input_html: { name: "store_manager_recipient_email" }, required: true %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Criar Loja" %>
+  </div>
 <% end %>
