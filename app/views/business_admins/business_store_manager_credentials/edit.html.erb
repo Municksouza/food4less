@@ -1,0 +1,17 @@
+<h1>Editar Credenciais do Store Manager</h1>
+
+    <%= simple_form_for(@store_manager, url: store_store_manager_credentials_path(@store)) do |f| %>
+      <%= f.error_notification %>
+    
+      <div class="form-inputs">
+        <%= f.input :email, label: "Email", required: true %>
+        <%= f.input :password, label: "Nova Senha", required: false, hint: "Deixe em branco se não quiser alterar" %>
+        <%= f.input :password_confirmation, label: "Confirme a Nova Senha", required: false %>
+      </div>
+    
+      <div class="form-actions">
+        <%= f.button :submit, "Atualizar Credenciais", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    
+    <%= link_to "Voltar", store_admin_dashboard_path(@store), class: "btn btn-secondary" %>

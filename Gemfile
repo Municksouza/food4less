@@ -42,15 +42,15 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem "devise"             # Autenticação de usuários
-gem "pundit"             # Controle de permissões
-gem "simple_form"        # Formulários mais fáceis
-gem "cloudinary"         # Upload de imagens
-gem "stripe"             # Pagamentos via Stripe
-gem "paypal-sdk-rest", "~> 1.7" # Pagamentos via PayPal
-gem "prawn", "~> 2.5"    # Gerar PDFs para faturas
-gem "prawn-table", "~> 0.2.2" # Tabelas em PDFs
-gem "faker"              # Gerar dados fake para testes
+gem "devise"             # User authentication
+gem "pundit"             # Permission control
+gem "simple_form"        # Easier forms
+gem "cloudinary"         # Image uploads
+gem "stripe"             # Payments via Stripe
+gem "paypal-sdk-rest", "~> 1.7" # Payments via PayPal
+gem "prawn", "~> 2.5"    # Generate PDFs for invoices
+gem "prawn-table", "~> 0.2.2" # Tables in PDFs
+gem "faker"              # Generate fake data for tests
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -66,6 +66,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem "letter_opener"
 end
 
 group :test do

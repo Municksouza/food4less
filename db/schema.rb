@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
     t.bigint "customer_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "total_amount"
     t.index ["customer_id"], name: "index_orders_on_customer_id"
     t.index ["store_id"], name: "index_orders_on_store_id"
   end
@@ -114,7 +115,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
     t.string "transaction_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "store_id", null: false
+    t.decimal "amount"
+    t.datetime "payment_date"
     t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["store_id"], name: "index_payments_on_store_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -129,6 +134,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
+  create_table "receipts", force: :cascade do |t|
+    t.string "receipt_type", null: false
+    t.text "content", null: false
+    t.bigint "order_id"
+    t.bigint "store_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.decimal "amount"
+    t.index ["order_id"], name: "index_receipts_on_order_id"
+    t.index ["store_id"], name: "index_receipts_on_store_id"
+  end
+
+  create_table "refunds", force: :cascade do |t|
+    t.bigint "order_id", null: false
+    t.decimal "amount", precision: 10, scale: 2, null: false
+    t.datetime "refund_date", precision: nil, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "store_id", null: false
+    t.index ["order_id"], name: "index_refunds_on_order_id"
+    t.index ["store_id"], name: "index_refunds_on_store_id"
+  end
+
   create_table "store_managers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -137,8 +165,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "store_id"
     t.index ["email"], name: "index_store_managers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_store_managers_on_reset_password_token", unique: true
+    t.index ["store_id"], name: "index_store_managers_on_store_id"
   end
 
   create_table "stores", force: :cascade do |t|
@@ -146,12 +176,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
     t.string "address"
     t.string "phone"
     t.string "zip_code"
-    t.string "logo"
     t.bigint "business_id", null: false
     t.string "manager_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "business_admin_id"
+    t.string "email"
+    t.text "description"
     t.index ["business_id"], name: "index_stores_on_business_id"
   end
 
@@ -182,9 +213,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_28_211011) do
   add_foreign_key "businesses", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "orders", "customers"
   add_foreign_key "orders", "stores"
-  add_foreign_key "orders", "users", column: "customer_id"
   add_foreign_key "payments", "orders"
+  add_foreign_key "payments", "stores"
   add_foreign_key "products", "stores"
-  add_foreign_key "stores", "businesses"
+  add_foreign_key "receipts", "orders"
+  add_foreign_key "receipts", "stores"
+  add_foreign_key "refunds", "orders"
+  add_foreign_key "refunds", "stores"
+  add_foreign_key "store_managers", "stores"
+  add_foreign_key "stores", "business_admins", column: "business_id"
 end

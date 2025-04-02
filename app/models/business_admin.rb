@@ -4,6 +4,15 @@ class BusinessAdmin < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  has_many :stores, dependent: :destroy
+  has_one_attached :logo
 
+
+  has_many :stores, foreign_key: "business_id", dependent: :destroy
+
+  validates :name, presence: true
+  validates :address, presence: true
+  validates :zip_code, presence: true
+  validates :phone, presence: true
+  validates :email, presence: true
+  validates :logo, presence: true  
 end

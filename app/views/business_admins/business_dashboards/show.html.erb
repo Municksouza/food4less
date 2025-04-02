@@ -1,0 +1,30 @@
+<h1>Dashboard do Business</h1>
+
+  <div class="summary">
+    <p><strong>Total de Lojas:</strong> <%= current_business_admin.stores.count %></p>
+    <p>
+      <strong>Total de Vendas (global):</strong>
+      <%= number_to_currency(Order.where(store_id: current_business_admin.stores.pluck(:id))
+                                    .where(status: 'accepted')
+                                    .sum(:total_amount)) %>
+    </p>
+  </div>
+  
+  <h2>Suas Lojas</h2>
+  <% current_business_admin.stores.each do |store| %>
+    <div class="store-summary">
+      <% if store.logo.attached? %>
+        <div class="store-logo">
+          <%= image_tag url_for(store.logo), alt: "#{store.name} Logo", class: "img-thumbnail" %>
+        </div>
+      <% end %>
+      <h3><%= store.name %></h3>
+      <p><strong>Endereço:</strong> <%= store.address %></p>
+      <p><strong>Telefone:</strong> <%= store.phone %></p>
+      <%= link_to "Acessar Dashboard da Loja", store_admin_dashboard_path(store), class: "btn btn-info" %>
+    </div>
+  <% end %>
+  
+  <div class="actions">
+    <%= link_to "Criar Nova Loja", new_store_path, class: "btn btn-primary" %>
+  </div>

@@ -1,0 +1,124 @@
+<h1>Store Dashboard: <%= @store.name %></h1>
+<% if @store.logo.attached? %>
+  <div class="store-logo">
+    <%= image_tag url_for(@store.logo), alt: "#{@store.name} Logo", class: "img-thumbnail" %>
+  </div>
+<% else %>
+  <p>Logo not uploaded.</p>
+<% end %>
+
+<section class="store-metrics">
+  <div class="metric">
+    <h3>Total Sales</h3>
+    <p><%= number_to_currency(@total_sales) %></p>
+  </div>
+  <div class="metric">
+    <h3>Accepted Orders</h3>
+    <p><%= @accepted_orders %></p>
+  </div>
+  <div class="metric">
+    <h3>Rejected Orders</h3>
+    <p><%= @rejected_orders %></p>
+  </div>
+  <div class="metric">
+    <h3>Total Refunds</h3>
+    <p><%= number_to_currency(@total_refunds) %></p>
+  </div>
+</section>
+
+<section class="orders">
+  <h2>Orders</h2>
+  <% if @orders.any? %>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Status</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= order.id %></td>
+            <td><%= order.status %></td>
+            <td><%= number_to_currency(order.total_amount) %></td>
+            <td>
+              <% if order.status == 'pending' %>
+                <%= link_to "Approve", approve_order_path(order), method: :patch, class: "btn btn-success" %>
+                <%= link_to "Reject", reject_order_path(order), method: :patch, class: "btn btn-danger" %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No orders registered.</p>
+  <% end %>
+</section>
+
+<section class="products">
+  <h2>Products</h2>
+  <%= link_to "Add Product", new_store_product_path(@store), class: "btn btn-primary" %>
+  <% if @products.any? %>
+    <ul>
+      <% @products.each do |product| %>
+        <li>
+          <strong><%= product.name %></strong>
+          - Original Price: <%= number_to_currency(product.original_price) %>
+          - Discount Price: <%= number_to_currency(product.discount_price) %>
+          <br>
+          <%= image_tag url_for(product.image), alt: product.name if product.image.attached? %>
+          <p><%= product.description %></p>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No products registered.</p>
+  <% end %>
+</section>
+
+<section class="receipts">
+  <h2>Receipts</h2>
+  <h3>Customer Receipts</h3>
+  <% if @customer_receipts.any? %>
+    <ul>
+      <% @customer_receipts.each do |receipt| %>
+        <li><%= receipt.content %> (<%= receipt.created_at.strftime("%d/%m/%Y") %>)</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No customer receipts found.</p>
+  <% end %>
+
+  <h3>Store Receipts</h3>
+  <% if @store_receipts.any? %>
+    <ul>
+      <% @store_receipts.each do |receipt| %>
+        <li><%= receipt.content %> (<%= receipt.created_at.strftime("%d/%m/%Y") %>)</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No store receipts found.</p>
+  <% end %>
+</section>
+
+<section class="store-customers">
+  <h2>Store Customers</h2>
+  <% if @customers.any? %>
+    <ul>
+      <% @customers.each do |customer| %>
+        <li><strong><%= customer.name %></strong> - <%= customer.email %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No customers found.</p>
+  <% end %>
+</section>
+
+<%= link_to "Edit Store Profile", edit_store_path(@store), class: "btn btn-warning" %>
+<%= link_to "Back to Business Dashboard", business_dashboard_path, class: "btn btn-secondary" %>
+<%= link_to "Edit Store Manager Credentials", edit_store_store_manager_credentials_path(@store), class: "btn btn-warning" %>
+<%= link_to 'Delete', store_path(@store), method: :delete, data: { confirm: 'Are you sure you want to delete this store?' }, class: "btn btn-danger" %>
