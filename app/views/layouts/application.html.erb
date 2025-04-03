@@ -16,7 +16,6 @@
 
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
-
   </head>
 
   <body>
@@ -27,10 +26,12 @@
       </div>
     <% end %>
 
-    <%= render "shared/navbar" %>
-    
-    <div class="container mt-4">
-      <% if current_account.present? %>
+    <% unless current_customer || current_store_manager || current_business_admin %>
+      <%= render "shared/navbar" %>
+    <% end %>
+
+    <div class="container-fluid mt-4">
+      <% if current_customer || current_store_manager || current_business_admin %>
         <div class="row">
           <div class="col-md-3">
             <%= render "shared/sidebar" %>

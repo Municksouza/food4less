@@ -1,29 +1,11 @@
-<h1>Welcome to Food4Less</h1>
+<div class="container mt-4">
+  <h1 class="mb-4">Featured Products</h1>
 
-<h2>Available Products</h2>
-
-<div class="row">
-  <% @products.each do |product| %>
-    <div class="col-md-4">
-      <div class="card mb-3">
-        <%= image_tag product.images.first, class: "card-img-top", alt: product.name if product.images.any? %>
-        <div class="card-body">
-          <h5 class="card-title"><%= product.name %></h5>
-          <p class="card-text">
-            <strong>Old Price:</strong> <span class="text-decoration-line-through">$<%= product.old_price %></span><br>
-            <strong>Current Price:</strong> $<%= product.price %>
-          </p>
-          <p class="card-text">
-            <strong>Quantity Available:</strong> <%= product.quantity %>
-          </p>
-          <p class="card-text">
-            <strong>Store:</strong> <%= product.store.name %> <br>
-            <strong>Address:</strong> <%= product.store.address %> <br>
-            <strong>Phone:</strong> <%= product.store.phone %>
-          </p>
-          <%= link_to "View Product", product_path(product), class: "btn btn-primary" %>
-        </div>
+  <div class="row">
+    <% @products.each do |product| %>
+      <div class="col-md-4">
+        <%= render partial: "products/product_card", locals: { product: product } %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

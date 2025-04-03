@@ -1,0 +1,71 @@
+<div class="container mt-5 print-area">  
+
+  <% if @receipt.store.logo.attached? %>
+    <div class="text-center mb-3">
+      <%= image_tag @receipt.store.logo, width: 120, class: "store-logo" %>
+    </div>
+  <% end %>
+
+  <h1 class="mb-4">Your Receipt</h1>
+
+  <div class="d-flex justify-content-between mb-3">
+    <%= link_to "← Back to Orders", customers_dashboard_path, class: "btn btn-outline-secondary" %>
+    <div>
+      <%= link_to "Download PDF", customers_receipt_path(@receipt, format: :pdf), class: "btn btn-sm btn-outline-dark" %>
+      <%= button_to "Print Receipt", "#", class: "btn btn-outline-success", onclick: "window.print(); return false;" %>
+    </div>
+  </div>
+
+  <p><strong>Order ID:</strong> <%= @receipt.order.id %></p>
+  <p><strong>Date:</strong> <%= @receipt.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+
+  <hr>
+
+  <h3>Store Information</h3>
+  <p>
+    <strong>Name:</strong> <%= @receipt.store.name %><br>
+    <strong>Address:</strong> <%= @receipt.store.address %><br>
+    <strong>Phone:</strong> <%= @receipt.store.phone %>
+  </p>
+
+  <h3>Customer Information</h3>
+  <p>
+    <strong>Name:</strong> <%= @receipt.order.customer.name %><br>
+    <strong>Email:</strong> <%= @receipt.order.customer.email %>
+  </p>
+
+  <hr>
+
+  <h3>Order Items</h3>
+  <table class="table table-bordered table-striped">
+    <thead class="table-light">
+      <tr>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% total = 0 %>
+      <% @receipt.order.order_items.each do |item| %>
+        <% subtotal = item.quantity * item.unit_price %>
+        <% total += subtotal %>
+        <tr>
+          <td><%= item.product.name %></td>
+          <td><%= item.quantity %></td>
+          <td><%= number_to_currency(item.unit_price) %></td>
+          <td><%= number_to_currency(subtotal) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <% tax_rate = 0.11 %>
+  <% tax_amount = total * tax_rate %>
+  <% total_with_tax = total + tax_amount %>
+
+  <p><strong>Subtotal:</strong> <%= number_to_currency(total) %></p>
+  <p><strong>Tax (11%):</strong> <%= number_to_currency(tax_amount) %></p>
+  <h4><strong>Total:</strong> <%= number_to_currency(total_with_tax) %></h4>
+</div>

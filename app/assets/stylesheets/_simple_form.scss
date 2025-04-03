@@ -1,0 +1,45 @@
+// Estilos personalizados para simple_form
+
+.input {
+    margin-bottom: 1rem;
+  
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
+  
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+  
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+    }
+  
+    .error {
+      color: red;
+      font-size: 0.85rem;
+      margin-top: 0.2rem;
+    }
+  }
+  
+  button,
+  input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }

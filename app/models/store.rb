@@ -9,6 +9,7 @@ class Store < ApplicationRecord
   has_many :refunds, dependent: :destroy
   has_many :products, dependent: :destroy
   has_many :receipts
+  has_many :reviews
 
   validates :name, :address, :phone, :zip_code, :logo, presence: true
   validates :description, presence: true  

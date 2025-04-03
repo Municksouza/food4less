@@ -1,42 +1,59 @@
-<% if user_signed_in? %>
-  <div class="list-group">
-    <%= link_to "Dashboard", dashboard_path, class: "list-group-item list-group-item-action active" %>
+<%= render "shared/back_button" %>
+<% if current_customer || current_store_manager || current_business_admin %>
+  <div class="list-group p-3 text-center bg-light border-end vh-100">
 
-    <% if current_user.customer? %>
-      <%= link_to "My Orders", orders_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Cart", cart_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Saved Payments", payments_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Receipts", receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Edit Profile", edit_user_registration_path, class: "list-group-item list-group-item-action" %>
+    <!-- PROFILE PICTURE / LOGO -->
+    <div class="mb-3">
+      <% if current_customer&.photo&.attached? %>
+        <%= image_tag current_customer.photo, class: "rounded-circle mb-2", style: "width: 80px; height: 80px; object-fit: cover;" %>
+      <% elsif current_store_manager&.store&.logo&.attached? %>
+        <%= image_tag current_store_manager.store.logo, class: "rounded-circle mb-2", style: "width: 80px; height: 80px; object-fit: cover;" %>
+      <% elsif current_business_admin&.logo&.attached? %>
+        <%= image_tag current_business_admin.logo, class: "rounded-circle mb-2", style: "width: 80px; height: 80px; object-fit: cover;" %>
+      <% else %>
+        <%= image_tag 'placeholder.jpeg', class: "rounded-circle mb-2", style: "width: 80px; height: 80px;" %>
+      <% end %>
+    </div>
+
+    <!-- NAME -->
+    <h5 class="mb-3">
+      <%= current_customer&.name || current_store_manager&.store&.name || current_business_admin&.name %>
+    </h5>
+
+    <!-- CUSTOMER MENU -->
+    <% if current_customer %>
+      <%= link_to "🏠 Home", root_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Dashboard", customers_dashboard_path, class: "list-group-item list-group-item-action active" %>
+      <%= link_to "My Orders", customers_dashboard_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "My Cart", customers_cart_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "My Receipt", customers_receipt_path(current_customer.receipts.last), class: "list-group-item list-group-item-action" if current_customer.receipts.any? %>
+      <%= link_to "My Reviews", customers_reviews_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Edit Profile", edit_customer_registration_path, class: "list-group-item list-group-item-action" %>
     <% end %>
 
-    <% if current_user.store_manager? %>
-      <%= link_to "Store Products", products_path, class: "list-group-item list-group-item-action" %>
+    <!-- STORE MANAGER MENU -->
+    <% if current_store_manager %>
+      <%= link_to "🏠 Home", root_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Store Dashboard", stores_dashboard_path, class: "list-group-item list-group-item-action active" %>
+      <%= link_to "Products", products_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Add Product", new_product_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Orders", orders_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Pending Orders", pending_orders_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Manage Payments", payments_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Receipts", receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Customers", customers_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Edit Store Profile", edit_store_path(current_user.store), class: "list-group-item list-group-item-action" %>
+      <%= link_to "Orders", stores_orders_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Receipts", stores_receipts_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Edit Store", edit_store_path(current_store_manager.store), class: "list-group-item list-group-item-action" %>
     <% end %>
 
-    <% if current_user.business_admin? %>
-      <%= link_to "Manage Stores", stores_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Add Store", new_store_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Employees", employees_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Payments", payments_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Receipts", receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Edit Business Profile", edit_business_path(current_user.business), class: "list-group-item list-group-item-action" %>
+    <!-- BUSINESS ADMIN MENU -->
+    <% if current_business_admin %>
+      <%= link_to "🏠 Home", root_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Admin Dashboard", business_admin_dashboard_path, class: "list-group-item list-group-item-action active" %>
+      <%= link_to "Manage Stores", business_admin_stores_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Receipts", business_admin_receipts_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Edit Profile", edit_business_path(current_business_admin), class: "list-group-item list-group-item-action" %>
     <% end %>
 
-    <% if current_user.super_admin? %>
-      <%= link_to "Users", users_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Stores", stores_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Orders", orders_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Payments", payments_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Receipts", receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Business Accounts", businesses_path, class: "list-group-item list-group-item-action" %>
-    <% end %>
+    <hr>
+    <%= link_to "Sign Out", destroy_customer_session_path, method: :delete, class: "list-group-item list-group-item-action text-danger" if current_customer %>
+    <%= link_to "Sign Out", destroy_store_manager_session_path, method: :delete, class: "list-group-item list-group-item-action text-danger" if current_store_manager %>
+    <%= link_to "Sign Out", destroy_business_admin_session_path, method: :delete, class: "list-group-item list-group-item-action text-danger" if current_business_admin %>
   </div>
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,6 +71,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
     t.index ["user_id"], name: "index_businesses_on_user_id"
   end
 
+  create_table "cart_items", force: :cascade do |t|
+    t.bigint "cart_id", null: false
+    t.bigint "product_id", null: false
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["cart_id"], name: "index_cart_items_on_cart_id"
+    t.index ["product_id"], name: "index_cart_items_on_product_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
+    t.bigint "customer_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_carts_on_customer_id"
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -92,6 +110,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "unit_price"
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end
@@ -153,8 +172,22 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "store_id", null: false
+    t.string "reason"
     t.index ["order_id"], name: "index_refunds_on_order_id"
     t.index ["store_id"], name: "index_refunds_on_store_id"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.integer "rating"
+    t.text "comment"
+    t.bigint "order_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "store_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["customer_id"], name: "index_reviews_on_customer_id"
+    t.index ["order_id"], name: "index_reviews_on_order_id"
+    t.index ["store_id"], name: "index_reviews_on_store_id"
   end
 
   create_table "store_managers", force: :cascade do |t|
@@ -211,6 +244,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "businesses", "users"
+  add_foreign_key "cart_items", "carts"
+  add_foreign_key "cart_items", "products"
+  add_foreign_key "carts", "customers"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "customers"
@@ -222,6 +258,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_02_164230) do
   add_foreign_key "receipts", "stores"
   add_foreign_key "refunds", "orders"
   add_foreign_key "refunds", "stores"
+  add_foreign_key "reviews", "customers"
+  add_foreign_key "reviews", "orders"
+  add_foreign_key "reviews", "stores"
   add_foreign_key "store_managers", "stores"
   add_foreign_key "stores", "business_admins", column: "business_id"
 end

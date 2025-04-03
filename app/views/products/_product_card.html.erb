@@ -1,0 +1,28 @@
+<div class="card product-card mb-4" style="width: 18rem;">
+  <% if product.images.attached? %>
+    <%= image_tag url_for(product.images.first.variant(resize_to_fill: [400, 250])), class: "card-img-top" %>
+  <% else %>
+    <%= image_tag "placeholder.jpeg", class: "card-img-top" %>
+  <% end %>
+
+  <div class="card-body">
+    <h5 class="card-title"><%= product.name %></h5>
+    <p class="card-text"><%= truncate(product.description, length: 100) %></p>
+    <p class="text-muted"><del><%= number_to_currency(product.old_price) %></del></p>
+    <p class="text-success"><strong><%= number_to_currency(product.price) %></strong></p>
+    <p class="text-secondary">Stock: <%= product.stock %></p>
+    <% if product.store.reviews.any? %>
+      <p class="mt-2">
+        ⭐ <strong><%= number_with_precision(product.store.reviews.average(:rating), precision: 1) %></strong>
+        based on <%= product.store.reviews.count %> reviews
+      </p>
+      <%= link_to "View Store", store_path(product.store), class: "btn btn-sm btn-outline-secondary mt-2" %>
+    <% else %>
+      <p class="mt-2 text-muted">No reviews yet</p>
+    <% end %>
+    <hr>
+    <p class="mb-0"><strong>Store:</strong> <%= product.store.name %></p>
+    <p><%= product.store.address %> | <%= product.store.phone %></p>
+    <%= button_to "Add to Cart", add_item_customers_cart_path(product_id: product.id), method: :post, class: "btn btn-primary" %>
+  </div>
+</div>

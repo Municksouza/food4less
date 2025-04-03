@@ -7,6 +7,12 @@ module Stores
       @store = Store.new
     end
 
+    def show
+      @store = Store.find(params[:id])
+      @products = @store.products
+      @reviews = @store.reviews.includes(:customer).order(created_at: :desc)
+    end
+
     def create
       @store = current_business_admin.stores.build(store_params)
       password = params[:store_manager_password]
