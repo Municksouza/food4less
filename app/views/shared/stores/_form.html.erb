@@ -1,0 +1,10 @@
+<%= simple_form_for [:business_admins, store], html: { multipart: true } do |f| %>
+    <%= f.input :name %>
+    <%= f.input :email %>
+    <%= f.input :phone %>
+    <%= f.input :address %>
+    <%= f.input :zip_code %>
+    <%= f.input :description %>
+    <%= f.input :logo, as: :file %>
+    <%= f.button :submit, "Salvar", class: "btn btn-success" %>
+  <% end %>

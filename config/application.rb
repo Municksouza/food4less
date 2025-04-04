@@ -17,7 +17,7 @@ module Food4less
     config.autoload_lib(ignore: %w[assets tasks])
 
     # Configuration for the application, engines, and railties goes here.
-    #
+    config.autoload_paths += Dir[Rails.root.join('app', 'policies', '*.rb')]
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #

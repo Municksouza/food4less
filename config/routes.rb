@@ -55,9 +55,20 @@ Rails.application.routes.draw do
 
   # ✅ Business Admin Area
   namespace :business_admins do
+    # resources :customers, only: [:index, :show], module: "shared"
+    resources :receipts, only: [:show, :index]
+    get "business_dashboard", to: "business_dashboard#show"
     resources :stores do
       resource :dashboard, only: [:show], controller: "business_store_dashboard"
-      resource :store_manager_credentials, only: [:edit, :update], controller: "business_store_manager_credentials"
+      resource :store_manager_credentials, only: [:edit, :update], controller: "business_store_manager_credentials"    
+      resources :payments, only: [:index]
+
+      get "/products", to: "products#index", as: :store_products
+      get "/products/new", to: "products#new", as: :new_store_product
+      post "/products", to: "products#create"
+      get "/products/:id/edit", to: "products#edit", as: :edit_store_product
+      patch "/products/:id", to: "products#update", as: :store_product
+      delete "/products/:id", to: "products#destroy"
     end
   end
 
@@ -80,11 +91,11 @@ Rails.application.routes.draw do
       collection do
         get :manage, action: :menu_management
       end
-  end
-  
+    end
+
     resources :payments, only: [:index]
     resources :receipts, only: [:index, :show, :new, :create]
-    resources :customers, only: [:index, :show]
+    # resources :customers, only: [:index, :show], module: "shared"
 
     get "dashboard", to: "store_dashboards#show"
     get "reports", to: "reports#index"
@@ -108,4 +119,7 @@ Rails.application.routes.draw do
 
   # ✅ Health Check
   get "up", to: "rails/health#show", as: :rails_health_check
+
+  resources :customers, only: [:index, :show], module: "shared"
+
 end

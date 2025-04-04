@@ -39,16 +39,18 @@
       <%= link_to "Add Product", new_product_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Orders", stores_orders_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Receipts", stores_receipts_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Search Customers", customers_path, class: "list-group-item list-group-item-action" %>      
       <%= link_to "Edit Store", edit_store_path(current_store_manager.store), class: "list-group-item list-group-item-action" %>
     <% end %>
 
     <!-- BUSINESS ADMIN MENU -->
     <% if current_business_admin %>
       <%= link_to "🏠 Home", root_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Admin Dashboard", business_admin_dashboard_path, class: "list-group-item list-group-item-action active" %>
-      <%= link_to "Manage Stores", business_admin_stores_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Receipts", business_admin_receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Edit Profile", edit_business_path(current_business_admin), class: "list-group-item list-group-item-action" %>
+      <%= link_to "Admin Dashboard", business_admins_business_dashboard_path, class: "list-group-item list-group-item-action active" %>
+      <%= link_to "Manage Stores", business_admins_stores_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Receipts", business_admins_receipts_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Search Customers", customers_path, class: "list-group-item list-group-item-action" %>      
+      <%= link_to "Edit Profile", edit_business_admin_registration_path(current_business_admin), class: "list-group-item list-group-item-action" %>
     <% end %>
 
     <hr>

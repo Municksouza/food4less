@@ -61,6 +61,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem "dotenv-rails"
 end
 
 group :development do
@@ -76,6 +77,10 @@ group :test do
 end
 
 
-
+gem "geocoder"
 gem "jsbundling-rails", "~> 1.3"
 gem "cssbundling-rails", "~> 1.3"
+
+gem "chartkick", "~> 5.1"
+
+gem "groupdate", "~> 6.5"

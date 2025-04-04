@@ -10,6 +10,8 @@
 
 # frozen_string_literal: true
 
+# frozen_string_literal: true
+
 require 'faker'
 
 # Data cleanup
@@ -140,7 +142,8 @@ Customer.all.each do |customer|
       item = order.order_items.create!(
         product: product,
         quantity: quantity,
-        price: product.price
+        unit_price: product.price,
+        price: product.price,
       )
       order.total_price += item.quantity * item.price
     end
@@ -161,6 +164,7 @@ Customer.all.each do |customer|
     receipt = Receipt.create!(
       order: order,
       store: store,
+      amount: order.total_price,
       content: "Receipt for Order ##{order.id}",
       receipt_type: "store"
     )
@@ -186,6 +190,10 @@ Order.find_each do |order|
   unless Receipt.exists?(order_id: order.id)
     Receipt.create!(
       order: order,
+      store: order.store,
+      amount: order.total_price,
+      content: "Generated Receipt for Order ##{order.id}",
+      receipt_type: "store",
       issued_at: Time.current
     )
     puts "🧾 Created receipt for Order ##{order.id}"
@@ -195,7 +203,7 @@ Order.find_each do |order|
     refund_amount = rand(1..(order.total_price * 0.5)).round(2)
     Refund.create!(
       order: order,
-      store: order.store, 
+      store: order.store,
       amount: refund_amount,
       reason: ["Product damaged", "Late delivery", "Customer complaint"].sample,
       refund_date: Time.current
@@ -206,3 +214,49 @@ end
 
 puts "✅ Receipts and refunds generation completed."
 puts "🌱 Seed data created successfully!"
+
+if BusinessAdmin.any?
+  business_admin = BusinessAdmin.first
+
+  extra_stores = [
+    {
+      name: "Fresh Mart East",
+      address: "270 Acadia Dr, Saskatoon, SK",
+      zip_code: "S7H 3V4"
+    },
+    {
+      name: "Budget Foods",
+      address: "501 22nd St E, Saskatoon, SK",
+      zip_code: "S7K 0H2"
+    },
+    {
+      name: "North End Grocery",
+      address: "134 Primrose Dr, Saskatoon, SK",
+      zip_code: "S7K 5S6"
+    }
+  ]
+
+  # Create additional stores with real addresses
+  extra_stores.each do |data|
+    store = business_admin.stores.new(
+      name: data[:name],
+      email: Faker::Internet.email,
+      phone: Faker::PhoneNumber.phone_number,
+      address: data[:address],
+      zip_code: data[:zip_code],
+      description: Faker::Company.catch_phrase
+    )
+
+    store.logo.attach(
+      io: File.open(logo_path),
+      filename: 'placeholder.jpeg',
+      content_type: 'image/jpeg'
+    ) if File.exist?(logo_path)
+
+    store.geocode if store.respond_to?(:geocode)
+
+    store.save!
+
+    puts "📍 Store com endereço real adicionada: #{store.name} - #{store.address}, #{store.zip_code}"
+  end
+end

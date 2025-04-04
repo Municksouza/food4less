@@ -34,4 +34,8 @@ class Order < ApplicationRecord
   def pending?
     status == 'pending'
   end
+
+  def total_quantity
+    order_items.sum(:quantity)
+  end
 end

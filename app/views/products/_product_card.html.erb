@@ -1,4 +1,4 @@
-<div class="card product-card mb-4" style="width: 18rem;">
+<div class="card product-card shadow-sm mb-4" style="width: 18rem;">
   <% if product.images.attached? %>
     <%= image_tag url_for(product.images.first.variant(resize_to_fill: [400, 250])), class: "card-img-top" %>
   <% else %>
@@ -7,22 +7,39 @@
 
   <div class="card-body">
     <h5 class="card-title"><%= product.name %></h5>
-    <p class="card-text"><%= truncate(product.description, length: 100) %></p>
-    <p class="text-muted"><del><%= number_to_currency(product.old_price) %></del></p>
-    <p class="text-success"><strong><%= number_to_currency(product.price) %></strong></p>
-    <p class="text-secondary">Stock: <%= product.stock %></p>
+    <p class="card-text text-muted"><%= truncate(product.description, length: 100) %></p>
+
+    <p class="mb-1 text-muted small">
+      <del><%= number_to_currency(product.old_price) %></del>
+    </p>
+    <p class="text-success fw-bold fs-5"><%= number_to_currency(product.price) %></p>
+
+    <p class="text-secondary mb-2">🧺 <strong>Stock:</strong> <%= product.stock %></p>
+
     <% if product.store.reviews.any? %>
-      <p class="mt-2">
+      <p class="mb-2">
         ⭐ <strong><%= number_with_precision(product.store.reviews.average(:rating), precision: 1) %></strong>
-        based on <%= product.store.reviews.count %> reviews
+        (<%= product.store.reviews.count %> reviews)
       </p>
-      <%= link_to "View Store", store_path(product.store), class: "btn btn-sm btn-outline-secondary mt-2" %>
     <% else %>
-      <p class="mt-2 text-muted">No reviews yet</p>
+      <p class="text-muted small">No reviews</p>
     <% end %>
-    <hr>
-    <p class="mb-0"><strong>Store:</strong> <%= product.store.name %></p>
-    <p><%= product.store.address %> | <%= product.store.phone %></p>
-    <%= button_to "Add to Cart", add_item_customers_cart_path(product_id: product.id), method: :post, class: "btn btn-primary" %>
+
+    <hr class="my-2">
+
+    <p class="mb-0"><strong>🏬 Store:</strong> <%= product.store.name %></p>
+    <p class="mb-1">
+      📍 
+      <%= link_to product.store.address,
+                  "https://www.google.com/maps/search/?api=1&query=#{URI.encode_www_form_component(product.store.address)}",
+                  target: "_blank",
+                  rel: "noopener",
+                  class: "text-decoration-none text-primary" %>
+    </p>
+    <p>📞 <%= product.store.phone %></p>
+
+    <% unless business_admin_signed_in? || store_manager_signed_in? %>
+      <%= button_to "🛒 Add to cart", add_item_customers_cart_path(product_id: product.id), method: :post, class: "btn btn-primary w-100 mt-2" %>
+    <% end %>
   </div>
 </div>

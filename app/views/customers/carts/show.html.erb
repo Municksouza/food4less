@@ -1,4 +1,4 @@
-<h1 class="mb-4">Your Shopping Cart</h1>
+<h1 class="mb-4">🛒 Your Shopping Cart</h1>
 <%= link_to "← Back", (session[:previous_url] || root_path), class: "btn btn-outline-secondary mb-3" %>
 
 <% if @cart.present? && @cart.any? %>
@@ -6,42 +6,47 @@
     <% store = Store.find_by(id: store_id) %>
     <% next unless store %>
 
+    <% store_total = 0 %>
+    <% total_items = items.values.map(&:to_i).sum %>
+
     <div class="card mb-4 shadow-sm">
-      <div class="card-header bg-primary text-white">
-        <h5 class="mb-0"><%= store.name %></h5>
-        <small><%= store.address %> | <%= store.phone %></small>
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div>
+          <h5 class="mb-0"><%= store.name %></h5>
+          <small><%= store.address %> | <%= store.phone %></small>
+        </div>
+        <span class="badge bg-warning text-dark fs-6"><%= total_items %> items</span>
       </div>
 
       <div class="card-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered align-middle">
           <thead class="table-light">
             <tr>
-              <th>Product</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Subtotal</th>
-              <th>Actions</th>
+              <th>🛍️ Product</th>
+              <th>📦 Quantity</th>
+              <th>💵 Unit Price</th>
+              <th>💰 Subtotal</th>
+              <th>🛠️ Actions</th>
             </tr>
           </thead>
           <tbody>
-            <% total = 0 %>
-            <% items.each do |product_id, item_quantity| %>
+            <% items.each do |product_id, quantity| %>
               <% product = Product.find_by(id: product_id) %>
               <% next unless product %>
-              <% subtotal = product.price * item_quantity %>
-              <% total += subtotal %>
+              <% subtotal = product.price.to_f * quantity.to_i %>
+              <% store_total += subtotal %>
               <tr>
                 <td><%= product.name %></td>
                 <td>
-                <%= form_with url: update_item_customers_cart_path(product_id: product.id), method: :patch, local: true, class: "d-inline-flex gap-2 align-items-center" do |f| %>
-                  <%= f.number_field :quantity, value: item_quantity, min: 1, class: "form-control w-75" %>
-                  <%= f.submit "Update", class: "btn btn-sm btn-warning ms-2" %>
-                <% end %>
+                  <%= form_with url: update_item_customers_cart_path(product_id: product.id), method: :patch, local: true, class: "d-flex gap-2 align-items-center" do |f| %>
+                    <%= f.number_field :quantity, value: quantity, min: 1, class: "form-control w-75" %>
+                    <%= f.submit "🔁", class: "btn btn-sm btn-warning" %>
+                  <% end %>
                 </td>
                 <td><%= number_to_currency(product.price) %></td>
                 <td><%= number_to_currency(subtotal) %></td>
                 <td>
-                  <%= button_to "Remove", remove_item_customers_cart_path(product_id: product.id), method: :delete, class: "btn btn-sm btn-danger" %>
+                  <%= button_to "❌ Remove", remove_item_customers_cart_path(product_id: product.id), method: :delete, class: "btn btn-sm btn-danger" %>
                 </td>
               </tr>
             <% end %>
@@ -49,27 +54,27 @@
         </table>
 
         <% tax_rate = 0.11 %>
-        <% tax_amount = total * tax_rate %>
-        <% total_with_tax = total + tax_amount %>
+        <% tax_amount = store_total * tax_rate %>
+        <% total_with_tax = store_total + tax_amount %>
 
         <div class="text-end mt-4">
-          <p><strong>Store Subtotal:</strong> <%= number_to_currency(total) %></p>
-          <p><strong>Taxes (11%):</strong> <%= number_to_currency(tax_amount) %></p>
-          <h4><strong>Total for this store:</strong> <%= number_to_currency(total_with_tax) %></h4>
+          <p><strong>Subtotal:</strong> <%= number_to_currency(store_total) %></p>
+          <p><strong>Tax (11%):</strong> <%= number_to_currency(tax_amount) %></p>
+          <h4><strong>Total (with tax):</strong> <%= number_to_currency(total_with_tax) %></h4>
         </div>
 
-        <div class="mt-3">
-          <%= button_to "Checkout for this store", checkout_customers_cart_path(store_id: store.id), method: :post, class: "btn btn-success" %>
+        <div class="text-end mt-3">
+          <%= button_to "✅ Checkout for this Store", checkout_customers_cart_path(store_id: store.id), method: :post, class: "btn btn-success btn-lg" %>
         </div>
       </div>
     </div>
   <% end %>
 
   <div class="d-flex justify-content-between mt-3">
-    <%= button_to "Clear Cart", clear_cart_customers_cart_path, method: :delete, class: "btn btn-outline-danger" %>
+    <%= button_to "🧹 Clear Entire Cart", clear_cart_customers_cart_path, method: :delete, class: "btn btn-outline-danger" %>
   </div>
 <% else %>
   <div class="alert alert-info">
-    Your cart is empty.
+    Your cart is currently empty. Start shopping to add some items!
   </div>
 <% end %>

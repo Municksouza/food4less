@@ -61,19 +61,10 @@
 
 <section class="products">
   <h2>Products</h2>
-  <%= link_to "Add Product", new_store_product_path(@store), class: "btn btn-primary" %>
+  <%= link_to "Add Product", business_admins_store_new_store_product_path(@store), class: "btn btn-primary mb-3" %>
   <% if @products.any? %>
     <ul>
-      <% @products.each do |product| %>
-        <li>
-          <strong><%= product.name %></strong>
-          - Original Price: <%= number_to_currency(product.original_price) %>
-          - Discount Price: <%= number_to_currency(product.discount_price) %>
-          <br>
-          <%= image_tag url_for(product.image), alt: product.name if product.image.attached? %>
-          <p><%= product.description %></p>
-        </li>
-      <% end %>
+      <%= render partial: "products/product_card", collection: @products, as: :product %>
     </ul>
   <% else %>
     <p>No products registered.</p>
@@ -118,7 +109,7 @@
   <% end %>
 </section>
 
-<%= link_to "Edit Store Profile", edit_store_path(@store), class: "btn btn-warning" %>
-<%= link_to "Back to Business Dashboard", business_dashboard_path, class: "btn btn-secondary" %>
-<%= link_to "Edit Store Manager Credentials", edit_store_store_manager_credentials_path(@store), class: "btn btn-warning" %>
-<%= link_to 'Delete', store_path(@store), method: :delete, data: { confirm: 'Are you sure you want to delete this store?' }, class: "btn btn-danger" %>
+<%= link_to "Edit Store Profile", edit_business_admins_store_path(@store), class: "btn btn-warning" %>
+<%= link_to "Back to Business Dashboard", business_admins_business_dashboard_path, class: "btn btn-secondary" %>
+<%= link_to "Edit Store Manager Credentials", edit_business_admins_store_store_manager_credentials_path(@store), class: "btn btn-warning" %>
+<%= link_to 'Delete', business_admins_store_path(@store), method: :delete, data: { confirm: 'Are you sure you want to delete this store?' }, class: "btn btn-danger" %>

@@ -4,6 +4,22 @@ class Customers::CartsController < ApplicationController
   def show
     session[:previous_url] ||= request.referer
     @cart = session[:cart] || {}
+  
+    @store_totals = {}
+    @overall_total = 0
+  
+    @cart.each do |store_id, products|
+      store_total = 0
+      products.each do |product_id, quantity|
+        product = Product.find_by(id: product_id)
+        next unless product
+  
+        subtotal = quantity.to_i * product.price.to_f
+        store_total += subtotal
+      end
+      @store_totals[store_id] = store_total
+      @overall_total += store_total
+    end
   end
 
   def add_item

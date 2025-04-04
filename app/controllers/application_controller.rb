@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
-  include Pundit
-
+  include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   helper_method :current_customer, :customer_signed_in?
@@ -9,6 +8,13 @@ class ApplicationController < ActionController::Base
   helper_method :current_store_manager, :store_manager_signed_in?
   helper_method :current_super_admin, :super_admin_signed_in?
   helper_method :current_account
+
+  def pundit_user
+    current_business_admin
+    current_store_manager
+    current_super_admin
+    current_customer
+  end
 
   def current_user_of_type(type, scope)
     user = warden.user(scope)
@@ -58,7 +64,7 @@ class ApplicationController < ActionController::Base
     when Customer
       customer_dashboard_path
     when BusinessAdmin
-      business_dashboard_path
+      business_admins_business_dashboard_path
     when StoreManager
       store_dashboard_path
     when SuperAdmin
@@ -85,7 +91,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = "Você não tem permissão para acessar esta página."
+    flash[:alert] = "You do not have permission to access this page."
     redirect_to(request.referer || root_path)
   end
 end

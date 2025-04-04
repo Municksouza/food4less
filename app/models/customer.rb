@@ -7,6 +7,7 @@ class Customer < ApplicationRecord
   has_one_attached :photo
   has_many :orders
   has_many :receipts, through: :orders
+  has_many :payments, through: :orders
   has_many :stores, through: :orders
   has_many :products, through: :stores
   has_many :reviews

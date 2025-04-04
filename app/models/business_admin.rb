@@ -5,7 +5,7 @@ class BusinessAdmin < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :logo
-
+  has_many :receipts
 
   has_many :stores, foreign_key: "business_id", dependent: :destroy
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,6 +103,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
 
+  create_table "order_histories", force: :cascade do |t|
+    t.string "status"
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_histories_on_order_id"
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.integer "quantity"
     t.decimal "price"
@@ -113,6 +121,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
     t.decimal "unit_price"
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
+  end
+
+  create_table "order_statuses", force: :cascade do |t|
+    t.string "status"
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_statuses_on_order_id"
   end
 
   create_table "orders", force: :cascade do |t|
@@ -216,6 +232,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
     t.integer "business_admin_id"
     t.string "email"
     t.text "description"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["business_id"], name: "index_stores_on_business_id"
   end
 
@@ -247,8 +265,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_03_131430) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "customers"
+  add_foreign_key "order_histories", "orders"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
+  add_foreign_key "order_statuses", "orders"
   add_foreign_key "orders", "customers"
   add_foreign_key "orders", "stores"
   add_foreign_key "payments", "orders"

@@ -1,17 +1,17 @@
 module BusinessAdmins
-  class StoreManagerCredentialsController < ApplicationController    
+  class BusinessStoreManagerCredentialsController < ApplicationController
     before_action :authenticate_business_admin!
     before_action :set_store_and_manager
   
     def edit
-      # Renderiza o formulário para editar as credenciais
+      # Renders the form to edit credentials
     end
   
     def update
       if @store_manager.update(store_manager_params)
-        redirect_to  store_admin_dashboard_path(@store), notice: "Credenciais atualizadas com sucesso."
+        redirect_to store_admin_dashboard_path(@store), notice: "Credentials successfully updated."
       else
-        flash.now[:alert] = "Erro ao atualizar credenciais."
+        flash.now[:alert] = "Error updating credentials."
         render :edit
       end
     end
@@ -19,16 +19,16 @@ module BusinessAdmins
     private
   
     def set_store_and_manager
-      # O BusinessAdmin só pode editar as lojas que lhe pertencem
+      # The BusinessAdmin can only edit stores that belong to them
       @store = current_business_admin.stores.find(params[:store_id])
       @store_manager = @store.store_manager
       unless @store_manager
-        redirect_to  store_admin_dashboard_path(@store), alert: "Store Manager não encontrado para essa loja."
+        redirect_to business_admins_store_dashboard_path(@store), alert: "Store Manager not found for this store."
       end
     end
   
     def store_manager_params
-      # Permite a atualização do email e, se informado, da senha
+      # Allows updating the email and, if provided, the password
       params.require(:store_manager).permit(:email, :password, :password_confirmation)
     end
   end
