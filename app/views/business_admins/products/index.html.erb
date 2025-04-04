@@ -1,0 +1,27 @@
+<h1>Products for <%= @store.name %></h1>
+
+<%= link_to "Add Product", business_admins_store_new_store_product_path(@store), class: "btn btn-primary mb-3" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= number_to_currency(product.price) %></td>
+        <td><%= product.stock %></td>
+        <td>
+            <%= link_to "Edit", business_admins_store_edit_store_product_path(@store, product), class: "btn btn-sm btn-outline-warning" %>            
+            <%= link_to "Delete", business_admins_store_store_product_path(@store, product), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>        
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

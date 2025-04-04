@@ -1,0 +1,27 @@
+<h1>My Stores</h1>
+
+<%= link_to "Create New Store", new_business_admins_store_path, class: "btn btn-primary mb-3" %>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @stores.each do |store| %>
+            <tr>
+                <td><%= store.name %></td>
+                <td><%= store.address %></td>
+                <td><%= store.email %></td>
+                <td>
+                    <%= link_to "Dashboard", business_admins_store_dashboard_path(store), class: "btn btn-sm btn-outline-info" %>
+                    <%= link_to "Edit", edit_business_admins_store_path(store), class: "btn btn-sm btn-warning" %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

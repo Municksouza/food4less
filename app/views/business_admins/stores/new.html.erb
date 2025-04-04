@@ -1,0 +1,52 @@
+<%= simple_form_for [:business_admins, @store], html: { multipart: true, class: "needs-validation" } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <i class="fas fa-store me-2"></i><strong>Store Details</strong>
+    </div>
+    <div class="card-body row">
+      <div class="col-md-6">
+        <%= f.input :name, label: "Store Name", required: true, prepend: "<i class='fas fa-building'></i>".html_safe %>
+        <%= f.input :email, label: "Store Email", required: true, prepend: "<i class='fas fa-envelope'></i>".html_safe %>
+        <%= f.input :phone, label: "Phone", required: true, prepend: "<i class='fas fa-phone'></i>".html_safe %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :address, input_html: { id: 'store_address' }, prepend: "<i class='fas fa-map-marker-alt'></i>".html_safe %>
+        <%= f.input :zip_code, label: "ZIP Code", required: true, prepend: "<i class='fas fa-map-pin'></i>".html_safe %>
+        <%= f.input :description, label: "Description", as: :text, required: true, prepend: "<i class='fas fa-align-left'></i>".html_safe %>
+        <%= f.input :logo, as: :file, label: "Store Logo", required: true %>
+        <%= f.input :latitude, as: :hidden, input_html: { id: 'store_latitude' } %>
+        <%= f.input :longitude, as: :hidden, input_html: { id: 'store_longitude' } %>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-secondary text-white">
+      <i class="fas fa-user-lock me-2"></i><strong>Store Manager Credentials</strong>
+    </div>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-key me-2"></i>Password</label>
+        <%= password_field_tag :store_manager_password, nil, class: "form-control", required: true %>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-key me-2"></i>Confirm Password</label>
+        <%= password_field_tag :store_manager_password_confirmation, nil, class: "form-control", required: true %>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label"><i class="fas fa-paper-plane me-2"></i>Recipient Email</label>
+        <%= email_field_tag :store_manager_recipient_email, @store.email, required: true, class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions text-end">
+    <%= f.button :submit, class: "btn btn-success px-4 py-2" do %>
+      <i class="fas fa-plus-circle me-2"></i>Create Store
+    <% end %>
+  </div>
+<% end %>

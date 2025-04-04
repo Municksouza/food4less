@@ -1,0 +1,62 @@
+<% if @receipt.store.logo.attached? %>
+  <%= image_tag @receipt.store.logo, style: "height: 60px; margin-bottom: 10px;" %>
+<% end %>
+<% if @receipt.store.name.present? %>
+  <h2><%= @receipt.store.name %></h2>
+<% end %>
+<% if @receipt.store.address.present? %>
+  <p><strong>Address:</strong> <%= @receipt.store.address %></p>
+<% end %>
+<% if @receipt.store.phone.present? %>
+  <p><strong>Phone:</strong> <%= @receipt.store.phone %></p>
+<% end %>
+<% if @receipt.store.email.present? %>
+  <p><strong>Email:</strong> <%= @receipt.store.email %></p>
+<% end %>
+<% if @receipt.store.website.present? %>
+  <p><strong>Website:</strong> <%= @receipt.store.website %></p>
+<% end %>
+
+<h1>Receipt - Order <%= @receipt.order.id %></h1>
+<p><strong>Copy for:</strong> Customer</p>
+<p><strong>Date:</strong> <%= @receipt.created_at.strftime("%B %d, %Y") %></p>
+
+<hr>
+
+<h3>Store</h3>
+<p>
+  <strong>Name:</strong> <%= @receipt.store.name %><br>
+  <strong>Address:</strong> <%= @receipt.store.address %><br>
+  <strong>Phone:</strong> <%= @receipt.store.phone %>
+</p>
+
+<h3>Customer</h3>
+<p><strong>Name:</strong> <%= @receipt.order.customer.name %></p>
+
+<hr>
+
+<h3>Items</h3>
+<table style="width: 100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="border: 1px solid #ccc; padding: 5px;">Product</th>
+      <th style="border: 1px solid #ccc; padding: 5px;">Qty</th>
+      <th style="border: 1px solid #ccc; padding: 5px;">Price</th>
+      <th style="border: 1px solid #ccc; padding: 5px;">Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @receipt.order.order_items.each do |item| %>
+      <tr>
+        <td style="border: 1px solid #ccc; padding: 5px;"><%= item.product.name %></td>
+        <td style="border: 1px solid #ccc; padding: 5px;"><%= item.quantity %></td>
+        <td style="border: 1px solid #ccc; padding: 5px;"><%= number_to_currency(item.unit_price) %></td>
+        <td style="border: 1px solid #ccc; padding: 5px;"><%= number_to_currency(item.unit_price * item.quantity) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<hr>
+<h3>Total</h3>
+<p><strong><%= number_to_currency(@receipt.order.total_price) %></strong></p>

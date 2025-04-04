@@ -1,0 +1,35 @@
+<h1 class="mb-4">Search Customers</h1>
+
+<%= simple_form_for :search, url: customers_path, method: :get, html: { class: "mb-4" } do |f| %>
+  <div class="input-group">
+    <%= f.input :query, input_html: { value: params[:query] || params.dig(:search, :query), placeholder: "Search...", class: "form-control" }, label: false %>
+    <button class="btn btn-primary" type="submit">🔍 Search</button>
+  </div>
+<% end %>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @customers.each do |customer| %>
+            <tr>
+                <td><%= customer.name %></td>
+                <td><%= customer.email %></td>
+                <td><%= customer.phone %></td>
+                <td><%= link_to "View", dynamic_customer_path(customer), class: "btn btn-sm btn-outline-secondary" %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<% if current_business_admin %>
+  <%= link_to "← Back to Dashboard", business_admins_business_dashboard_path, class: "btn btn-outline-secondary mt-3" %>
+<% elsif current_store_manager %>
+  <%= link_to "← Back to Store Dashboard", stores_store_dashboard_path, class: "btn btn-outline-secondary mt-3" %>
+<% end %>

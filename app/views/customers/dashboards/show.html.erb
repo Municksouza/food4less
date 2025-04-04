@@ -1,0 +1,78 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Welcome, <%= current_customer.name %>!</h1>
+
+  <!-- Last order highlight -->
+  <% if @past_orders.any? %>
+    <% last_order = @past_orders.first %>
+    <div class="alert alert-success">
+      <strong>Last Order:</strong> Order <%= last_order.id %> on <%= last_order.created_at.strftime("%d/%m/%Y") %> - <%= number_to_currency(last_order.total_price) %>
+      <% if (receipt = Receipt.find_by(order_id: last_order.id)) %>
+        <%= link_to "View Receipt", customers_receipt_path(receipt), class: "btn btn-sm btn-outline-light ms-2" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Order history -->
+  <section class="mb-5">
+    <h2>My Orders</h2>
+
+    <% if @past_orders.any? %>
+      <div class="row">
+        <% @past_orders.each do |order| %>
+          <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">Order #<%= order.id %></h5>
+                <p class="mb-1"><strong>Date:</strong> <%= order.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+                <p class="mb-1"><strong>Store:</strong> <%= order.store.name %></p>
+                <p class="mb-1"><strong>Items:</strong> <%= order.order_items.sum(&:quantity) %></p>
+                <p class="mb-1"><strong>Total:</strong> <%= number_to_currency(order.total_price) %></p>
+                <p class="mb-2"><strong>Status:</strong> <span class="badge bg-info"><%= order.status.capitalize %></span></p>
+
+                <div class="d-flex justify-content-between">
+                  <% if (receipt = Receipt.find_by(order_id: order.id)) %>
+                    <%= link_to "View Receipt", customers_receipt_path(receipt), class: "btn btn-sm btn-outline-primary" %>
+                  <% else %>
+                    <span class="text-muted small">Receipt not available</span>
+                  <% end %>
+
+                  <% if order.review.present? %>
+                    <span class="badge bg-success">Reviewed</span>
+                  <% else %>
+                    <%= button_tag "Rate Order", class: "btn btn-sm btn-outline-success", data: { bs_toggle: "modal", bs_target: "#rateOrderModal#{order.id}" } %>
+                  <% end %>
+                </div>
+
+                <!-- Rating Modal -->
+                <div class="modal fade" id="rateOrderModal<%= order.id %>" tabindex="-1" aria-labelledby="rateOrderModalLabel<%= order.id %>" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="rateOrderModalLabel<%= order.id %>">Rate Order #<%= order.id %></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <%= simple_form_for Review.new, url: reviews_path, method: :post do |f| %>
+                          <%= f.input :order_id, as: :hidden, input_html: { value: order.id } %>
+
+                          <%= f.input :rating, collection: 1..5, as: :radio_buttons, item_wrapper_class: "form-check", label: "Rating" %>
+
+                          <%= f.input :comment, label: "Comment (optional)", as: :text, input_html: { rows: 3 } %>
+
+                          <%= f.button :submit, "Submit Feedback", class: "btn btn-primary" %>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- End Modal -->
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-muted">You haven’t made any purchases yet.</p>
+    <% end %>
+  </section>
+</div>

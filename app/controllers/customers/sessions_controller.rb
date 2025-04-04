@@ -19,7 +19,7 @@ class Customers::SessionsController < Devise::SessionsController
   protected
 
   def after_sign_in_path_for(resource)
-    customer_dashboard_path
+    customers_dashboard_path
   end
 
   def after_sign_out_path_for(resource)

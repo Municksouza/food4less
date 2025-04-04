@@ -1,0 +1,76 @@
+<h1 class="mb-4"><%= @customer.name %></h1>
+
+<div class="row">
+    <!-- Customer Information -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                Customer Information
+            </div>
+            <div class="card-body">
+                <p><strong>Email:</strong> <%= @customer.email %></p>
+                <p><strong>Phone:</strong> <%= @customer.phone %></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Orders -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">Recent Orders</div>
+            <ul class="list-group list-group-flush">
+                <% @orders.each do |order| %>
+                    <li class="list-group-item">
+                        Order #<%= order.id %> • <%= l(order.created_at, format: :short) %>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Receipts -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">Recent Receipts</div>
+            <ul class="list-group list-group-flush">
+                <% @receipts.each do |receipt| %>
+                    <li class="list-group-item">
+                        Receipt #<%= receipt.id %> • <%= l(receipt.created_at, format: :short) %>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Payments -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">Recent Payments</div>
+            <ul class="list-group list-group-flush">
+                <% @payments.each do |payment| %>
+                    <li class="list-group-item">
+                        Payment #<%= payment.id %> • <%= l(payment.created_at, format: :short) %>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Reviews -->
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">Recent Reviews</div>
+            <ul class="list-group list-group-flush">
+                <% @reviews.each do |review| %>
+                    <li class="list-group-item">
+                        ⭐ <%= review.rating %> • <%= truncate(review.comment, length: 100) %>
+                    </li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,2 +1,30 @@
-<h1>Stores#show</h1>
-<p>Find me in app/views/stores/show.html.erb</p>
+<div class="container mt-5">
+  <h1 class="mb-4"><%= @store.name %></h1>
+  <p><strong>Address:</strong> <%= @store.address %> | <%= @store.phone %></p>
+
+  <hr>
+  <h2 class="mt-4">Products</h2>
+  <div class="row">
+    <% @products.each do |product| %>
+      <div class="col-md-4">
+        <%= render partial: "products/product_card", locals: { product: product } %>
+      </div>
+    <% end %>
+  </div>
+
+  <hr>
+  <h2 class="mt-5">Customer Reviews</h2>
+  <% if @reviews.any? %>
+    <% @reviews.each do |review| %>
+      <div class="border p-3 mb-3">
+        <p>⭐ <strong><%= review.rating %></strong></p>
+        <% if review.comment.present? %>
+          <p><%= review.comment %></p>
+        <% end %>
+        <small class="text-muted">by <%= review.customer.name %> on <%= review.created_at.strftime("%d/%m/%Y") %></small>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="text-muted">No reviews yet for this store.</p>
+  <% end %>
+</div>

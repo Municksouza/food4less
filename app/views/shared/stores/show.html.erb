@@ -1,0 +1,8 @@
+<h1><%= @store.name %></h1>
+<p><strong>Address:</strong> <%= @store.address %></p>
+<p><strong>Phone:</strong> <%= @store.phone %></p>
+<p><strong>Email:</strong> <%= @store.email %></p>
+<p><strong>Description:</strong> <%= @store.description %></p>
+
+<%= link_to "Edit", url_for([:edit, :stores, :store]), class: "btn btn-primary" if store_manager_signed_in? %>
+<%= link_to "Edit", edit_business_admins_store_path(@store), class: "btn btn-warning" if business_admin_signed_in? %>

@@ -1,0 +1,64 @@
+<h1 class="mb-4">Receipts Overview</h1>
+
+<%= simple_form_for :filters, url: business_admins_receipts_path, method: :get, html: { class: "row g-3 align-items-end mb-4" } do |f| %>
+  <div class="col-md-3">
+    <%= f.input :store_id,
+      collection: current_business_admin.stores.map { |store| [store.name, store.id] },
+      prompt: "All stores",
+      label: "Store",
+      input_html: { class: "form-select", value: params.dig(:filters, :store_id) } %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.input :date,
+      as: :string,
+      label: "Date",
+      input_html: {
+        class: "form-control",
+        type: "date",
+        value: params.dig(:filters, :date)
+      } %>
+  </div>
+
+  <div class="col-md-3">
+    <%= f.input :sort,
+      collection: [
+        ["Date ↑", "date_asc"],
+        ["Date ↓", "date_desc"],
+        ["Amount ↑", "amount_asc"],
+        ["Amount ↓", "amount_desc"]
+      ],
+      label: "Sort by",
+      input_html: {
+        class: "form-select",
+        value: params.dig(:filters, :sort)
+      } %>
+  </div>
+
+  <div class="col-md-3 d-grid gap-2">
+    <%= f.button :submit, "Apply Filters", class: "btn btn-primary" %>
+    <%= link_to "Clear", business_admins_receipts_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>
+
+<% if @receipts.any? %>
+  <div class="row">
+    <% @receipts.each do |receipt| %>
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">Order #<%= receipt.order_id %></h5>
+            <h6 class="card-subtitle text-muted mb-2"><%= receipt.store&.name %></h6>
+            <p class="mb-1"><strong>Customer:</strong> <%= receipt.order&.customer&.name %></p>
+            <p class="mb-1"><strong>Date:</strong> <%= l(receipt.created_at.to_date) %></p>
+            <p class="mb-1"><strong>Amount:</strong> <%= number_to_currency(receipt.amount || 0) %></p>
+            <p class="mb-1"><strong>Type:</strong> <%= receipt.receipt_type.titleize %></p>
+            <%= link_to "View Receipt", business_admins_receipt_path(receipt), class: "btn btn-sm btn-outline-primary mt-2" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p class="alert alert-info">No receipts found with current filters.</p>
+<% end %>

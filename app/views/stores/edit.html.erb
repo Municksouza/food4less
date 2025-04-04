@@ -1,2 +1,21 @@
-<h1>Stores#edit</h1>
-<p>Find me in app/views/stores/edit.html.erb</p>
+<h1>Editar Perfil da Loja</h1>
+
+<%= simple_form_for @store, html: { multipart: true } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name, label: "Nome da Loja", required: true %>
+    <%= f.input :email, label: "E-mail da Loja", required: true %>
+    <%= f.input :phone, label: "Telefone da Loja", required: true %>
+    <%= f.input :address, label: "Endereço da Loja", required: true %>
+    <%= f.input :zip_code, label: "CEP da Loja", required: true %>
+    <%= f.input :description, label: "Descrição da Loja", as: :text, required: true %>
+    <%= f.input :logo, as: :file, label: "Logo da Loja" %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit, "Atualizar Loja", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+  <%= link_to "Voltar", store_admin_dashboard_path(@store), class: "btn btn-secondary" %>

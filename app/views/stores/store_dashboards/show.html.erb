@@ -1,0 +1,73 @@
+<h1>Manager Dashboard: <%= @store.name %></h1>
+
+<% if @store.logo.attached? %>
+  <div class="store-logo mb-4">
+    <%= image_tag url_for(@store.logo.variant(resize_to_limit: [150, 150])), alt: "#{@store.name} Logo", class: "img-thumbnail" %>
+  </div>
+<% else %>
+  <p>No logo uploaded.</p>
+<% end %>
+
+<section class="mb-4">
+  <h2>Sales Summary</h2>
+  <p>Total Sales: <%= number_to_currency(@total_sales) %></p>
+  <p>Accepted Orders: <%= @accepted_orders %></p>
+  <p>Rejected Orders: <%= @rejected_orders %></p>
+</section>
+
+<section class="mb-4">
+  <h2>Recent Orders</h2>
+  <%= link_to "View All Orders", stores_orders_path, class: "btn btn-outline-primary mb-2" %>
+  <ul>
+    <% @orders.first(5).each do |order| %>
+      <li>
+        <%= link_to "Order ##{order.id}", stores_order_path(order) %> -
+        <%= order.status.capitalize %> |
+        <%= number_to_currency(order.total_price) %>
+      </li>
+    <% end %>
+  </ul>
+</section>
+
+<section class="mb-4">
+  <h2>Products</h2>
+  <%= link_to "Manage Products", manage_stores_products_path, class: "btn btn-outline-primary mb-2" %>
+  <ul>
+    <% @products.first(5).each do |product| %>
+      <li>
+        <%= link_to product.name, stores_product_path(product) %> -
+        <%= number_to_currency(product.discount_price || product.original_price) %>
+        |
+        <%= link_to "Edit", edit_stores_product_path(product), class: "btn btn-sm btn-secondary" %>
+        <%= link_to "Delete", stores_product_path(product), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+      </li>
+    <% end %>
+  </ul>
+</section>
+
+<section class="mb-4">
+  <h2>Recent Payments</h2>
+  <%= link_to "View All Payments", stores_payments_path, class: "btn btn-outline-primary mb-2" %>
+  <ul>
+    <% @payments.first(5).each do |payment| %>
+      <li>
+        Order: <%= link_to "##{payment.order_id}", stores_order_path(payment.order_id) %> |
+        <%= number_to_currency(payment.amount) if payment.respond_to?(:amount) %> |
+        <%= payment.status %>
+      </li>
+    <% end %>
+  </ul>
+</section>
+
+<section class="mb-4">
+  <h2>Receipts</h2>
+  <%= link_to "View All Receipts", stores_receipts_path, class: "btn btn-outline-primary mb-2" %>
+  <ul>
+    <% @receipts.first(5).each do |receipt| %>
+      <li>
+        Receipt for Order <%= link_to "##{receipt.order_id}", stores_order_path(receipt.order_id) if receipt.order_id %> |
+        <%= link_to "Download PDF", stores_receipt_path(receipt, format: :pdf), class: "btn btn-sm btn-primary" %>
+      </li>
+    <% end %>
+  </ul>
+</section>
