@@ -1,0 +1,53 @@
+<h1>Products for <%= @store.name %></h1>
+
+<%= link_to "Add Product", new_business_admins_store_product_path(@store), class: "btn btn-primary mb-3" %>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @products.each do |product| %>
+      <tr>
+        <td><%= product.name %></td>
+        <td><%= number_to_currency(product.price) %></td>
+        <td><%= product.stock %></td>
+        <td>
+            <%= link_to "Edit", edit_business_admins_store_product_path(@store, product), class: "btn btn-sm btn-outline-warning" %>
+            <%= link_to "Delete", business_admins_store_product_path(@store, product), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-outline-danger" %>   
+        </td>
+      </tr>
+    <% end %>
+
+    <h2 class="mt-5">Archived Products</h2>
+      <% archived_products = @store.products.where(active: false) %>
+      <% if archived_products.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Restore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% archived_products.each do |product| %>
+              <tr>
+                <td><%= product.name %></td>
+                <td><%= product.description %></td>
+                <td>
+                  <%= button_to "Restore", restore_business_admins_store_product_path(@store, product), method: :patch, class: "btn btn-sm btn-success" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <p>No archived products.</p>
+      <% end %>
+  </tbody>
+</table>

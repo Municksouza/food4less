@@ -1,15 +1,33 @@
 ENV["RAILS_ENV"] ||= "test"
+
 require_relative "../config/environment"
 require "rails/test_help"
+require "bcrypt"
+
+# Recarrega as rotas para garantir que estão atualizadas
+Rails.application.routes.default_url_options[:host] = 'localhost:3000'
+include Rails.application.routes.url_helpers
+
+# Configuração do Devise para testes
+# Devise.setup do |config|
+#   config.router_name = :main_app if defined?(main_app)
+# end
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with specified workers
+    # Executa os testes em paralelo com o número de processadores disponíveis
     parallelize(workers: :number_of_processors)
 
-    # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
+    # Carrega todos os fixtures em test/fixtures/*.yml para todos os testes
     fixtures :all
 
-    # Add more helper methods to be used by all tests here...
+    # Inclui os helpers do Devise para facilitar o login nos testes
+    include Devise::Test::IntegrationHelpers
+
+    # Inclui os helpers do Warden, se necessário
+    include Warden::Test::Helpers
+    Warden.test_mode!
+
+    # Adicione mais métodos auxiliares para serem usados em todos os testes aqui...
   end
 end

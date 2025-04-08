@@ -1,0 +1,44 @@
+<% if @receipt.store.logo.attached? %>
+  <%= image_tag @receipt.store.logo, style: "height: 60px; margin-bottom: 10px;" %>
+<% end %>
+<% if @receipt.store.name.present? %>
+  <h2><%= @receipt.store.name %></h2>
+<% end %>
+<% if @receipt.store.address.present? %>
+  <p><strong>Address:</strong> <%= @receipt.store.address %></p>
+<% end %>
+<% if @receipt.store.phone.present? %>
+  <p><strong>Phone:</strong> <%= @receipt.store.phone %></p>
+<% end %>
+<% if @receipt.store.email.present? %>
+  <p><strong>Email:</strong> <%= @receipt.store.email %></p>
+<% end %>
+<% if @receipt.store.website.present? %>
+  <p><strong>Website:</strong> <%= @receipt.store.website %></p>
+<% end %>
+
+<h1>Receipt - Order <%= @receipt.order.id %></h1>
+<p><strong>Copy for:</strong> Business Admin</p>
+<p><strong>Date:</strong> <%= @receipt.created_at.strftime("%B %d, %Y") %></p>
+
+<hr>
+
+<h3>Store Info</h3>
+<p>
+  <strong>Store:</strong> <%= @receipt.store.name %><br>
+  <strong>Manager:</strong> <%= @receipt.store.store_manager&.email %>
+</p>
+
+<h3>Customer</h3>
+<p><strong>Name:</strong> <%= @receipt.order.customer.name %></p>
+
+<hr>
+
+<h3>Order Summary</h3>
+<ul>
+  <% @receipt.order.order_items.each do |item| %>
+    <li><%= item.product.name %> - <%= item.quantity %> x <%= number_to_currency(item.unit_price) %></li>
+  <% end %>
+</ul>
+
+<p><strong>Total:</strong> <%= number_to_currency(@receipt.order.total_price) %></p>

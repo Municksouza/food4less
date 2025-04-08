@@ -11,6 +11,10 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
+        <%= simple_form_for :search, url: search_path, method: :get, html: { class: "d-flex" } do |f| %>
+          <%= f.input :query, label: false, placeholder: "Search stores or products...", input_html: { class: "form-control me-2", type: "search" } %>
+          <%= f.button :submit, "Search", class: "btn btn-outline-success" %>
+        <% end %>
         <li class="nav-item me-3">
           <%= link_to 'Home', root_path, class: 'nav-link' %>
         </li>
@@ -25,10 +29,10 @@
           <li class="nav-item dropdown">
             <% user_photo_url = current_customer.photo.attached? ? url_for(current_customer.photo) : asset_path("default-avatar.png") %>
             <a class="nav-link dropdown-toggle" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="avatar" src="<%= user_photo_url %>" alt="Customer Avatar" />
+              <%= image_tag user_photo_url, class: "avatar rounded-circle", size: "40x40", alt: "Customer Photo" %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerDropdown">
-              <li><%= link_to "Profile", customer_dashboard_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Profile", customers_dashboard_path, class: "dropdown-item" %></li>
               <li><%= link_to "Edit your account", edit_customer_registration_path, class: "dropdown-item" %></li>
               <li><%= link_to "Log out", destroy_customer_session_path, 
                 method: :delete, 
@@ -39,9 +43,16 @@
 
         <% elsif business_admin_signed_in? %>
           <li class="nav-item dropdown">
-            <% user_photo_url = current_business_admin.respond_to?(:photo) && current_business_admin.photo.attached? ? url_for(current_business_admin.photo) : asset_path("default-avatar.png") %>
+            <%# Para Business Admin, se não houver logo, não exibe imagem nenhuma %>
+            <% if current_business_admin.logo&.attached? %>
+              <% logo_url = url_for(current_business_admin.logo) %>
+            <% end %>
             <a class="nav-link dropdown-toggle" href="#" id="businessDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="avatar" src="<%= user_photo_url %>" alt="Business Admin Avatar" />
+              <% if defined?(logo_url) && logo_url.present? %>
+                <img class="avatar" src="<%= logo_url %>" alt="Business Admin Logo" />
+              <% else %>
+                <span>Business</span>
+              <% end %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="businessDropdown">
               <li><%= link_to "Business Profile", business_dashboard_path, class: "dropdown-item" %></li>
@@ -50,14 +61,22 @@
             </ul>
           </li>
 
+     
         <% elsif store_manager_signed_in? %>
           <li class="nav-item dropdown">
-            <% user_photo_url = current_store_manager.respond_to?(:photo) && current_store_manager.photo.attached? ? url_for(current_store_manager.photo) : asset_path("default-avatar.png") %>
+            <%# Para Store Manager, se não houver foto, não exibe imagem nenhuma %>
+            <% if current_store_manager.respond_to?(:photo) && current_store_manager.photo.attached? %>
+              <% photo_url = url_for(current_store_manager.photo) %>
+            <% end %>
             <a class="nav-link dropdown-toggle" href="#" id="storeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <img class="avatar" src="<%= user_photo_url %>" alt="Store Manager Avatar" />
+              <% if defined?(photo_url) && photo_url.present? %>
+                <img class="avatar" src="<%= photo_url %>" alt="Store Manager Photo" />
+              <% else %>
+                <span>Store</span>
+              <% end %>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="storeDropdown">
-              <li><%= link_to "Store Profile", store_dashboard_path, class: "dropdown-item" %></li>
+              <li><%= link_to "Store Profile", stores_dashboard_path, class: "dropdown-item" %></li>
               <li><%= link_to "Log out", destroy_store_manager_session_path, method: :delete, data: { confirm: "Are you sure?" }, class: "dropdown-item text-danger" %></li>
             </ul>
           </li>

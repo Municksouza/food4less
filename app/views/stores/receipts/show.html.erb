@@ -1,0 +1,21 @@
+<div class="container mt-5">
+  <h1 class="mb-4">Receipt for Order #<%= @receipt.order.id %></h1>
+
+  <%= link_to "View PDF", stores_receipt_path(receipt, format: :pdf), target: "_blank", class: "btn btn-sm btn-outline-dark" %>
+  <%= button_to "Print Receipt", "#", class: "btn btn-sm btn-outline-success", onclick: "window.print(); return false;" %>
+  <p><strong>Date:</strong> <%= @receipt.created_at.strftime("%d/%m/%Y") %></p>
+  <p><strong>Customer:</strong> <%= @receipt.order.customer.name %></p>
+  <p><strong>Total:</strong> <%= number_to_currency(@receipt.order.total_price) %></p>
+
+  <hr>
+
+  <h2>Order Items</h2>
+  <ul>
+    <% @receipt.order.order_items.each do |item| %>
+      <li>
+        <%= item.product.name %> — <%= item.quantity %>x
+        (<%= number_to_currency(item.unit_price) %>)
+      </li>
+    <% end %>
+  </ul>
+</div>

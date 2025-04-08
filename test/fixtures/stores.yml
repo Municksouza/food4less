@@ -1,19 +1,29 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
+# test/fixtures/stores.yml
+
 one:
   name: MyString
   address: MyString
   phone: MyString
   zip_code: MyString
-  logo: MyString
-  business: one
+  business_admin: one
   manager_email: MyString
+  description: MyString
+  status: active
+  email: store1@example.com
+  latitude: 0.0
+  longitude: 0.0
 
 two:
   name: MyString
   address: MyString
   phone: MyString
   zip_code: MyString
-  logo: MyString
-  business: two
+  business_admin: two
   manager_email: MyString
+  description: MyString
+  status: inactive
+  email: store2@example.com
+  latitude: 0.0
+  longitude: 0.0

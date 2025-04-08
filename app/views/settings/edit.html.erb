@@ -1,0 +1,20 @@
+<h2>Account Settings</h2>
+
+<%= form_with model: @store_manager, url: settings_path, method: :put, local: true do |f| %>
+    <div class="form-group">
+        <%= f.label :email %>
+        <%= f.email_field :email, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :password %>
+        <%= f.password_field :password, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Update", class: "btn btn-primary" %>
+<% end %>

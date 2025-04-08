@@ -5,9 +5,11 @@ one:
   payment_method: MyString
   status: MyString
   transaction_id: MyString
+  store: one
 
 two:
   order: two
   payment_method: MyString
   status: MyString
   transaction_id: MyString
+  store: two

@@ -1,0 +1,45 @@
+<div class="card product-card shadow-sm mb-4" style="width: 18rem;">
+  <% if product.images.attached? %>
+    <%= image_tag url_for(product.images.first.variant(resize_to_fill: [400, 250])), class: "card-img-top" %>
+  <% else %>
+    <%= image_tag "placeholder.jpeg", class: "card-img-top" %>
+  <% end %>
+
+  <div class="card-body">
+    <h5 class="card-title"><%= product.name %></h5>
+    <p class="card-text text-muted"><%= truncate(product.description, length: 100) %></p>
+
+    <p class="mb-1 text-muted small">
+      <del><%= number_to_currency(product.old_price) %></del>
+    </p>
+    <p class="text-success fw-bold fs-5"><%= number_to_currency(product.price) %></p>
+
+    <p class="text-secondary mb-2">🧺 <strong>Stock:</strong> <%= product.stock %></p>
+
+    <% if product.store.reviews.any? %>
+      <p class="mb-2">
+        ⭐ <strong><%= number_with_precision(product.store.reviews.average(:rating), precision: 1) %></strong>
+        (<%= product.store.reviews.count %> reviews)
+      </p>
+    <% else %>
+      <p class="text-muted small">No reviews</p>
+    <% end %>
+
+    <hr class="my-2">
+
+    <p class="mb-0"><strong>🏬 Store:</strong> <%= product.store.name %></p>
+    <p class="mb-1">
+      📍 
+      <%= link_to product.store.address,
+                  "https://www.google.com/maps/search/?api=1&query=#{URI.encode_www_form_component(product.store.address)}",
+                  target: "_blank",
+                  rel: "noopener",
+                  class: "text-decoration-none text-primary" %>
+    </p>
+    <p>📞 <%= product.store.phone %></p>
+
+    <% unless business_admin_signed_in? || store_manager_signed_in? %>
+      <%= button_to "🛒 Add to cart", add_item_customers_cart_path, method: :post, params: { product_id: product.id }, class: "btn btn-primary w-100 mt-2" %>
+    <% end %>
+  </div>
+</div>

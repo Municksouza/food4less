@@ -1,0 +1,8 @@
+<h1>New Receipt</h1>
+
+<%= simple_form_for [:stores, @receipt] do |f| %>
+  <%= f.input :order_id, label: "Order ID", as: :integer %>
+  <%= f.input :content, as: :text %>
+
+  <%= f.button :submit, "Create Receipt", class: "btn btn-success" %>
+<% end %>

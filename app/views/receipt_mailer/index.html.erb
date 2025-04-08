@@ -1,0 +1,22 @@
+<h1>Receipts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Order</th>
+      <th>Date</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @receipts.each do |receipt| %>
+      <tr>
+        <td><%= receipt.id %></td>
+        <td><%= receipt.order_id %></td>
+        <td><%= receipt.created_at.strftime("%d/%m/%Y") %></td>
+        <td><%= link_to "Download PDF", receipt_path(receipt), class: "btn btn-sm btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
