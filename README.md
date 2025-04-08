@@ -1,4 +1,5 @@
 # README
+![CI](https://github.com/Municksouza/food4less/actions/workflows/ci.yml/badge.svg?branch=main)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
