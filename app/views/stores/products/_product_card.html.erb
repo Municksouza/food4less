@@ -39,7 +39,7 @@
     <p>📞 <%= product.store.phone %></p>
 
     <% unless business_admin_signed_in? || store_manager_signed_in? %>
-      <%= button_to "🛒 Add to cart", add_item_customers_cart_path(product_id: product.id), method: :post, class: "btn btn-primary w-100 mt-2" %>
+      <%= button_to "🛒 Add to cart", add_item_customers_cart_path, method: :post, params: { product_id: product.id }, class: "btn btn-primary w-100 mt-2" %>
     <% end %>
   </div>
 </div>

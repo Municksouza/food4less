@@ -6,7 +6,7 @@ module Customers
     def show
       cart = Cart.find_by(customer_id: current_customer.id, status: 'open')
       @grouped_cart_items = {}
-    
+
       if cart
         cart.cart_items.includes(:product, product: :store).each do |item|
           store = item.product.store
@@ -14,15 +14,16 @@ module Customers
           @grouped_cart_items[store] << item
         end
       end
-    
+
       @past_orders = current_customer.orders.includes(:receipt).where.not(status: 'open').order(created_at: :desc)
       @reviews = current_customer.reviews.includes(:store, :order)
+      @stores = Store.all
     end
 
     private
 
     def ensure_customer!
-      redirect_to root_path, alert: "Acesso não autorizado" unless current_customer
+      redirect_to root_path, alert: "Unauthorized access" unless current_customer
     end
   end
 end

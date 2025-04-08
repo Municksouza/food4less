@@ -1,21 +1,8 @@
-<h1>Search Results</h1>
-
-<h2>Stores</h2>
-<% if @store_results.any? %>
-  <ul>
-    <% @store_results.each do |store| %>
-      <li><%= link_to store.name, store_path(store) %></li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No stores found.</p>
-<% end %>
-
 <h2>Products</h2>
 <% if @product_results.any? %>
   <ul>
     <% @product_results.each do |product| %>
-      <li><%= link_to product.name, product_path(product) %></li>
+      <li><%= link_to product.name, stores_product_path(product) %></li>
     <% end %>
   </ul>
 <% else %>

@@ -34,12 +34,12 @@
     <!-- STORE MANAGER MENU -->
     <% if current_store_manager %>
       <%= link_to "🏠 Home", root_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Store Dashboard", stores_dashboard_path, class: "list-group-item list-group-item-action active" %>
-      <%= link_to "Products", products_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Add Product", new_product_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Store Dashboard", stores_store_dashboard_path, class: "list-group-item list-group-item-action active" %>
+      <%= link_to "Products", stores_products_path, class: "list-group-item list-group-item-action" %>
+      <%= link_to "Add Product", new_stores_product_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Orders", stores_orders_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Receipts", stores_receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Search Customers", customers_path, class: "list-group-item list-group-item-action" %>      
+      <%= link_to "Search Customers", public_customers_path, class: "list-group-item list-group-item-action" %>      
       <%= link_to "Edit Store", edit_store_path(current_store_manager.store), class: "list-group-item list-group-item-action" %>
     <% end %>
 
@@ -49,7 +49,7 @@
       <%= link_to "Admin Dashboard", business_admins_business_dashboard_path, class: "list-group-item list-group-item-action active" %>
       <%= link_to "Manage Stores", business_admins_stores_path, class: "list-group-item list-group-item-action" %>
       <%= link_to "Receipts", business_admins_receipts_path, class: "list-group-item list-group-item-action" %>
-      <%= link_to "Search Customers", customers_path, class: "list-group-item list-group-item-action" %>      
+      <%= link_to "Search Customers", public_customers_path, class: "list-group-item list-group-item-action" %>      
       <%= link_to "Edit Profile", edit_business_admin_registration_path(current_business_admin), class: "list-group-item list-group-item-action" %>
     <% end %>
 

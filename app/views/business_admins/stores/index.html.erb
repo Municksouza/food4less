@@ -23,5 +23,19 @@
                 </td>
             </tr>
         <% end %>
+        <h2 class="mt-5">Archived Stores</h2>
+        <% archived_stores = current_business_admin.stores.where(active: false) %>
+        <% if archived_stores.any? %>
+        <ul>
+            <% archived_stores.each do |store| %>
+            <li>
+                <%= store.name %>
+                <%= button_to "Restore", restore_business_admins_store_path(store), method: :patch, class: "btn btn-sm btn-success" %>
+            </li>
+            <% end %>
+        </ul>
+        <% else %>
+        <p>No archived stores.</p>
+        <% end %>
     </tbody>
 </table>

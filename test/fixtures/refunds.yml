@@ -4,8 +4,10 @@ one:
   order: one
   amount: 9.99
   refund_date: 2025-03-28 15:49:17
+  store: one
 
 two:
   order: two
   amount: 9.99
   refund_date: 2025-03-28 15:49:17
+  store: two

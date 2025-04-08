@@ -46,9 +46,8 @@
             <td><%= number_to_currency(order.total_amount) %></td>
             <td>
               <% if order.status == 'pending' %>
-                <%= link_to "Approve", approve_order_path(order), method: :patch, class: "btn btn-success" %>
-                <%= link_to "Reject", reject_order_path(order), method: :patch, class: "btn btn-danger" %>
-              <% end %>
+              <%= link_to "Approve", approve_business_admins_store_order_path(order.store, order), method: :patch, class: "btn btn-success" %>
+              <%= link_to "Reject", reject_business_admins_store_order_path(order.store, order), method: :patch, class: "btn btn-danger" %>              <% end %>
             </td>
           </tr>
         <% end %>
@@ -61,10 +60,10 @@
 
 <section class="products">
   <h2>Products</h2>
-  <%= link_to "Add Product", business_admins_store_new_store_product_path(@store), class: "btn btn-primary mb-3" %>
+    <%= link_to "Add Product", new_business_admins_store_product_path(@store), class: "btn btn-primary mb-3" %>   
   <% if @products.any? %>
     <ul>
-      <%= render partial: "products/product_card", collection: @products, as: :product %>
+      <%= render partial: "stores/products/product_card", collection: @products, as: :product %>
     </ul>
   <% else %>
     <p>No products registered.</p>

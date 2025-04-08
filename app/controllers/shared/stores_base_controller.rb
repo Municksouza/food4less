@@ -11,9 +11,9 @@ module Shared
   
     def update
       if @store.update(store_params)
-        redirect_to after_update_path, notice: "Loja atualizada com sucesso."
+        redirect_to after_update_path, notice: "Store successfully updated.", allow_other_host: true
       else
-        flash.now[:alert] = "Erro ao atualizar a loja."
+        flash.now[:alert] = "Error updating the store."
         render :edit
       end
     end
@@ -24,7 +24,7 @@ module Shared
       params.require(:store).permit(:name, :email, :phone, :address, :zip_code, :description, :logo, :latitude, :longitude)
     end
   
-    # Cada controller define como encontrar sua loja e qual path usar
+    # Each controller defines how to find its store and which path to use
     def after_update_path
       raise NotImplementedError
     end

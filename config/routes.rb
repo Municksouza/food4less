@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # ✅ Pages
-  root "pages#home"
+  root to: "pages#home"
   get "search/index"
   get "about", to: "pages#about"
   get "contact", to: "pages#contact"
@@ -32,48 +32,58 @@ Rails.application.routes.draw do
 
   # ✅ Customers Area
   namespace :customers do
-    get "reviews/index"
-    get "reviews/destroy"
-    resource :dashboard, only: [:show]
+    get "dashboard", to: "dashboards#show"
+
+    resource :cart, only: [:show] do
+      post :add_item
+      patch :update_item
+      delete :remove_item
+      delete :clear_cart
+      post :checkout
+    end
+
     resources :orders, only: [:index, :show, :create]
     resources :payments, only: [:index, :create]
     resources :receipts, only: [:show]
     resources :reviews, only: [:index, :destroy]
-
-
     get "order_history", to: "orders#history"
     get "saved_payments", to: "payments#saved"
     get "saved_receipts", to: "receipts#saved"
-    resource :cart, only: [:show] do
-      post "add_item", to: "carts#add_item"
-      delete "remove_item", to: "carts#remove_item"
-      patch "update_item", to: "carts#update_item"
-      delete "clear_cart", to: "carts#clear_cart"
-      post "checkout", to: "carts#checkout"
-    end
   end
 
   # ✅ Business Admin Area
   namespace :business_admins do
-    # resources :customers, only: [:index, :show], module: "shared"
     resources :receipts, only: [:show, :index]
     get "business_dashboard", to: "business_dashboard#show"
-    resources :stores do
-      resource :dashboard, only: [:show], controller: "business_store_dashboard"
-      resource :store_manager_credentials, only: [:edit, :update], controller: "business_store_manager_credentials"    
-      resources :payments, only: [:index]
 
-      get "/products", to: "products#index", as: :store_products
-      get "/products/new", to: "products#new", as: :new_store_product
-      post "/products", to: "products#create"
-      get "/products/:id/edit", to: "products#edit", as: :edit_store_product
-      patch "/products/:id", to: "products#update", as: :store_product
-      delete "/products/:id", to: "products#destroy"
+    resources :stores do
+      member do
+        patch :archive
+        patch :restore
+      end
+
+      resources :orders do
+        member do
+          patch :approve
+          patch :reject
+        end
+      end
+
+      resources :products do
+        member do
+          patch :archive
+          patch :restore
+        end
+      end
+
+      resource :dashboard, only: [:show], controller: "business_store_dashboard"
+      resource :store_manager_credentials, only: [:edit, :update], controller: "business_store_manager_credentials"
+      resources :payments, only: [:index]
     end
   end
 
   # ✅ Store Manager Area
-  namespace :stores, only: [ :index, :show] do
+  namespace :stores do
     resource :store_dashboard, only: [:show]
 
     resources :orders do
@@ -91,11 +101,14 @@ Rails.application.routes.draw do
       collection do
         get :manage, action: :menu_management
       end
+      member do
+        patch :archive
+        patch :restore
+      end
     end
 
     resources :payments, only: [:index]
     resources :receipts, only: [:index, :show, :new, :create]
-    # resources :customers, only: [:index, :show], module: "shared"
 
     get "dashboard", to: "store_dashboards#show"
     get "reports", to: "reports#index"
@@ -106,12 +119,23 @@ Rails.application.routes.draw do
   end
 
   # ✅ Super Admin Area
-  resource :super_admin_dashboard, only: [:show]
+  namespace :super_admins do
+    resource :dashboard, only: [:show], controller: "super_admin_dashboards"
+    resources :orders do
+      member do
+        get :generate_invoice
+        get :generate_receipt
+        patch :approve
+        patch :reject
+      end
+    end
+  end
+
+  # ✅ Global Admin Resources
   resources :users, only: [:index, :edit, :update, :destroy]
-  resources :businesses, only: [:index, :destroy]
-  resources :stores, only: [:index, :destroy]
+  resources :stores, only: [:index, :edit, :update, :destroy, :show]
   resources :orders, only: [:index, :destroy]
-  resources :payments, only: [:index, :destroy]
+  resources :payments, only: [:index, :destroy, :create]
   resources :reviews, only: [:create]
 
   # ✅ Global Search
@@ -120,6 +144,7 @@ Rails.application.routes.draw do
   # ✅ Health Check
   get "up", to: "rails/health#show", as: :rails_health_check
 
-  resources :customers, only: [:index, :show], module: "shared"
-
+  # ✅ Public Customer Pages
+  get "customers/:id", to: "shared/customers#show", as: "public_customer"
+  get "customers", to: "shared/customers#index", as: "public_customers"
 end

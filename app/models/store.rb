@@ -1,5 +1,5 @@
 class Store < ApplicationRecord
-  belongs_to :business_admin, foreign_key: "business_id"
+  belongs_to :business_admin
   has_one_attached :logo
   has_one :store_manager, dependent: :destroy
   
@@ -15,6 +15,7 @@ class Store < ApplicationRecord
   after_validation :geocode, if: -> { will_save_change_to_address? && (latitude.blank? || longitude.blank?) }
 
   validates :name, :address, :phone, :zip_code, :logo, presence: true
+  validates :status, inclusion: { in: %w[active inactive] }
   validates :description, presence: true  
   validates :email, presence: true
   validates :latitude, :longitude, numericality: true, allow_nil: true

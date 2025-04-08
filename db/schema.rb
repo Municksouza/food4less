@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -59,18 +59,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.index ["reset_password_token"], name: "index_business_admins_on_reset_password_token", unique: true
   end
 
-  create_table "businesses", force: :cascade do |t|
-    t.string "name"
-    t.string "phone"
-    t.string "address"
-    t.string "zip_code"
-    t.string "logo"
-    t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_businesses_on_user_id"
-  end
-
   create_table "cart_items", force: :cascade do |t|
     t.bigint "cart_id", null: false
     t.bigint "product_id", null: false
@@ -99,6 +87,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.datetime "updated_at", null: false
     t.string "name"
     t.string "phone"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
+    t.index ["confirmation_token"], name: "index_customers_on_confirmation_token", unique: true
     t.index ["email"], name: "index_customers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_customers_on_reset_password_token", unique: true
   end
@@ -166,6 +159,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.bigint "store_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "discount_price"
+    t.boolean "active", default: true
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
@@ -225,7 +220,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.string "address"
     t.string "phone"
     t.string "zip_code"
-    t.bigint "business_id", null: false
     t.string "manager_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -234,7 +228,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.text "description"
     t.float "latitude"
     t.float "longitude"
-    t.index ["business_id"], name: "index_stores_on_business_id"
+    t.string "status"
+    t.boolean "active", default: true
   end
 
   create_table "super_admins", force: :cascade do |t|
@@ -244,6 +239,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "encrypted_password", default: "", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -261,7 +257,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "businesses", "users"
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "customers"
@@ -282,5 +277,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_04_010829) do
   add_foreign_key "reviews", "orders"
   add_foreign_key "reviews", "stores"
   add_foreign_key "store_managers", "stores"
-  add_foreign_key "stores", "business_admins", column: "business_id"
+  add_foreign_key "stores", "business_admins"
 end

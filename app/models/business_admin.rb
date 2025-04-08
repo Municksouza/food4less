@@ -7,7 +7,7 @@ class BusinessAdmin < ApplicationRecord
   has_one_attached :logo
   has_many :receipts
 
-  has_many :stores, foreign_key: "business_id", dependent: :destroy
+  has_many :stores
 
   validates :name, presence: true
   validates :address, presence: true

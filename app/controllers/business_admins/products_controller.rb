@@ -3,9 +3,11 @@ module BusinessAdmins
     class ProductsController < ApplicationController
       before_action :authenticate_business_admin!
       before_action :set_store
+      before_action :set_product, only: [:edit, :update, :destroy, :restore]
   
       def index
-        @products = @store.products
+        @store = Store.find(params[:store_id])
+        @products = @store.products.where(active: true)
       end
   
       def new
@@ -35,11 +37,15 @@ module BusinessAdmins
       end
   
       def destroy
-        @product = @store.products.find(params[:id])
-        @product.destroy
-        redirect_to business_admins_store_products_path(@store), notice: "Product deleted."
+        @product.update(active: false)
+        redirect_to business_admins_store_products_path(@store), notice: "Product archived successfully."
       end
-  
+
+      def restore
+        @product.update(active: true)
+        redirect_to business_admins_store_products_path(@store), notice: "Product restored successfully."
+      end
+      
       private
   
       def set_store
@@ -48,6 +54,11 @@ module BusinessAdmins
   
       def product_params
         params.require(:product).permit(:name, :description, :price, :old_price, :stock, images: [])
+      end
+
+      def set_product
+        @product = @store.products.find_by(id: params[:id])
+        redirect_to business_admins_store_products_path(@store), alert: "Product not found." unless @product
       end
     end
 end

@@ -3,6 +3,14 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
+  rescue_from ActionController::Redirecting::UnsafeRedirectError do
+    if Rails.env.test?
+      redirect_to root_url(host: "www.example.com", allow_other_host: true)
+    else
+      redirect_to root_url
+    end
+  end
+  
   helper_method :current_customer, :customer_signed_in?
   helper_method :current_business_admin, :business_admin_signed_in?
   helper_method :current_store_manager, :store_manager_signed_in?
@@ -10,10 +18,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_account
 
   def pundit_user
-    current_business_admin
-    current_store_manager
-    current_super_admin
-    current_customer
+    current_account
   end
 
   def current_user_of_type(type, scope)
@@ -62,7 +67,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(resource)
     case resource
     when Customer
-      customer_dashboard_path
+      customers_dashboard_path
     when BusinessAdmin
       business_admins_business_dashboard_path
     when StoreManager

@@ -63,7 +63,8 @@ end
       phone: Faker::PhoneNumber.phone_number,
       zip_code: Faker::Address.zip_code,
       email: Faker::Internet.email,
-      description: Faker::Company.catch_phrase
+      description: Faker::Company.catch_phrase,
+      status: "active"
     )
 
     if File.exist?(logo_path)
@@ -133,7 +134,7 @@ Customer.all.each do |customer|
     order = customer.orders.create!(
       store: store,
       total_price: 0.0,
-      status: 'accepted'
+      status: "pending"
     )
 
     3.times do
@@ -244,7 +245,8 @@ if BusinessAdmin.any?
       phone: Faker::PhoneNumber.phone_number,
       address: data[:address],
       zip_code: data[:zip_code],
-      description: Faker::Company.catch_phrase
+      description: Faker::Company.catch_phrase,
+      status: "active"
     )
 
     store.logo.attach(
