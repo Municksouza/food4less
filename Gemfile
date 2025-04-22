@@ -68,7 +68,7 @@ group :development do
   gem "web-console"
   gem "letter_opener"
   gem "redis" # Use Redis for caching and Action Cable
-
+ 
 end
 
 group :test do
