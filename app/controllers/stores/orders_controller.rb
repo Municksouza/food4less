@@ -1,88 +1,151 @@
-# app/controllers/stores/orders_controller.rb
 module Stores
-    class OrdersController < ApplicationController
-      before_action :authenticate_store_manager!
-  
-      def index
-        @orders = current_store_manager.store.orders
-      end
-  
-      def new 
-        @order = current_store_manager.store.orders.new
-      end
-      def create
-        @order = current_store_manager.store.orders.new(order_params)
-        if @order.save
-          redirect_to stores_orders_path, notice: "Pedido criado com sucesso."
-        else
-          render :new
-        end
-      end
-      
-      def show
-        @order = current_store_manager.store.orders.find(params[:id])
-      end
-  
-      def approve
-        @order = current_store_manager.store.orders.find(params[:id])
-        @order.update(status: 'approved')
-        redirect_to stores_orders_path, notice: 'Pedido aprovado.'
-      end
-  
-      def reject
-        @order = current_store_manager.store.orders.find(params[:id])
-        @order.update(status: 'rejected')
-        redirect_to stores_orders_path, notice: 'Pedido rejeitado.'
-      end
-  
-      def live
-        @live_orders = current_store_manager.store.orders.pending
-      end
+  class OrdersController < ApplicationController
+    before_action :authenticate_store_manager!
+    before_action :set_store
+    before_action :set_order, only: [:approve, :reject, :finalize, :destroy, :set_ready_time]
+
+    def index
+      @orders          = @store.orders.order(created_at: :desc)
+      @accepted_orders = @orders.accepted
+      @pending_orders  = @orders.pending
+      @completed_orders = @orders.completed
+    end
     
-      def history
-        @order_history = current_store_manager.store.orders.completed
+    def create
+      @order = @store.orders.new(order_params)
+      if @order.save
+        payload = { order: @order.as_json }
+        OrderBroadcaster.new(@order).broadcast_new
+        redirect_to stores_store_dashboard_path, notice: "Order created successfully."
+      else
+        render :new, alert: "Failed to create order."
       end
     end
 
-    def generate_invoice
+    def approve
+      if params[:order].present? && params[:order][:ready_in_minutes].present? &&
+        @order.update!(status: :accepted,
+        ready_in_minutes: params[:order][:ready_in_minutes],
+        countdown_end_time: Time.current + params[:order][:ready_in_minutes].to_i.minutes)
+
+        OrderBroadcaster.new(@order).broadcast_accept
+
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to stores_store_dashboard_path(@order.store), notice: 'Order approved successfully.' }
+        end
+      else
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("order-#{@order.id}", partial: "stores/orders/order", locals: { order: @order }) }
+          format.html { redirect_to stores_store_dashboard_path(@order.store), alert: 'Error approving the order.' }
+        end
+      end
+    end
+
+    def reject
+      if @order.update(status: 'rejected')
+        OrderBroadcaster.new(@order).broadcast_reject
+        respond_to do |format|
+          format.turbo_stream
+          format.html { redirect_to stores_store_dashboard_path(@order.store), notice: 'Order rejected successfully.' }
+        end
+      else
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("order-#{@order.id}", partial: "stores/orders/order", locals: { order: @order }) }
+          format.html { redirect_to stores_store_dashboard_path(@order.store), alert: 'Error rejecting the order.' }
+        end
+      end
+    end
+
+    def finalize
       @order = Order.find(params[:id])
-      # Generate PDF invoice using Prawn
+      if @order.update(status: "completed", finalized_at: Time.current)  # changed: using "completed"
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.remove("order-#{@order.id}") }
+          format.html { redirect_to stores_store_dashboard_path(@order.store), notice: "Order finalized successfully." }
+        end
+      else
+        respond_to do |format|
+          format.turbo_stream { render turbo_stream: turbo_stream.replace("order-#{@order.id}", partial: "stores/orders/order", locals: { order: @order, play_sound: false }) }
+          format.html { redirect_to stores_store_dashboard_path(@order.store), alert: "Failed to finalize order." }
+        end
+      end
+    end
+
+    def in_progress_orders
+      @in_progress_orders = @store.orders.accepted.order(created_at: :desc)
+    end
+
+    def destroy
+      @order.destroy
+      redirect_to stores_store_dashboard_path, notice: "Order ##{@order.id} has been deleted."
+    end
+
+    def set_ready_time
+      if @order.accepted?
+        if params[:ready_in_minutes].present?
+          @order.update!(estimated_ready_time: Time.current + params[:ready_in_minutes].to_i.minutes)
+          redirect_to stores_store_dashboard_path, notice: "Ready time set."
+        else
+          redirect_to stores_store_dashboard_path, alert: "Ready time is required."
+        end
+      else
+        redirect_to stores_store_dashboard_path, alert: "Order must be accepted first."
+      end
+    end
+
+    def history
+      @order_history = current_store_manager.store.orders.completed
+    end
+
+    def complete
+      @order.update!(status: "completed")
+      redirect_to stores_store_dashboard_path(order_id: @order.id), notice: "Order completed!"
+    end
+
+    def generate_invoice
       pdf = Prawn::Document.new
       pdf.text "Invoice - Order ##{@order.id}"
       send_data pdf.render, filename: "invoice_#{@order.id}.pdf", type: "application/pdf"
     end
 
-    def destroy
-      @order = current_store_manager.store.orders.find(params[:id])
-      @order.destroy
-      redirect_to stores_orders_path, notice: "Pedido excluído."
+    def new_orders
+      new_orders = @store.orders.where(status: 'new').exists?
+      render json: { new_orders: new_orders }
     end
 
-    def edit
-      @order = current_store_manager.store.orders.find(params[:id])
-    end 
-
-    def update
-      @order = current_store_manager.store.orders.find(params[:id])
-      if @order.update(order_params)
-        redirect_to stores_orders_path, notice: "Pedido atualizado com sucesso."
-      else
-        render :edit
+    def show
+      @order = @store.orders.find_by(id: params[:id])
+      unless @order
+        redirect_to stores_store_dashboard_path, alert: "Order not found." and return
       end
+
+      @pending_orders = @store.orders.pending.order("COALESCE(countdown_end_time, updated_at) ASC")
+      @accepted_orders = @store.orders.accepted.order("COALESCE(countdown_end_time, updated_at) ASC")      
+      @completed_orders = @store.orders.completed.order("COALESCE(countdown_end_time, updated_at) ASC")
+      @rejected_orders = @store.orders.rejected.order("COALESCE(countdown_end_time, updated_at) ASC")
     end
 
     private
+
     def authenticate_store_manager!
-      unless store_manager_signed_in?
-        redirect_to root_path, alert: "Acesso negado."
-      end
+      redirect_to root_path, alert: "Access denied." unless store_manager_signed_in?
+    end
+
+    def set_store
+      @store = current_store_manager.store
     end
 
     def set_order
-      @order = current_store_manager.store.orders.find(params[:id])
+      @order = @store.orders.find_by(id: params[:id])
+      unless @order
+        Rails.logger.error "Order not found for ID: #{params[:id]}"
+        render json: { error: "Order not found" }, status: :not_found
+      end
     end
 
     def order_params
-      params.require(:order).permit(:status, :total_price, :customer_name, :customer_email)
+      params.require(:order).permit(:status, :total_price, :customer_name, :customer_email, :ready_in_minutes, :countdown_end_time)
     end
+  end
 end

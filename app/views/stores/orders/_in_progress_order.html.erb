@@ -1,0 +1,33 @@
+<div class="list-group-item d-flex justify-content-between align-items-start mb-3 p-2 border rounded shadow-sm">
+  <div class="flex-grow-1">
+    <strong>Order <%= order.id %></strong><br>
+    👤 <%= order.customer&.name || "Unknown" %><br>
+    📧 <%= order.customer&.email || "No email provided" %><br>
+    📞 <%= order.customer&.phone || "No phone number provided" %><br>
+
+    <% if order.ready_in_minutes.present? %>
+      <div class="mt-1">
+        ⏳ <span
+          <% countdown_data = {
+            controller: "countdown",
+            countdown_end_time_value: order.countdown_end_time.present? ? order.countdown_end_time.iso8601 : (order.updated_at + order.ready_in_minutes.minutes).iso8601,
+            countdown_order_id_value: order.id,
+            countdown_alert_sound_value: "/sounds/alert-loop.mp3",
+            countdown_play_sound_value: true,
+            countdown_order_status_value: order.status
+          } %>
+          <%= tag.attributes(countdown_data) if countdown_data.present? %>
+          class="countdown" style="display:block; font-weight:bold;">
+          <%= order.ready_in_minutes %> minutes
+        </span>
+      </div>
+    <% else %>
+      <p class="text-muted">⏳ Awaiting time</p>
+    <% end %>
+  </div>
+
+  <div class="mt-2 d-flex flex-column align-items-end gap-1">
+    <%= link_to "View", stores_store_dashboard_path(order_id: order.id), class: "btn btn-sm btn-outline-primary" %>
+    <%= button_to "✅ Complete Order", complete_stores_order_path(order), method: :patch, class: "btn btn-sm btn-success" %>
+  </div>
+</div>

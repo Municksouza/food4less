@@ -5,4 +5,6 @@ class StoreManager < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   belongs_to :store
+  validates :receive_notifications, inclusion: { in: [true, false] }
+
 end

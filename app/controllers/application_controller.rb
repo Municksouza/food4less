@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
     when BusinessAdmin
       business_admins_business_dashboard_path
     when StoreManager
-      store_dashboard_path
+      stores_store_dashboard_path
     when SuperAdmin
       super_admin_dashboard_path
     else

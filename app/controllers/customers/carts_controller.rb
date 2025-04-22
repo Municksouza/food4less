@@ -1,6 +1,8 @@
 module Customers
   class CartsController < ApplicationController
     before_action :authenticate_customer!
+    before_action :load_cart, only: %i[show checkout clear_cart]
+
 
     def show
       @cart = session[:cart] || {}
@@ -18,9 +20,9 @@ module Customers
         @store_totals[store_id] = store_total
         @overall_total += store_total
       end
-     # Exemplo de render para testes
+
       respond_to do |format|
-        format.html # show.html.erb
+        format.html
         format.json { render json: { cart: @cart, totals: @store_totals, overall_total: @overall_total } }
       end
     end
@@ -47,7 +49,6 @@ module Customers
       product_id = params[:product_id].to_s
       store_id = Product.find_by(id: product_id)&.store_id.to_s
       session[:cart][store_id].delete(product_id)
-
       session[:cart].delete(store_id) if session[:cart][store_id].blank?
 
       redirect_to customers_cart_path, notice: "Item removed from cart."
@@ -76,7 +77,6 @@ module Customers
       redirect_to customers_cart_path
     end
 
-
     def clear_cart
       session[:cart] = {}
       redirect_to customers_cart_path, notice: "Cart cleared."
@@ -84,74 +84,106 @@ module Customers
 
     def checkout
       store_id = params[:store_id].to_s
-      cart = session[:cart] || {}
-    
-      if cart[store_id].blank?
-        flash[:alert] = "Your cart for this store is empty."
-        return redirect_to customers_cart_path
+      if @cart[store_id].blank?
+        return redirect_to customers_cart_path, alert: "Your cart for this store is empty."
       end
     
       store = Store.find_by(id: store_id)
       return redirect_to customers_cart_path, alert: "Store not found." unless store
     
+      ready_minutes = 30
+    
+      # 1) Cria o order com campos zerados
       order = current_customer.orders.create!(
-        store: store,
-        status: "accepted",
-        total_price: 0
+        store:             store,
+        status:            "pending",
+        subtotal:          0.0,
+        taxes:             0.0,
+        total_price:       0.0,
+        total_with_taxes:  0.0,
+        ready_in_minutes:  ready_minutes
       )
     
-      total_price = 0
-    
-      cart[store_id].each do |product_id, quantity|
-        product = Product.find_by(id: product_id)
+      # 2) Popula os order_items e acumula subtotal
+      subtotal = 0.0
+      @cart[store_id].each do |product_id, qty|
+        product     = Product.find_by(id: product_id)
         next unless product
     
-        quantity = quantity.to_i
-        unit_price = product.price
-        subtotal = unit_price * quantity
-        
+        quantity    = qty.to_i
+        unit_price  = product.price
+        line_total  = unit_price * quantity
+        subtotal   += line_total
+    
         order.order_items.create!(
-          price: unit_price,
-          product: product,
-          quantity: quantity,
-          unit_price: unit_price
+          product:     product,
+          quantity:    quantity,
+          unit_price:  unit_price,
+          total_price: line_total,
+          price:       unit_price
         )
-        
-        total_price += subtotal
       end
     
-      order.update!(total_price: total_price)
+      # 3) Calcula impostos e total final
+      tax_rate = 0.11
+      taxes    = (subtotal * tax_rate).round(2)
+      total    = subtotal + taxes
     
-      Payment.create!(
-        order: order,
-        store: store,
-        amount: total_price,
-        payment_method: %w[PayPal Stripe].sample,
-        status: "paid",
-        transaction_id: SecureRandom.hex(10),
-        payment_date: Time.current
+      order.update!(
+        subtotal:           subtotal,
+        taxes:              taxes,
+        total_price:        total,
+        total_with_taxes:   total,
+        countdown_end_time: Time.current + ready_minutes.minutes
       )
     
-      receipt = Receipt.create!(
-        order: order,
-        store: store,
-        amount: total_price,
-        content: "Receipt for Order ##{order.id}",
+      # 4) Cria pagamento e recibo
+      Payment.create!(
+        order:          order,
+        store:          store,
+        amount:         total,
+        payment_method: %w[PayPal Stripe].sample,
+        status:         "paid",
+        transaction_id: SecureRandom.hex(10),
+        payment_date:   Time.current
+      )
+      Receipt.create!(
+        order:        order,
+        store:        store,
+        amount:       total,
+        content:      "Receipt for Order ##{order.id}",
         receipt_type: "store"
       )
     
-      # Clear only the items for this store
-      session[:cart].delete(store_id)
+      # 5) Limpa o carrinho desta loja
+      @cart.delete(store_id)
+      session[:cart] = @cart
     
+      # 6) Broadcast único
+      OrderBroadcaster.new(order).broadcast_new
+    
+      # 7) Envia emails de recibo (silencia falhas)
       begin
-        ReceiptMailer.send_receipt_to_customer(receipt).deliver_now
-        ReceiptMailer.send_receipt_to_store(receipt).deliver_now
-        ReceiptMailer.send_receipt_to_business(receipt).deliver_now
+        ReceiptMailer.send_receipt_to_customer(order).deliver_now
+        ReceiptMailer.send_receipt_to_store(order).deliver_now
+        ReceiptMailer.send_receipt_to_business(order).deliver_now
       rescue => e
-        Rails.logger.warn "❌ Falha ao enviar recibo: #{e.message}"
+        Rails.logger.warn "Receipt email failed: #{e.message}"
       end
     
       redirect_to customers_cart_path, notice: "Checkout completed for #{store.name}!"
+    end
+
+    private
+
+    def authenticate_customer!
+      unless customer_signed_in?
+        redirect_to new_customer_session_path, alert: 'You need to be logged in to access this page.'
+      end
+    end
+
+    def load_cart
+      @cart = session[:cart] || {}
     end
   end
 end

@@ -99,6 +99,5 @@ class ReceiptsController < ApplicationController
     pdf.text "Total Amount (incl. tax): #{ActionController::Base.helpers.number_to_currency(total_with_tax)}", size: 16, style: :bold
   
     pdf.render
-    end
   end
 end

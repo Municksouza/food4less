@@ -64,7 +64,11 @@
         </div>
 
         <div class="text-end mt-3">
-          <%= button_to "✅ Checkout for this Store", checkout_customers_cart_path(store_id: store.id), method: :post, class: "btn btn-success btn-lg" %>
+        <%= button_to "✅ Checkout for this Store",
+        checkout_customers_cart_path(store_id: store.id),
+        method: :post,
+        data: { turbo: false },
+        class: "btn btn-success btn-lg" %>
         </div>
       </div>
     </div>

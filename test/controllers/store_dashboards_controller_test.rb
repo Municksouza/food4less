@@ -9,7 +9,7 @@ class StoreDashboardsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get show" do
-    get stores_dashboard_path # Ensure this matches the correct route helper for the 'show' action
+    get stores_store_dashboard_path # Ensure this matches the correct route helper for the 'show' action
     assert_response :success
   end
 end

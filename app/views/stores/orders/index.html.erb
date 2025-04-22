@@ -1,0 +1,9 @@
+<!-- filepath: /Users/munickfreitas/code/Municksouza/food4less/app/views/stores/orders/index.html.erb -->
+<div id="store-orders" data-store-id="<%= @store.id %>">
+  <h3>Orders</h3>
+  <div id="orders-list">
+    <% @orders.each do |order| %>
+      <%= render partial: "stores/orders/order", locals: { order: order } %>
+    <% end %>
+  </div>
+</div>

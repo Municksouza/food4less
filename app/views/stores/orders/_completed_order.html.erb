@@ -1,0 +1,12 @@
+<div class="list-group-item d-flex justify-content-between align-items-start mb-3 p-2 border rounded shadow-sm">
+  <div class="flex-grow-1">
+    <strong>Order <%= order.id %></strong><br>
+    👤 <%= order.customer&.name || "Unknown" %><br>
+    📧 <%= order.customer&.email %><br>
+    📞 <%= order.customer&.phone %><br>
+    🕓 <%= l(order.updated_at, format: :short) %>
+  </div>
+  <div class="d-flex align-items-center">
+    <%= link_to "View", stores_store_dashboard_path(order_id: order.id), class: "btn btn-sm btn-outline-secondary" %>
+  </div>
+</div>

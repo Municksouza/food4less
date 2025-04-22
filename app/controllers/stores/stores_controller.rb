@@ -1,5 +1,5 @@
 module Stores
-    class StoresController < Shared::StoresBaseController
+    class StoresController < ApplicationController
       before_action :authenticate_store_manager!
   
       def new
@@ -21,6 +21,7 @@ module Stores
         @products = @store.products
         @reviews = @store.reviews.includes(:customer).order(created_at: :desc)
       end
+
       def update
         @store = Store.find(params[:id])
         if @store.update(store_params)
@@ -30,6 +31,7 @@ module Stores
           render :edit
         end
       end
+      
       def destroy
         @store = Store.find(params[:id])
         if @store.destroy

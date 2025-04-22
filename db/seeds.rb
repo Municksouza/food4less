@@ -10,8 +10,6 @@
 
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 require 'faker'
 
 # Data cleanup
@@ -32,82 +30,82 @@ puts "✅ Data cleanup completed."
 logo_path = Rails.root.join('app', 'assets', 'images', 'placeholder.jpeg')
 
 unless File.exist?(logo_path)
-  puts "⚠️ Arquivo de logo não encontrado em #{logo_path}. Verifique o caminho e a existência do arquivo."
+  puts "⚠️ Logo file not found at #{logo_path}. Please check the path and file existence."
 end
 
-# Create 2 business_admins
-2.times do
-  email = Faker::Internet.email
-  business_admin = BusinessAdmin.new(
-    name: Faker::Company.name,
-    address: Faker::Address.full_address,
-    phone: Faker::PhoneNumber.phone_number,
-    zip_code: Faker::Address.zip_code,
-    email: email,
-    password: "123456",
-    password_confirmation: "123456",
-  )
-  business_admin.logo.attach(
+admin = BusinessAdmin.new(
+  name: "MarketGroup Inc.",
+  email: "admin@marketgroup.com",
+  phone: "306-555-9999",
+  zip_code: "S7K 0H2",
+  address: "Main Office - Saskatoon, SK",
+  password: "123456",
+  password_confirmation: "123456"
+)
+if File.exist?(logo_path)
+  admin.logo.attach(
     io: File.open(logo_path),
     filename: 'placeholder.jpeg',
     content_type: 'image/jpeg'
-  ) if File.exist?(logo_path)
+  )
+else
+  puts "⚠️ Admin logo attachment skipped as the file does not exist."
+end
 
-  business_admin.save!
-  puts "✅ BusinessAdmin created: #{email} | password: 123456"
+admin.save!
+puts "✅ BusinessAdmin created: #{admin.email} | password: 123456"
 
-  3.times do
-    store = business_admin.stores.create(
-      name: Faker::Company.name,
-      address: Faker::Address.full_address,
-      phone: Faker::PhoneNumber.phone_number,
-      zip_code: Faker::Address.zip_code,
-      email: Faker::Internet.email,
-      description: Faker::Company.catch_phrase,
-      status: "active"
+stores_data = [
+  # Sample store data
+  { name: "Westside Market", address: "123 Main St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Southside Grocers", address: "456 Elm St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Eastside Foods", address: "789 Maple Ave, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Central Market", address: "321 Oak St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Downtown Deli", address: "654 Pine St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Northside Grocery", address: "987 Birch St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Riverbend Market", address: "159 Cedar St, Saskatoon, SK", zip_code: "S7K 0H2" },
+  { name: "Hilltop Grocers", address: "753 Spruce St, Saskatoon, SK", zip_code: "S7K 0H2" },
+]
+
+# Create stores
+stores_data.each do |data|
+  store = admin.stores.new(
+    name: data[:name],
+    address: data[:address],
+    zip_code: data[:zip_code],
+    email: Faker::Internet.email,
+    phone: Faker::PhoneNumber.cell_phone,
+    description: Faker::Company.catch_phrase,
+    status: "active",
+    receive_notifications: true
+  )
+
+  store.logo.attach(io: File.open(logo_path, "rb"), filename: 'placeholder.jpeg', content_type: 'image/jpeg')
+
+  store.save!
+  store.geocode if store.respond_to?(:geocode)
+  puts "✅ Store '#{store.name}' created successfully."
+
+  StoreManager.create!(email: "manager_#{store.id}@demo.com", password: "123456", store: store, receive_notifications: true)
+  puts "✅ StoreManager created: manager_#{store.id}@demo.com"
+
+  5.times do
+    product = store.products.create!(
+      name: Faker::Commerce.product_name,
+      description: Faker::Lorem.sentence,
+      price: Faker::Commerce.price(range: 1.0..100.0),
+      stock: rand(10..100)
     )
-
     if File.exist?(logo_path)
-      store.logo.attach(
-        io: File.open(logo_path),
-        filename: 'placeholder.jpeg',
-        content_type: 'image/jpeg'
-      )
+      product.images.attach(io: File.open(logo_path), filename: 'placeholder.jpeg', content_type: 'image/jpeg')
+    else
+      puts "⚠️ Product image skipped: file not found."
     end
-    store.save!
-    puts "✅ Loja '#{store.name}' criada com sucesso."
-
-    # Create StoreManager for each store
-    store_manager_email = "manager_#{store.id}@store.com"
-    StoreManager.create!(
-      email: store_manager_email,
-      password: "123456",
-      store: store
-    )
-    puts "✅ StoreManager created: #{store_manager_email} | password: 123456"
-
-    # Create products
-    5.times do
-      product = store.products.create!(
-        name: Faker::Commerce.product_name,
-        description: Faker::Lorem.sentence,
-        old_price: Faker::Commerce.price(range: 30..100),
-        price: Faker::Commerce.price(range: 10..30),
-        stock: rand(10..100)
-      )
-
-      if File.exist?(logo_path)
-        product.images.attach(
-          io: File.open(logo_path),
-          filename: 'placeholder.jpeg',
-          content_type: 'image/jpeg'
-        )
-      end
-    end
+    puts "✅ Product '#{product.name}' created for Store '#{store.name}'."
   end
 end
 
-# Create 5 customers
+# Create customers
 5.times do
   email = Faker::Internet.unique.email
   customer = Customer.create!(
@@ -115,15 +113,11 @@ end
     email: email,
     phone: Faker::PhoneNumber.phone_number,
     password: "123456",
-    password_confirmation: "123456",
+    password_confirmation: "123456"
   )
-
-  customer.photo.attach(
-    io: File.open(logo_path),
-    filename: 'placeholder.jpeg',
-    content_type: 'image/jpeg'
-  ) if File.exist?(logo_path)
-
+  if File.exist?(logo_path)
+    customer.photo.attach(io: File.open(logo_path), filename: 'placeholder.jpeg', content_type: 'image/jpeg')
+  end
   puts "✅ Customer created: #{email} | password: 123456"
 end
 
@@ -131,11 +125,7 @@ end
 Customer.all.each do |customer|
   2.times do
     store = Store.order(Arel.sql("RANDOM()")).first || next
-    order = customer.orders.create!(
-      store: store,
-      total_price: 0.0,
-      status: "pending"
-    )
+    order = customer.orders.create!(store: store, total_price: 0.0, status: "pending")
 
     3.times do
       product = store.products.order(Arel.sql("RANDOM()")).first || next
@@ -144,13 +134,12 @@ Customer.all.each do |customer|
         product: product,
         quantity: quantity,
         unit_price: product.price,
-        price: product.price,
+        price: product.price
       )
       order.total_price += item.quantity * item.price
     end
     order.save!
 
-    # Payment
     payment = Payment.create!(
       order: order,
       store: store,
@@ -161,7 +150,6 @@ Customer.all.each do |customer|
       payment_date: Time.current
     )
 
-    # Receipt
     receipt = Receipt.create!(
       order: order,
       store: store,
@@ -174,17 +162,15 @@ Customer.all.each do |customer|
       ReceiptMailer.send_receipt_to_customer(receipt).deliver_now
       ReceiptMailer.send_receipt_to_store(receipt).deliver_now
       ReceiptMailer.send_receipt_to_business(receipt).deliver_now
-    rescue StandardError => e
-      puts "⚠️ Failed to send receipt emails for Order ##{order.id}: #{e.message}"
+    rescue => e
+      puts "⚠️ Email error for Order ##{order.id}: #{e.message}"
     end
 
-    puts "✅ Order ##{order.id} created with total price: #{order.total_price}"
-    puts "✅ Payment created for Order ##{order.id} with amount: #{payment.amount}"
-    puts "✅ Receipt created for Order ##{order.id} with content: #{receipt.content}"
+    puts "✅ Order ##{order.id} | Payment: #{payment.amount} | Receipt: #{receipt.content}"
   end
 end
 
-# Geração de recibos e reembolsos complementares
+# Generate receipts and random refunds
 puts "Generating receipts and refunds..."
 
 Order.find_each do |order|
@@ -197,7 +183,7 @@ Order.find_each do |order|
       receipt_type: "store",
       issued_at: Time.current
     )
-    puts "🧾 Created receipt for Order ##{order.id}"
+    puts "🧾 Generated receipt for Order ##{order.id}"
   end
 
   if [true, false].sample
@@ -209,56 +195,9 @@ Order.find_each do |order|
       reason: ["Product damaged", "Late delivery", "Customer complaint"].sample,
       refund_date: Time.current
     )
-    puts "💸 Refund created for Order ##{order.id} - Amount: #{refund_amount}"
+    puts "💸 Refund issued for Order ##{order.id} - Amount: #{refund_amount}"
   end
 end
 
 puts "✅ Receipts and refunds generation completed."
 puts "🌱 Seed data created successfully!"
-
-if BusinessAdmin.any?
-  business_admin = BusinessAdmin.first
-
-  extra_stores = [
-    {
-      name: "Fresh Mart East",
-      address: "270 Acadia Dr, Saskatoon, SK",
-      zip_code: "S7H 3V4"
-    },
-    {
-      name: "Budget Foods",
-      address: "501 22nd St E, Saskatoon, SK",
-      zip_code: "S7K 0H2"
-    },
-    {
-      name: "North End Grocery",
-      address: "134 Primrose Dr, Saskatoon, SK",
-      zip_code: "S7K 5S6"
-    }
-  ]
-
-  # Create additional stores with real addresses
-  extra_stores.each do |data|
-    store = business_admin.stores.new(
-      name: data[:name],
-      email: Faker::Internet.email,
-      phone: Faker::PhoneNumber.phone_number,
-      address: data[:address],
-      zip_code: data[:zip_code],
-      description: Faker::Company.catch_phrase,
-      status: "active"
-    )
-
-    store.logo.attach(
-      io: File.open(logo_path),
-      filename: 'placeholder.jpeg',
-      content_type: 'image/jpeg'
-    ) if File.exist?(logo_path)
-
-    store.geocode if store.respond_to?(:geocode)
-
-    store.save!
-
-    puts "📍 Store com endereço real adicionada: #{store.name} - #{store.address}, #{store.zip_code}"
-  end
-end

@@ -19,4 +19,6 @@ class Store < ApplicationRecord
   validates :description, presence: true  
   validates :email, presence: true
   validates :latitude, :longitude, numericality: true, allow_nil: true
+  validates :receive_notifications, inclusion: { in: [true, false] }
+
 end

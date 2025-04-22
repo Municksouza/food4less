@@ -1,10 +1,10 @@
 const esbuild = require("esbuild");
 
 esbuild.build({
-  entryPoints: ["app/javascript/application.js"], // Arquivo principal
+  entryPoints: ["app/javascript/application.js"], // Main entry point for the application 
   bundle: true,
   format: "esm",
-  sourcemap: "inline", // ou true para sourcemaps externos
+  sourcemap: "inline",
   minify: false, 
   target: ["esnext"],
   outdir: "app/assets/builds",

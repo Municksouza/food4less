@@ -28,7 +28,6 @@ gem "tzinfo-data", platforms: %i[ windows jruby ]
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
 gem "solid_cache"
 gem "solid_queue"
-gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -45,12 +44,12 @@ gem "image_processing", "~> 1.2"
 gem "devise"             # User authentication
 gem "pundit"             # Permission control
 gem "simple_form"        # Easier forms
-gem "cloudinary"         # Image uploads
 gem "stripe"             # Payments via Stripe
 gem "paypal-sdk-rest", "~> 1.7" # Payments via PayPal
 gem "prawn", "~> 2.5"    # Generate PDFs for invoices
 gem "prawn-table", "~> 0.2.2" # Tables in PDFs
 gem "faker"              # Generate fake data for tests
+gem 'hotwire-rails'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -68,6 +67,9 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "letter_opener"
+  gem "redis" # Use Redis for caching and Action Cable
+  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
+
 end
 
 group :test do
@@ -80,12 +82,7 @@ end
 gem "geocoder"
 gem "jsbundling-rails", "~> 1.3"
 gem "cssbundling-rails", "~> 1.3"
-
 gem "chartkick", "~> 5.1"
-
 gem "groupdate", "~> 6.5"
-
 gem "minitest", "~> 5.25"
-
-
 gem "kaminari", "~> 1.2"

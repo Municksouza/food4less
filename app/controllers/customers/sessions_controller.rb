@@ -4,16 +4,16 @@ class Customers::SessionsController < Devise::SessionsController
 
     if customer&.valid_password?(params[:customer][:password])
       sign_in_and_redirect customer, event: :authentication
-      flash[:notice] = "Login bem-sucedido!"
+      flash[:notice] = "Login successful!"
     else
-      flash[:alert] = "Email ou senha inválidos"
+      flash[:alert] = "Invalid email or password"
       render :new
     end
   end
 
   def destroy
     sign_out(:customer)
-    redirect_to root_path, notice: "Você saiu com sucesso."
+    redirect_to root_path, notice: "You have successfully logged out."
   end
 
   protected

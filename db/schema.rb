@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -112,6 +112,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "unit_price"
+    t.decimal "total_price", precision: 10, scale: 2, default: "0.0", null: false
     t.index ["order_id"], name: "index_order_items_on_order_id"
     t.index ["product_id"], name: "index_order_items_on_product_id"
   end
@@ -125,14 +126,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string "status"
-    t.decimal "total_price"
     t.bigint "store_id", null: false
     t.bigint "customer_id", null: false
+    t.decimal "total_price", precision: 10, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.decimal "total_amount"
+    t.integer "ready_in_minutes"
+    t.text "note"
+    t.integer "preparation_time"
+    t.datetime "countdown_end_time"
+    t.integer "status", default: 0
+    t.datetime "finalized_at"
+    t.decimal "subtotal", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "taxes", precision: 10, scale: 2, default: "0.0", null: false
+    t.decimal "total_with_taxes", precision: 10, scale: 2, default: "0.0", null: false
     t.index ["customer_id"], name: "index_orders_on_customer_id"
+    t.index ["id"], name: "index_orders_on_id", unique: true
     t.index ["store_id"], name: "index_orders_on_store_id"
   end
 
@@ -210,6 +220,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "store_id"
+    t.boolean "receive_notifications"
     t.index ["email"], name: "index_store_managers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_store_managers_on_reset_password_token", unique: true
     t.index ["store_id"], name: "index_store_managers_on_store_id"
@@ -230,6 +241,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_08_012018) do
     t.float "longitude"
     t.string "status"
     t.boolean "active", default: true
+    t.boolean "receive_notifications", default: false, null: false
   end
 
   create_table "super_admins", force: :cascade do |t|

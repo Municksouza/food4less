@@ -3,11 +3,12 @@ require "test_helper"
 class Customers::OrdersControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers  
 
-  fixtures :orders, :stores, :customers
+  fixtures :orders, :stores, :customers, :products
 
   setup do
-    @customer = customers(:one)
-    sign_in @customer
+    @store   = stores(:one)
+    @product = products(:one)
+    sign_in customers(:one)
   end
 
   test "should get index" do
@@ -22,18 +23,20 @@ class Customers::OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should create order" do
-    sign_in customers(:one)
-  
-    assert_difference('Order.count', 1) do
+    assert_difference "Order.count", 1 do
       post customers_orders_url, params: {
-        order: {
-          store_id: stores(:one).id,
-          total_price: 10.50,
-          status: "pending",
+        store_id:         @store.id,
+        ready_in_minutes: 20,
+        order_items_attributes: {
+          "0" => {
+            product_id:  @product.id,
+            unit_price:  @product.price,
+            quantity:    2
+          }
         }
       }
     end
-  
-    assert_redirected_to customers_orders_path(Order.last)
+
+    assert_redirected_to customers_orders_path
   end
 end

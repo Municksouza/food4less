@@ -1,73 +1,53 @@
-<h1>Manager Dashboard: <%= @store.name %></h1>
+<%# app/views/stores/dashboard/show.html.erb %>
 
-<% if @store.logo.attached? %>
-  <div class="store-logo mb-4">
-    <%= image_tag url_for(@store.logo.variant(resize_to_limit: [150, 150])), alt: "#{@store.name} Logo", class: "img-thumbnail" %>
+<%= turbo_stream_from "store_#{@store.id}_orders" %>
+
+<div id="store-dashboard" data-store-id="<%= @store.id %>">
+  <!-- 🔔 Banner de ativação de som -->
+  <div id="sound-activation-banner"
+       data-controller="sound-activation"
+       class="alert alert-warning text-center m-2">
+    <strong>🔔 Enable sound alerts for new orders?</strong>
+    <button type="button"
+            class="btn btn-sm btn-primary ms-3"
+            data-action="click->sound-activation#activateSound">
+      🔊 Enable Sound
+    </button>
   </div>
-<% else %>
-  <p>No logo uploaded.</p>
-<% end %>
 
-<section class="mb-4">
-  <h2>Sales Summary</h2>
-  <p>Total Sales: <%= number_to_currency(@total_sales) %></p>
-  <p>Accepted Orders: <%= @accepted_orders %></p>
-  <p>Rejected Orders: <%= @rejected_orders %></p>
-</section>
+  <div class="row">
+    <!-- Pending Orders -->
+    <div class="col-md-9 overflow-auto" style="height: 80vh;">
+      <h4>📥 Pending Orders</h4>
+      <div id="pending-orders">
+        <%= render partial: "stores/orders/order",
+                   collection: @pending_orders,
+                   locals:     { play_sound: false } %>
+      </div>
+    </div>
 
-<section class="mb-4">
-  <h2>Recent Orders</h2>
-  <%= link_to "View All Orders", stores_orders_path, class: "btn btn-outline-primary mb-2" %>
-  <ul>
-    <% @orders.first(5).each do |order| %>
-      <li>
-        <%= link_to "Order ##{order.id}", stores_order_path(order) %> -
-        <%= order.status.capitalize %> |
-        <%= number_to_currency(order.total_price) %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+    <!-- In Progress & Completed -->
+    <div class="col-md-3 bg-light border-start p-3" style="height: 80vh; overflow-y: auto;">
+      <!-- In Progress -->
+      <h5>🕒 In Progress</h5>
+      <div id="in-progress-orders">
+        <%= render partial: "stores/orders/order",
+                   collection: @accepted_orders,
+                   locals:     { play_sound: false } %>
+      </div>
 
-<section class="mb-4">
-  <h2>Products</h2>
-  <%= link_to "Manage Products", manage_stores_products_path, class: "btn btn-outline-primary mb-2" %>
-  <ul>
-    <% @products.first(5).each do |product| %>
-      <li>
-        <%= link_to product.name, stores_product_path(product) %> -
-        <%= number_to_currency(product.discount_price || product.original_price) %>
-        |
-        <%= link_to "Edit", edit_stores_product_path(product), class: "btn btn-sm btn-secondary" %>
-        <%= link_to "Delete", stores_product_path(product), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+      <hr>
 
-<section class="mb-4">
-  <h2>Recent Payments</h2>
-  <%= link_to "View All Payments", stores_payments_path, class: "btn btn-outline-primary mb-2" %>
-  <ul>
-    <% @payments.first(5).each do |payment| %>
-      <li>
-        Order: <%= link_to "##{payment.order_id}", stores_order_path(payment.order_id) %> |
-        <%= number_to_currency(payment.amount) if payment.respond_to?(:amount) %> |
-        <%= payment.status %>
-      </li>
-    <% end %>
-  </ul>
-</section>
-
-<section class="mb-4">
-  <h2>Receipts</h2>
-  <%= link_to "View All Receipts", stores_receipts_path, class: "btn btn-outline-primary mb-2" %>
-  <ul>
-    <% @receipts.first(5).each do |receipt| %>
-      <li>
-        Receipt for Order <%= link_to "##{receipt.order_id}", stores_order_path(receipt.order_id) if receipt.order_id %> |
-        <%= link_to "Download PDF", stores_receipt_path(receipt, format: :pdf), class: "btn btn-sm btn-primary" %>
-      </li>
-    <% end %>
-  </ul>
-</section>
+      <!-- Completed -->
+      <h5>✅ Completed Orders</h5>
+      <div id="completed-orders">
+        <% @completed_orders.each do |order| %>
+          <div class="new-order-card">
+            <%= render partial: "stores/orders/completed_order",
+                       locals: { order: order } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

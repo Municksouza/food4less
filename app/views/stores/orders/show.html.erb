@@ -1,0 +1,22 @@
+<div id="orders-dashboard">
+  <h2>📥 Pending Orders</h2>
+  <div id="pending-orders">
+    <% @pending_orders.each do |order| %>
+      <%= render partial: "stores/orders/order", locals: { order: order, play_sound: false } %>
+    <% end %>
+  </div>
+
+  <h2>🕒 In Progress</h2>
+  <div id="accepted-orders">
+    <% @accepted_orders.each do |order| %>
+      <%= render partial: "stores/orders/order", locals: { order: order, play_sound: false } %>
+    <% end %>
+  </div>
+
+  <h2>✅ Completed</h2>
+  <div id="completed-orders">
+    <% @completed_orders.each do |order| %>
+      <%= render partial: "stores/orders/order", locals: { order: order, play_sound: false } %>
+    <% end %>
+  </div>
+</div>

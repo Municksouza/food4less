@@ -1,0 +1,52 @@
+<h2>📈 Sales Report</h2>
+
+<h4 class="mt-4">Sales by Day</h4>
+<%= line_chart @sales_by_day, xtitle: "Date", ytitle: "$", points: false %>
+<h4 class="mt-4">Sales by Month</h4>
+<%= line_chart @sales_by_month, xtitle: "Month", ytitle: "$", points: false %>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h4>Total Sales</h4>
+    <p><strong><%= number_to_currency(@total_sales_amount) %></strong></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h4>Accepted Orders</h4>
+    <p><strong><%= @total_accepted %></strong></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <h4>Rejected Orders</h4>
+    <p><strong><%= @total_rejected %></strong></p>
+  </div>
+</div>
+
+<h4 class="mt-4">Top Selling Products</h4>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @top_products.each do |item| %>
+      <tr>
+        <td><%= Product.find(item.product_id).name %></td>
+        <td><%= item.total_quantity %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h4 class="mt-4">Top Selling Products Chart</h4>
+<%= bar_chart @top_products_chart, xtitle: "Product", ytitle: "Quantity Sold" %>
+
+<%= link_to "⬅️ Back to Dashboard", stores_store_dashboard_path, class: "btn btn-outline-secondary" %>
+<%= link_to "⬇️ Export CSV",  stores_export_stores_sales_csv_path, class: "btn btn-outline-primary" %>
+<%= link_to "⬇️ Export PDF", stores_export_stores_sales_pdf_path, class: "btn btn-outline-danger ms-2" %>
