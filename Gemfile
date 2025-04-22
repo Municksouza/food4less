@@ -68,8 +68,7 @@ group :development do
   gem "web-console"
   gem "letter_opener"
   gem "redis" # Use Redis for caching and Action Cable
-  gem "error_highlight", ">= 0.4.0", platforms: [:ruby]
-
+ 
 end
 
 group :test do
