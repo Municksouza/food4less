@@ -16,11 +16,11 @@ class Stores::OrdersControllerTest < ActionDispatch::IntegrationTest
 
   test "should approve order" do
     patch approve_stores_order_url(@order)
-    assert_redirected_to stores_orders_url
+    assert_redirected_to stores_store_dashboard_path(@order.store)
   end
 
   test "should reject order" do
     patch reject_stores_order_url(@order)
-    assert_redirected_to stores_orders_url
+    assert_redirected_to stores_store_dashboard_path(@order.store)
   end
 end

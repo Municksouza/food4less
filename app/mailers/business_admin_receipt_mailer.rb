@@ -1,4 +1,4 @@
-class BusinessInvoiceMailer < ApplicationMailer
+class BusinessAdminReceiptMailer < ApplicationMailer
   def send_receipt
     @order = params[:order]
     @receipt = params[:receipt]

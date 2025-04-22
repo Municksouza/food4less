@@ -23,5 +23,11 @@ module Food4less
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    if defined?(SolidCable::Record)
+      config.after_initialize do
+        db_config = Rails.configuration.database_configuration[Rails.env.to_s]
+        SolidCable::Record.establish_connection(db_config)
+      end
+    end
   end
 end

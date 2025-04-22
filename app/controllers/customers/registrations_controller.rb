@@ -6,8 +6,8 @@ class Customers::RegistrationsController < Devise::RegistrationsController
     build_resource(sign_up_params)
 
     if resource.save
-      flash[:notice] = "Cadastro realizado com sucesso!"
-      sign_up(resource_name, resource) # Usa o método do Devise para autenticação correta
+      flash[:notice] = "Registration successful!"
+      sign_up(resource_name, resource) # Uses Devise's method for proper authentication
       respond_with resource, location: after_sign_up_path_for(resource)
     else
       clean_up_passwords resource
@@ -19,7 +19,7 @@ class Customers::RegistrationsController < Devise::RegistrationsController
   private
 
   def logout_if_authenticated
-    if customer_signed_in? # Verifica se um Customer está logado antes de deslogar
+    if customer_signed_in? # Checks if a Customer is logged in before logging out
       sign_out(current_customer)
       reset_session
     end
@@ -31,6 +31,6 @@ class Customers::RegistrationsController < Devise::RegistrationsController
   end
 
   def after_sign_up_path_for(resource)
-    customer_dashboard_path
+    customers_dashboard_path
   end
 end

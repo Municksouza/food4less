@@ -1,7 +1,12 @@
-// import "@hotwired/turbo-rails"; // Turbo
-import "./controllers"; // Stimulus
+console.log("Application initialized"); // Added test log
+
+import "@hotwired/stimulus";
+import "./controllers"; // Import Stimulus controllers
 import "./poppers/my-get-base-placement.js"; // Customized Popper
-import "./mapbox_geocode"
+import "./mapbox_geocode";
+import "./channels";
+import "@hotwired/turbo-rails"
+
 
 // Import Rails modules
 import Rails from "@rails/ujs";
@@ -14,3 +19,4 @@ import "@fortawesome/fontawesome-free/js/all";
 // Initialize Rails modules
 Rails.start();
 ActiveStorage.start();
+

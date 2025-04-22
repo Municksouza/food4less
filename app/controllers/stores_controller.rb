@@ -1,6 +1,6 @@
 class StoresController < ApplicationController
   # before_action :authenticate_business_admin!
-  # before_action :set_store, only: [:edit, :update, :destroy]
+  before_action :set_store, only: [:edit, :update]
 
   # def new
   #   @store = Store.new
@@ -75,6 +75,10 @@ class StoresController < ApplicationController
     @stores = Store.all
   end
 
+  def edit
+    @store = Store.find(params[:id])
+  end
+
   def show
     @store = Store.find(params[:id])
     @products = @store.products
@@ -85,5 +89,9 @@ class StoresController < ApplicationController
 
   def store_params
     params.require(:store).permit(:name, :email, :phone, :address, :zip_code, :description, :logo, :latitude, :longitude)
+  end
+
+  def set_store
+    @store = Store.find(params[:id])
   end
 end

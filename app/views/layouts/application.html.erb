@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_TOKEN'] %>">    
+    <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_TOKEN'] %>"> 
+    <%= favicon_link_tag "logo.food.png" %>    
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
+    <%= action_cable_meta_tag %>
+   
     <%= yield :head %>
 
     <link rel="icon" href="/icon.png" type="image/png">
@@ -19,7 +21,10 @@
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
   </head>
 
-  <body>
+  <body data-store-id="<%= current_store_manager&.store&.id %>"> 
+    <% if current_store_manager %>
+      <audio id="notification-sound" src="/sounds/alert-loop.mp3" loop></audio>
+    <% end %>   
     <% flash.each do |type, message| %>
       <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert">
         <%= message %>
@@ -44,6 +49,7 @@
       <% else %>
         <%= yield %>
       <% end %>
+        <%= render "shared/footer" %>
     </div>
   </body>
 </html>

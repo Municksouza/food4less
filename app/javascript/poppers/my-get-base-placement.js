@@ -1,6 +1,6 @@
 // app/javascript/poppers/my-get-base-placement.js
 
-console.log("Carregando meu getBasePlacement customizado");
+console.log("Loading my custom getBasePlacement");
 
 const auto = "auto";
 
@@ -12,7 +12,7 @@ function getBasePlacement(placement) {
   }
 
   if (typeof placement !== 'string') {
-    console.error("Invalid placement value (não string):", placement);
+    console.error("Invalid placement value (not a string):", placement);
     placement = String(placement || "bottom");
   }
   
@@ -27,5 +27,5 @@ function getBasePlacement(placement) {
   return placement.split('-')[0];
 }
 
-// Expondo a função para o escopo global
+// Exposing the function to the global scope
 window.getBasePlacement = getBasePlacement;

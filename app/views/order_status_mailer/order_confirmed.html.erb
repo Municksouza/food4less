@@ -1,0 +1,31 @@
+<h1>Hello <%= @customer.name %>,</h1>
+
+<p>Your order <strong>#<%= @order.id %></strong> has been accepted by the store <strong><%= @store.name %></strong>!</p>
+
+<% if @order.ready_in_minutes.present? %>
+    <p>You can pick it up in approximately <strong><%= @order.ready_in_minutes %> minutes</strong>.</p>
+<% end %>
+
+<% if @store.logo.attached? %>
+    <div style="margin: 20px 0;">
+        <%= image_tag url_for(@store.logo), alt: "#{@store.name} logo", style: "max-width: 150px;" %>
+    </div>
+<% end %>
+
+<h3>Store Address:</h3>
+<p><%= @store.full_address %></p>
+<p><%= link_to "View on map", "https://maps.google.com/?q=#{URI.encode(@store.full_address)}" %></p>
+
+<h3>Order Summary:</h3>
+<ul>
+    <% @order.order_items.each do |item| %>
+        <li><%= item.quantity %>x <%= item.product.name %> - <%= number_to_currency(item.unit_price) %></li>
+    <% end %>
+</ul>
+
+<p><strong>Total:</strong> <%= number_to_currency(@order.total_price) %></p>
+
+<hr>
+
+<p>Thank you for shopping at <strong><%= @store.name %></strong>!</p>
+<p>See you soon. 😊</p>

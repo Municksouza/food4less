@@ -1,0 +1,27 @@
+<% if flash[:notice] %>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <%= flash[:notice] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% elsif flash[:alert] %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <%= flash[:alert] %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% end %>
+
+<div class="card shadow-sm p-4">
+  <h4 class="mb-4">🔧 Notification Settings</h4>
+
+  <%= simple_form_for @store, url: stores_settings_path, method: :patch do |f| %>
+    <div class="form-check form-switch mb-4">
+      <%= f.input :receive_notifications,
+                  as: :boolean,
+                  label: "Enable sound alerts for new orders",
+                  input_html: { class: "form-check-input", role: "switch" },
+                  wrapper_html: { class: "form-switch" } %>
+    </div>
+  
+    <%= f.submit "Save Settings", class: "btn btn-primary" %>
+  <% end %>
+</div>

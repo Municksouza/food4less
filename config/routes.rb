@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+
+  # ✅ ActionCable mount
+  mount ActionCable.server => '/cable'
+  mount ActiveStorage::Engine => '/rails/active_storage'
+  
+
   # ✅ Pages
   root to: "pages#home"
   get "search/index"
@@ -18,7 +24,7 @@ Rails.application.routes.draw do
 
   devise_for :store_managers, controllers: {
     sessions: "store_managers/sessions"
-  }, skip: [:registrations]
+  }, skip: [:registrations], sign_out_via: [:delete, :get]
 
   devise_for :super_admins, controllers: {
     sessions: "super_admins/sessions",
@@ -84,12 +90,18 @@ Rails.application.routes.draw do
 
   # ✅ Store Manager Area
   namespace :stores do
+    get 'new_orders', to: 'orders#new_orders'
+    resource :settings, only: [:edit, :update]
     resource :store_dashboard, only: [:show]
 
     resources :orders do
+      patch :complete, on: :member
       member do
         patch :approve
         patch :reject
+        patch :finalize
+        patch :set_ready_time
+        delete :delete
       end
       collection do
         get :history
@@ -110,12 +122,15 @@ Rails.application.routes.draw do
     resources :payments, only: [:index]
     resources :receipts, only: [:index, :show, :new, :create]
 
-    get "dashboard", to: "store_dashboards#show"
     get "reports", to: "reports#index"
     get "settings", to: "settings#edit"
     patch "settings", to: "settings#update"
     delete "logout", to: "sessions#destroy"
     get "financial", to: "dashboard#financial"
+    get "sales", to: "sales#index"
+    get "sales/export_csv", to: "sales#export_csv", as: :export_stores_sales_csv
+    get "sales/export_pdf", to: "sales#export_pdf", as: :export_stores_sales_pdf
+    patch "orders/:id/complete", to: "orders#complete", as: :complete_stores_order
   end
 
   # ✅ Super Admin Area

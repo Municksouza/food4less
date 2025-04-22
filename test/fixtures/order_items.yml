@@ -5,9 +5,12 @@ one:
   price: 9.99
   order: one
   product: one
+  unit_price: 9.99
 
 two:
   quantity: 1
   price: 9.99
   order: two
   product: two
+  unit_price: 9.99
+

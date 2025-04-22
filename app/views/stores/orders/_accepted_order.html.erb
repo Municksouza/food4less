@@ -1,0 +1,7 @@
+<div class="order-card accepted" id="order-<%= order.id %>">
+  <h3>Accepted Order #<%= order.id %></h3>
+  <p>Customer: <%= order.customer.name %></p>
+  <p>Preparation Time: <%= order.preparation_time %> mins</p>
+
+  <%= button_to 'Finalize', complete_stores_order_path(order), method: :patch, class: 'btn btn-primary' %>
+</div>

@@ -2,7 +2,8 @@ class Customer < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_one_attached :photo
+  has_one_attached :photo 
+  has_one :cart
   has_many :orders
   has_many :receipts, through: :orders
   has_many :payments, through: :orders
