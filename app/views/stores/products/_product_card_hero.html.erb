@@ -1,0 +1,63 @@
+# <div class="hero-product-card text-center p-2">
+#     <% if product.present? %>
+#         <div class="text-center">
+#             <% if product.images.attached? %>
+#                 <%= image_tag product.images.first.variant(resize_to_limit: [200, 200]).processed, class: "product-card-image", alt: product.name %>
+#             <% else %>
+#                 <img src="/default_product_image.png" class="product-card-image" alt="No Image">
+#             <% end %>
+
+#             <h6 class="product-card-name"><%= truncate(product.name, length: 40) %></h6>
+
+#             <% if product.description.present? %>
+#                 <p class="product-card-description"><%= truncate(product.description, length: 60) %></p>
+#             <% end %>
+
+#             <% if product.price.present? %>
+#                 <div class="product-card-pricing">
+#                     <span class="text-danger fw-bold"><%= number_to_currency(product.price) %></span>
+#                     <% if product.old_price.present? && product.old_price > product.price %>
+#                         <span class="text-muted text-decoration-line-through small ms-2"><%= number_to_currency(product.old_price) %></span>
+#                     <% end %>
+#                 </div>
+#             <% else %>
+#                 <p class="text-muted small">Price Unavailable</p>
+#             <% end %>
+
+#             <% if product.stock.present? && product.stock > 0 %>
+#                 <p class="text-success small mt-1">Available: <%= product.stock %> units</p>
+#             <% else %>
+#                 <span class="badge bg-danger mt-1">Out of Stock</span>
+#             <% end %>
+
+#             <% if product&.store.present? %>
+#                 <div class="product-card-store-info d-flex align-items-center justify-content-center mt-2">
+#                     <% if product.store&.logo&.attached? %>
+#                         <%= image_tag product.store.logo.variant(resize_to_fill: [30, 30]), class: "rounded-circle", alt: product.store&.name %>
+#                     <% end %>
+#                     <div class="text-start small">
+#                         <strong class="text-primary fw-bold mb-0"><%= truncate(product.store&.name, length: 25) %></strong><br>
+#                             <% if product.store&.phone.present? %>
+#                                 <p class="text-muted small mb-0">📞 <%= product.store&.phone %></p>
+#                             <% end %>
+#                         <% if product.store&.address.present? %>
+#                             <p class="text-muted small mb-0">
+#                                 📍 <%= link_to truncate(product.store&.address, length: 40),
+#                                         "https://www.google.com/maps/search/?api=1&query=#{URI.encode_www_form_component(product.store&.address)}",
+#                                         target: "_blank", rel: "noopener", class: "text-decoration-none text-muted" %>
+#                             </p>
+#                         <% end %>
+#                     </div>
+#                 </div>
+#             <% end %>
+
+#             <% unless business_admin_signed_in? || store_manager_signed_in? %>
+#                 <%= button_to "🛒 Add to Cart", add_item_customers_cart_path,
+#                         method: :post,
+#                         params: { product_id: product.id },
+#                         class: "btn btn-sm btn-danger w-100 mt-2",
+#                         data: { action: "click->home#addToCart" } %>
+#             <% end %>
+#         </div>
+#     <% end %>
+# </div>

@@ -1,6 +1,28 @@
+html,
 body {
-    font-family: "Helvetica", sans-serif;
-    background-color: #f8f9fa;
-    margin: 0;
-    padding: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: "Inter", sans-serif;
+  background-color: white;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px; /* Adjust font size for smaller screens */
   }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 12px; /* Further adjustments for very small screens */
+  }
+}

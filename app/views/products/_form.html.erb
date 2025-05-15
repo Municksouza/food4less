@@ -1,0 +1,46 @@
+<%= form_with(model: product, local: true, html: { class: "needs-validation", novalidate: true }) do |form| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <h2><%= pluralize(product.errors.count, "error") %> prevented this product from being saved:</h2>
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :name, "Product Name", class: "form-label" %>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :description, "Description", class: "form-label" %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :price, "Price", class: "form-label" %>
+    <%= form.number_field :price, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :stock, "Stock", class: "form-label" %>
+    <%= form.number_field :stock, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :old_price, "Old Price", class: "form-label" %>
+    <%= form.number_field :old_price, step: 0.01, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :images, "Product Images", class: "form-label" %>
+    <%= form.file_field :images, multiple: true, class: "form-control" %>
+  </div>
+
+  <div class="d-grid">
+    <%= form.submit "Save Product", class: "btn btn-primary" %>
+  </div>
+<% end %>

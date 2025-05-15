@@ -1,15 +1,11 @@
 module Stores
   class StoreDashboardsController < ApplicationController
+    layout "application"
     before_action :authenticate_store_manager!
     before_action :set_store
-
-    def show
-      # Debugging: Log incoming params
-      Rails.logger.debug "Params: #{params.inspect}"
-      @store = Store.find(params[:id]) if params[:id].present?
-      unless @store
-        Rails.logger.debug "Store not found for ID: #{params[:id]}"
-      end
+    
+    def show  
+      @sidebar_type = :store_manager
       @order = @store.orders.find_by(id: params[:order_id]) if params[:order_id].present?
       if params[:order_id].present? && @order.nil?
         Rails.logger.debug "Order not found for store: #{@store.id}, order_id: #{params[:order_id]}"

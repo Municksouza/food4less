@@ -1,0 +1,15 @@
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title" id="signupModalLabel">Create Your Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center py-4">
+        <p class="mb-4 text-muted">Join Food4Less and start discovering the best local food deals!</p>
+        <%= link_to "Sign Up as Customer", new_customer_registration_path, class: "btn btn-red w-100 mb-3" %>
+        <%= link_to "Already have an account?", new_customer_session_path, class: "text-decoration-none text-secondary small d-block" %>
+      </div>
+    </div>
+  </div>
+</div>

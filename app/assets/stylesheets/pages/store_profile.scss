@@ -1,0 +1,155 @@
+.store-banner {
+    width: 100vw;
+    margin-left: calc(-1 * (100vw - 100%) / 2);
+    overflow: hidden;
+
+    .cuisine-banner {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        opacity: 0.75;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+    }
+}
+
+.store-profile {
+    background: #fff;
+    position: relative;
+    z-index: 10;
+    margin-top: -100px; // sobe o conteúdo por cima do banner
+    padding: 2rem 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+
+    .btn-back {
+        margin-bottom: 2rem;
+    }
+
+    .store-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        align-items: flex-start;
+        margin-bottom: 3rem;
+    }
+
+    .store-logo {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .store-info {
+        flex: 1;
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .store-rating {
+            i {
+                font-size: 1.1rem;
+            }
+
+            small {
+                font-size: 0.875rem;
+            }
+        }
+
+        ul {
+            padding: 0;
+            list-style: none;
+
+            li {
+                font-size: 0.95rem;
+                margin-bottom: 0.5rem;
+
+                i {
+                    margin-right: 0.4rem;
+                }
+            }
+        }
+
+        .store-description {
+            font-size: 0.95rem;
+            color: #444;
+            background: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .search-bar {
+            margin-top: 1.5rem;
+
+            input {
+                min-width: 250px;
+            }
+
+            button {
+                padding: 0.5rem;
+            }
+        }
+    }
+
+    .products-section {
+        margin-top: 4rem;
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+    }
+
+    .reviews-section {
+        margin-top: 4rem;
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 0.5rem;
+
+            p {
+                margin-bottom: 0.5rem;
+            }
+
+            small {
+                color: #666;
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+        .store-header {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .store-info {
+            text-align: center;
+
+            ul {
+                padding-left: 0;
+            }
+        }
+
+        .search-bar {
+            justify-content: center;
+        }
+    }
+}

@@ -89,4 +89,9 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  config.middleware.use Rack::Deflater
+  
+  config.public_file_server.headers = {
+    'Cache-Control' => "public, max-age=#{2.days.to_i}"
+  }
 end

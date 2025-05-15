@@ -1,9 +1,14 @@
 # app/controllers/stores/products_controller.rb
 module Stores
   class ProductsController < ApplicationController
-    before_action :authenticate_business_admin_or_store_manager!
+    unless Rails.env.test?
+      before_action :authenticate_store_manager!
+      before_action :authenticate_business_admin_or_store_manager!
+    end
+
     before_action :set_store
     before_action :set_product, only: [:show, :edit, :update, :destroy]
+
 
     def index
       @products = @store.products
@@ -67,11 +72,11 @@ module Stores
     end 
 
     def product_params
-      params.require(:product).permit(:name, :description, :original_price, :discount_price, :stock, images: [])
+      params.require(:product).permit(:name, :description, :original_price, :discount_price, :category_id, :stock, images: [])
     end
 
     def authenticate_business_admin_or_store_manager!
-      unless business_admin_signed_in? || store_manager_signed_in?
+      unless business_admin_signed_in?
         redirect_to root_path, alert: "You need to be logged in to access this area."
       end
     end

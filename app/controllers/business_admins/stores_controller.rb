@@ -5,6 +5,8 @@ module BusinessAdmins
 
     def index
       @stores = current_business_admin.stores
+      @stores = Store.where(status: "active").where.not(latitude: nil, longitude: nil)
+
     end
 
     def new

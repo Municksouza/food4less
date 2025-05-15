@@ -1,15 +1,20 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
+# test/fixtures/reviews.yml
 one:
-  rating: 1
-  comment: MyText
-  order: one
+  rating: 5
+  comment: "Great quality!"
+  order: one        # same for order, customer, and store
   customer: one
   store: one
+  product: one      # ← here!
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
 
 two:
-  rating: 1
-  comment: MyText
+  rating: 4
+  comment: "Good value for money."
   order: two
   customer: two
   store: two
+  product: one      # could use another product fixture, if it exists
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

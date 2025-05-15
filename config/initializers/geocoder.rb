@@ -5,5 +5,6 @@ Geocoder.configure(
     units: :km,                 # units (:km or :mi)
     distances: :linear,
     always_raise: [],
-    default_country: 'CA'
+    default_country: 'CA',
+    http_headers: { "User-Agent" => "munick@lewagon.com" }
 )

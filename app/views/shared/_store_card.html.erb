@@ -1,0 +1,23 @@
+<div class="card h-100 shadow-sm">
+  <% if store.logo.attached? %>
+    <%= image_tag store.logo.variant(resize_to_fill: [400, 250]), class: "card-img-top img-fluid" %>
+  <% else %>
+    <%= image_tag "placeholder.jpeg", class: "card-img-top img-fluid" %>
+  <% end %>
+
+  <div class="card-body">
+    <h5 class="card-title"><%= store.name %></h5>
+    <% if store.description.present? %>
+      <p class="card-text"><%= truncate(store.description, length: 100) %></p>
+    <% end %>
+    <p class="mb-1">
+      📍 <%= link_to store.address,
+        "https://www.google.com/maps/search/?api=1&query=#{URI.encode_www_form_component(store.address)}",
+        target: "_blank",
+        rel: "noopener",
+        class: "text-decoration-none text-primary" %>
+    </p>
+    <p>📞 <%= store.phone %></p>
+    <%= link_to "Visit Store", store_path(store), class: "btn btn-danger mt-3 w-100" %>
+  </div>
+</div>

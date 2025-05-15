@@ -1,0 +1,31 @@
+<section class="discover-section py-5" style="background-color: #f4f4f4;" data-controller="home">
+  <div class="container">
+    <div class="row align-items-center" data-home-target="fade">
+      <div class="row mb-4">
+        <div class="col-md-6 text-content">
+          <h5 class="text-uppercase text-muted mb-2">Discover, Order, and Enjoy</h5>
+          <h2 class="fw-bold mb-3">Explore local stores and shop your favorites</h2>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="store-carousel-container position-relative">
+        <div class="store-carousel">
+          <% @stores.each do |store| %>
+            <%= render partial: "shared/store_flip_card", locals: { store: store } %>
+          <% end %>
+        </div>
+
+        <!-- Carousel Navigation -->
+        <div class="carousel-navigation mt-4 d-flex justify-content-between">
+          <button type="button" class="custom-prev slick-arrow-btn">
+            <%= image_tag("left-arrow-svgrepo-com.svg", alt: "Previous", class: "arrow-svg") %>
+          </button>
+          <button type="button" class="custom-next slick-arrow-btn">
+            <%= image_tag("right-arrow-svgrepo-com.svg", alt: "Next", class: "arrow-svg") %>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

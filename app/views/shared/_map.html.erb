@@ -1,0 +1,52 @@
+<div class="sandwich-map-section">
+  <script>
+    window.stores = <%= raw(@stores.to_json(only: [:name, :address, :latitude, :longitude])) %>;
+  </script>
+
+  <!-- Map inside the sandwich -->
+  <div class="sandwich-map-wrapper">
+    <div id="map"
+         data-controller="map"
+         data-map-api-key-value="<%= ENV['MAPBOX_API_TOKEN'] %>">
+    </div>
+    <%= image_tag "sandwich-map.png", class: "sandwich-frame", alt: "Map inside the sandwich" %>
+  </div>
+
+  <!-- Right side with info -->
+  <div class="map-info-box" data-controller="zip">
+    <h6 class="map-title">Find a Pickup Spot Near You!</h6>
+    <div class="zip-search">
+      <input type="text" placeholder="Enter your ZIP code" class="zip-input" data-zip-target="input" />
+      <button class="zip-button" data-action="click->zip#search">Search</button>
+    </div>
+
+    <ul class="pickup-tags">
+      <li>Fresh Sandwiches 🥪</li>
+      <li>Pizza Slices 🍕</li>
+      <li>Leftover Deals 🥡</li>
+    </ul>
+
+    <!-- Highlighted testimonial -->
+    <div class="pickup-testimonial">
+      <div class="testimonial-carousel">
+        <div class="testimonial-track">
+          <% testimonials = [
+            { quote: "Easy to order, and I picked up a hot meal in minutes. I love it!", author: "Emily R." },
+            { quote: "Great local deals and quick pickup. Very convenient!", author: "Jamal S." },
+            { quote: "I save money and reduce waste. Win-win!", author: "Sophie L." }
+          ] %>
+
+          <% testimonials.each do |t| %>
+            <div class="testimonial-card">
+              <p class="quote">“<%= t[:quote] %>”</p>
+              <span class="author">— <%= t[:author] %></span>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="testimonial-image">
+        <%= image_tag "pickup-bag.png", alt: "Pickup Bag" %>
+      </div>
+    </div>
+  </div>
+</div>

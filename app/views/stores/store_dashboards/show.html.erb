@@ -1,53 +1,50 @@
-<%# app/views/stores/dashboard/show.html.erb %>
-
 <%= turbo_stream_from "store_#{@store.id}_orders" %>
 
-<div id="store-dashboard" data-store-id="<%= @store.id %>">
-  <!-- 🔔 Banner de ativação de som -->
-  <div id="sound-activation-banner"
-       data-controller="sound-activation"
-       class="alert alert-warning text-center m-2">
-    <strong>🔔 Enable sound alerts for new orders?</strong>
-    <button type="button"
-            class="btn btn-sm btn-primary ms-3"
-            data-action="click->sound-activation#activateSound">
-      🔊 Enable Sound
-    </button>
-  </div>
-
-  <div class="row">
-    <!-- Pending Orders -->
-    <div class="col-md-9 overflow-auto" style="height: 80vh;">
-      <h4>📥 Pending Orders</h4>
-      <div id="pending-orders">
-        <%= render partial: "stores/orders/order",
-                   collection: @pending_orders,
-                   locals:     { play_sound: false } %>
-      </div>
+<main class="main-content container-fluid">
+  <div id="store-dashboard" data-store-id="<%= @store.id %>">
+    <!-- 🔔 Sound Activation Banner -->
+    <div id="sound-activation-banner"
+         data-controller="sound-activation"
+         class="alert alert-warning text-center my-2">
+      <strong>🔔 Enable sound alerts for new orders?</strong>
+      <button type="button"
+              class="btn btn-sm btn-primary ms-3"
+              data-action="click->sound-activation#activateSound">
+        🔊 Enable Sound
+      </button>
     </div>
 
-    <!-- In Progress & Completed -->
-    <div class="col-md-3 bg-light border-start p-3" style="height: 80vh; overflow-y: auto;">
-      <!-- In Progress -->
-      <h5>🕒 In Progress</h5>
-      <div id="in-progress-orders">
-        <%= render partial: "stores/orders/order",
-                   collection: @accepted_orders,
-                   locals:     { play_sound: false } %>
+    <div class="row">
+      <!-- Pending Orders Section -->
+      <div class="col-lg-9 col-md-8 col-sm-12 pending-orders">
+        <h4>📥 Pending Orders</h4>
+        <div id="pending-orders">
+          <%= render partial: "stores/orders/order",
+                    collection: @pending_orders,
+                    locals: { play_sound: false } %>
+        </div>
       </div>
 
-      <hr>
+      <!-- In Progress and Completed Orders Section -->
+      <div class="col-lg-3 col-md-4 col-sm-12 in-progress-orders">
+        <h5>🕒 In Progress</h5>
+        <div id="in-progress-orders">
+          <%= render partial: "stores/orders/order",
+                    collection: @accepted_orders,
+                    locals: { play_sound: false } %>
+        </div>
 
-      <!-- Completed -->
-      <h5>✅ Completed Orders</h5>
-      <div id="completed-orders">
-        <% @completed_orders.each do |order| %>
-          <div class="new-order-card">
-            <%= render partial: "stores/orders/completed_order",
-                       locals: { order: order } %>
-          </div>
-        <% end %>
+        <hr>
+
+        <h5>✅ Completed Orders</h5>
+        <div id="completed-orders">
+          <% @completed_orders.each do |order| %>
+            <div class="new-order-card">
+              <%= render partial: "stores/orders/completed_order", locals: { order: order } %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>

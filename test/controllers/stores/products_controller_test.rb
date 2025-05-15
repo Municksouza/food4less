@@ -4,18 +4,22 @@ require "test_helper"
 module Stores
   class ProductsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
+    fixtures :store_managers, :stores, :categories, :products
 
     def setup
-      @store_manager = store_managers(:one)
-      sign_in @store_manager
-      @store = @store_manager.store
+      @manager = store_managers(:one)
+      sign_in @manager         # 👉 isso cria a sessão no escopo :store_manager
+      @store   = @manager.store
+      @category = categories(:one) 
+      @product  = products(:one)
 
       @product = @store.products.create!(
         name: "Existing Product",
         description: "Test product",
         price: 10.0,
         old_price: 15.0,
-        stock: 5
+        stock: 5,
+        category: @category
       )
     end
 
@@ -37,7 +41,9 @@ module Stores
             description: "Created from test",
             price: 12.0,
             old_price: 20.0,
-            stock: 10
+            stock: 10,
+            category_id: @category.id,
+            store_id: @store.id
           }
         }
       end

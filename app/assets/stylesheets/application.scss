@@ -2,26 +2,42 @@
 
 @use "../../../node_modules/bootstrap/scss/bootstrap" as *;
 @use "../../../node_modules/bootstrap-icons/font/bootstrap-icons";
-@use "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@use "../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
-
-// Base
-@use "base/variables";
-@use "base/reset";
-@use "base/typography";
-
-// Layout
+// @use "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+// // Layout
 @use "layout/body";
 @use "layout/header";
 @use "layout/footer";
+@use "layout/static_pages";
+@use "layout/navbar";
+@use "layout/offcanvas";
+@use "layout/marketplace";
+@use "layout/products_block";
+@use "layout/discover_order_enjoy";
+@use "layout/sidebar";
+@use "layout/hero_and_cards";
+@use "layout/cuisine";
+@use "layout/map";
 
-// Components
+// // Components
 @use "components/product_card";
 @use "components/avatar";
 @use "components/new_order_card";
+@use "components/store_card"; 
+@use "components/store_flip_card";
+@use "components/product_poster";
+@use "components/category";
+@use "components/buttons";
+@use "components/ticker";
 
-// Forms
+// // Pages
+@use "pages/home";
+@use "pages/store_dashboard";
+@use "pages/customer_dashboard";
+@use "pages/business_admin_dashboard";
+@use "pages/store_profile";
+
+// // Forms
 @use "forms/simple_form";
 
-// Partials
+// // Partials
 @use "partials/print";

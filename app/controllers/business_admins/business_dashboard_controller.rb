@@ -4,6 +4,8 @@ class BusinessAdmins::BusinessDashboardController < ApplicationController
     before_action :ensure_business_admin!
 
     def show
+      @sidebar_type = :business_admin
+
       @stores = current_business_admin.stores
       store_ids = @stores.pluck(:id)
     

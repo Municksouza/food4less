@@ -28,3 +28,25 @@ import {
 window.playNotificationSound      = playNotificationSound
 window.stopNotificationSound      = stopGlobalAudio
 window.unlockAudioForAutoplay     = unlockAudioForAutoplay
+
+import HomeController from "./home_controller.js"  
+application.register("home", HomeController)
+
+import SidebarController from "./sidebar_controller.js"
+application.register("sidebar", SidebarController)
+
+import PhoneController from "./phone_controller"
+application.register("phone", PhoneController)
+
+import FloatingEmojisController from "./floating_emojis_controller"
+application.register("floating-emojis", FloatingEmojisController)
+
+import SearchModalController from "./search_modal_controller"
+application.register("search_modal", SearchModalController)
+
+import MapController from "./map_controller"
+application.register("map", MapController)
+
+import ZipController from "./zip_controller"
+application.register("zip", ZipController)
+

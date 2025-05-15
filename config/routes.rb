@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "products/show"
 
   # ✅ ActionCable mount
   mount ActionCable.server => '/cable'
@@ -26,10 +27,10 @@ Rails.application.routes.draw do
     sessions: "store_managers/sessions"
   }, skip: [:registrations], sign_out_via: [:delete, :get]
 
-  devise_for :super_admins, controllers: {
-    sessions: "super_admins/sessions",
-    registrations: "super_admins/registrations"
-  }
+  # devise_for :super_admins, controllers: {
+  #   sessions: "super_admins/sessions",
+  #   registrations: "super_admins/registrations"
+  # }
 
   devise_for :users, controllers: {
     sessions: "users/sessions",
@@ -133,18 +134,18 @@ Rails.application.routes.draw do
     patch "orders/:id/complete", to: "orders#complete", as: :complete_stores_order
   end
 
-  # ✅ Super Admin Area
-  namespace :super_admins do
-    resource :dashboard, only: [:show], controller: "super_admin_dashboards"
-    resources :orders do
-      member do
-        get :generate_invoice
-        get :generate_receipt
-        patch :approve
-        patch :reject
-      end
-    end
-  end
+  # # ✅ Super Admin Area
+  # namespace :super_admins do
+  #   resource :dashboard, only: [:show], controller: "super_admin_dashboards"
+  #   resources :orders do
+  #     member do
+  #       get :generate_invoice
+  #       get :generate_receipt
+  #       patch :approve
+  #       patch :reject
+  #     end
+  #   end
+  # end
 
   # ✅ Global Admin Resources
   resources :users, only: [:index, :edit, :update, :destroy]
@@ -152,7 +153,10 @@ Rails.application.routes.draw do
   resources :orders, only: [:index, :destroy]
   resources :payments, only: [:index, :destroy, :create]
   resources :reviews, only: [:create]
-
+  resources :products, only: [:index, :show]
+  resources :stores, only: %i[index show] do
+    get :search_products, on: :member
+  end
   # ✅ Global Search
   get "search", to: "search#index"
 
@@ -160,6 +164,7 @@ Rails.application.routes.draw do
   get "up", to: "rails/health#show", as: :rails_health_check
 
   # ✅ Public Customer Pages
+  get 'products/category/:category_name', to: 'products#category', as: 'products_category'
   get "customers/:id", to: "shared/customers#show", as: "public_customer"
   get "customers", to: "shared/customers#index", as: "public_customers"
 end

@@ -14,7 +14,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_customer, :customer_signed_in?
   helper_method :current_business_admin, :business_admin_signed_in?
   helper_method :current_store_manager, :store_manager_signed_in?
-  helper_method :current_super_admin, :super_admin_signed_in?
   helper_method :current_account
 
   def pundit_user
@@ -52,16 +51,8 @@ class ApplicationController < ActionController::Base
     current_store_manager.present?
   end
 
-  def current_super_admin
-    current_user_of_type(SuperAdmin, :super_admin)
-  end
-
-  def super_admin_signed_in?
-    current_super_admin.present?
-  end
-
   def current_account
-    current_customer || current_business_admin || current_store_manager || current_super_admin
+    current_customer || current_business_admin || current_store_manager 
   end
 
   def after_sign_in_path_for(resource)
@@ -72,8 +63,8 @@ class ApplicationController < ActionController::Base
       business_admins_business_dashboard_path
     when StoreManager
       stores_store_dashboard_path
-    when SuperAdmin
-      super_admin_dashboard_path
+    when Store
+      store_path
     else
       root_path
     end

@@ -1,23 +1,24 @@
-<div class="container mt-5">
-  <h1 class="mb-4">Contact Us</h1>
-
-  <p>If you have any questions, feedback, or need support, feel free to reach out to us using the form below.</p>
-
-  <%= simple_form_for :contact, url: "#", html: { class: "mt-4" } do |f| %>
-    <div class="mb-3">
-      <%= f.input :name, required: true, input_html: { class: "form-control" } %>
+<section class="container my-5 fade-in" data-controller="home">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h1 class="text-center">Contact Us</h1>
+      <p class="text-center mb-4">Have questions, suggestions, or want to join Food For Less?</p>
+      
+      <%= form_with url: "#", local: true, class: "needs-validation" do |form| %>
+        <div class="mb-3">
+          <%= form.label :name, "Your Name" %>
+          <%= form.text_field :name, class: "form-control", required: true %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :email, "Your Email" %>
+          <%= form.email_field :email, class: "form-control", required: true %>
+        </div>
+        <div class="mb-3">
+          <%= form.label :message, "Message" %>
+          <%= form.text_area :message, class: "form-control", rows: 5, required: true %>
+        </div>
+        <%= form.submit "Send", class: "btn btn-success w-100" %>
+      <% end %>
     </div>
-
-    <div class="mb-3">
-      <%= f.input :email, required: true, input_html: { class: "form-control" } %>
-    </div>
-
-    <div class="mb-3">
-      <%= f.input :message, as: :text, required: true, input_html: { rows: 5, class: "form-control" } %>
-    </div>
-
-    <div>
-      <%= f.button :submit, "Send Message", class: "btn btn-primary" %>
-    </div>
-  <% end %>
-</div>
+  </div>
+</section>

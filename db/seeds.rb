@@ -33,6 +33,26 @@ unless File.exist?(logo_path)
   puts "⚠️ Logo file not found at #{logo_path}. Please check the path and file existence."
 end
 
+puts "🌱 Creating cuisine categories..."
+
+cuisines = [
+  "Italian",
+  "Chinese",
+  "Indian",
+  "Mexican",
+  "Japanese",
+  "French",
+  "Brazilian",
+  "Thai",
+  "Greek",
+  "Spanish"
+]
+
+cuisines.each do |cuisine_name|
+  Category.find_or_create_by!(name: cuisine_name)
+  puts "✅ Category created: #{cuisine_name}"
+end
+
 admin = BusinessAdmin.new(
   name: "MarketGroup Inc.",
   email: "admin@marketgroup.com",
@@ -90,11 +110,17 @@ stores_data.each do |data|
   puts "✅ StoreManager created: manager_#{store.id}@demo.com"
 
   5.times do
+    old_price = Faker::Commerce.price(range: 20.0..100.0)
+    discount = rand(10..40) # desconto entre 10% e 40%
+    price = (old_price * ((100 - discount) / 100.0)).round(2)
+    
     product = store.products.create!(
       name: Faker::Commerce.product_name,
       description: Faker::Lorem.sentence,
-      price: Faker::Commerce.price(range: 1.0..100.0),
-      stock: rand(10..100)
+      old_price: old_price,
+      price: price,
+      stock: rand(10..100),
+      category: Category.order("RANDOM()").first
     )
     if File.exist?(logo_path)
       product.images.attach(io: File.open(logo_path), filename: 'placeholder.jpeg', content_type: 'image/jpeg')

@@ -1,5 +1,7 @@
 class Store < ApplicationRecord
   belongs_to :business_admin
+  belongs_to :cuisine, optional: true
+  belongs_to :category, optional: true
   has_one_attached :logo
   has_one :store_manager, dependent: :destroy
   
@@ -21,4 +23,17 @@ class Store < ApplicationRecord
   validates :latitude, :longitude, numericality: true, allow_nil: true
   validates :receive_notifications, inclusion: { in: [true, false] }
 
+  after_validation :geocode_address, if: -> { address_changed? && (latitude.blank? || longitude.blank?) }
+
+  def geocode_address
+    return if address.blank?
+
+    url = URI("https://api.mapbox.com/geocoding/v5/mapbox.places/#{URI.encode(address)}.json?access_token=#{ENV['MAPBOX_ACCESS_TOKEN']}")
+    res = Net::HTTP.get_response(url)
+    json = JSON.parse(res.body)
+    
+    if json["features"].any?
+      self.longitude, self.latitude = json["features"][0]["center"]
+    end
+  end
 end

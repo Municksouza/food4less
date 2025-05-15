@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_10_033337) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -75,6 +75,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["customer_id"], name: "index_carts_on_customer_id"
+  end
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "icon"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cuisines", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "customers", force: :cascade do |t|
@@ -171,6 +184,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
     t.datetime "updated_at", null: false
     t.decimal "discount_price"
     t.boolean "active", default: true
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["store_id"], name: "index_products_on_store_id"
   end
 
@@ -206,8 +221,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
     t.bigint "store_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "product_id", null: false
     t.index ["customer_id"], name: "index_reviews_on_customer_id"
     t.index ["order_id"], name: "index_reviews_on_order_id"
+    t.index ["product_id"], name: "index_reviews_on_product_id"
     t.index ["store_id"], name: "index_reviews_on_store_id"
   end
 
@@ -242,6 +259,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
     t.string "status"
     t.boolean "active", default: true
     t.boolean "receive_notifications", default: false, null: false
+    t.bigint "cuisine_id"
+    t.index ["cuisine_id"], name: "index_stores_on_cuisine_id"
   end
 
   create_table "super_admins", force: :cascade do |t|
@@ -280,6 +299,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
   add_foreign_key "orders", "stores"
   add_foreign_key "payments", "orders"
   add_foreign_key "payments", "stores"
+  add_foreign_key "products", "categories"
   add_foreign_key "products", "stores"
   add_foreign_key "receipts", "orders"
   add_foreign_key "receipts", "stores"
@@ -287,7 +307,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_04_22_055517) do
   add_foreign_key "refunds", "stores"
   add_foreign_key "reviews", "customers"
   add_foreign_key "reviews", "orders"
+  add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "stores"
   add_foreign_key "store_managers", "stores"
   add_foreign_key "stores", "business_admins"
+  add_foreign_key "stores", "cuisines"
 end

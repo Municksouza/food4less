@@ -1,0 +1,515 @@
+// app/assets/stylesheets/components/_hero_and_cards.scss
+
+// ─────────────────────────────────────────────────────────────────
+// 1) Color Palette (CSS custom properties + fallback HEX)
+// ─────────────────────────────────────────────────────────────────
+$burnt-red-1: var(--burnt-red-1, #d97762);
+$burnt-red-5: var(--burnt-red-5, #9c4231);
+$vibrant-orange-1: var(--vibrant-orange-1, #ea4025);
+$vibrant-orange-2: var(--vibrant-orange-2, #ef5f3f);
+$vibrant-orange-3: var(--vibrant-orange-3, #f47d59);
+$vibrant-orange-4: var(--vibrant-orange-4, #fa9c74);
+$vibrant-orange-5: var(--vibrant-orange-5, #ffba8e);
+$white: #ffffff;
+$shadow: rgba(0, 0, 0, 0.1);
+
+// ─────────────────────────────────────────────────────────────────
+// 2) Hero Section
+// ─────────────────────────────────────────────────────────────────
+section.hero-split-section {
+  position: relative;
+  overflow: hidden;
+  min-height: 80vh;
+  padding-bottom: 50px;
+  display: flex;
+  align-items: center;
+
+  .hero-blob {
+    position: absolute;
+    right: 0;
+    width: 55%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero-carousel-col {
+    position: relative;
+    z-index: 2;
+    min-height: 300px;
+  }
+
+  .single-carousel {
+    position: relative;
+    z-index: 3;
+    min-height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .star-blob {
+    position: relative;
+    width: 150px;
+    height: 100px;
+    pointer-events: none;
+    z-index: 10;
+    top: -50px;
+
+    .star-blob-arrows {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 30px;
+    }
+
+    .star-blob {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .star-blob-text {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #FE043C;
+      font-family: "Inter", sans-serif;
+      text-align: center;
+    }
+  }
+
+  .hero-text-overlay {
+    color: #FE043C;
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin-left: 80px;
+    margin-bottom: 60px;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+
+    .hero-title {
+      font-size: 3rem !important;
+      font-weight: 700 !important;
+      line-height: 1.2 !important;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem !important;
+      font-weight: 500 !important;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .sticky-button {
+    z-index: 3;
+  }
+}
+
+.hero-footer-left {
+  position: absolute;
+  left: 0;
+  margin-top: 190px;
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 4) Product Card
+// ─────────────────────────────────────────────────────────────────
+.product-card-horizontal {
+  position: relative;
+  flex: 0 0 320px;
+  height: 350px;
+  width: 200px;
+  background: #FFF5EC;
+  border-radius: 24px;
+  overflow: visible;
+  box-shadow: 0 6px 20px $shadow;
+  padding-top: 120px;
+  padding-bottom: 140px !important;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  .product-image {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 150px;
+    border-radius: 10%;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    z-index: 2;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .action-buttons {
+    position: absolute;
+    top: 67%;
+    left: -36px;
+    transform: translateY(-50%);
+    background: #FFEDDE;
+    border-radius: 32px;
+    box-shadow: 0 4px 12px $shadow;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 3;
+
+    .btn-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 128, 0, 0.5) !important;
+      color: #FE043C !important;
+      border: none !important;
+      transition: background 0.2s ease !important;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.7) !important;
+        color: #fff !important;
+      }
+    }
+  }
+
+  & > .product-details {
+    position: absolute;
+    color: #FE043C;
+    bottom: 5px;
+    left: 51%;
+    transform: translateX(-50%);
+    width: 170px;
+    height: 190px;
+    background: #FFEDDE;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 128, 0, 0.5) !important;
+    display: flex;
+    flex-direction: column;
+    z-index: 5;
+
+    .product-name {
+      color: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .product-description {
+      font-size: 0.65rem;
+      color: #333;
+      line-height: 1.2;
+      max-height: 2.4rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .pricing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+
+      .price-old {
+        font-size: 0.75rem;
+        color: #999;
+        text-decoration: line-through;
+      }
+
+      .price-current {
+        font-size: 0.9rem;
+        font-weight: bold;
+        color: red;
+      }
+    }
+
+    .store-details-box {
+      color: inherit;
+      font-size: 0.7rem;
+      color: #555;
+      margin: 0 0 0.5rem;
+      margin-top: 15px;
+      line-height: 1.2;
+      text-align: center;
+
+      h6 {
+        color: inherit;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        i {
+          margin-right: 0.3rem;
+          color: $vibrant-orange-1;
+        }
+
+        a {
+          color: $vibrant-orange-3;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .product-reviews {
+      .stars {
+        color: $vibrant-orange-2;
+        font-size: 0.85rem;
+
+        i {
+          margin: 0 1px;
+        }
+      }
+      .review-count {
+        font-size: 0.65rem;
+        color: #555;
+      }
+    }
+  }
+
+  .discount-badge {
+    position: absolute;
+    top: -170px;
+    right: -50px;
+    background: #FE043C;
+    color: $white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 5;
+    white-space: nowrap;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// 5) Responsiveness
+// ─────────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  #products-section {
+    gap: 1.5rem;
+  }
+
+  .product-card-horizontal {
+    flex: 0 0 280px;
+    height: auto;
+    padding-top: 100px;
+    margin-bottom: 2rem;
+
+    .product-image {
+      top: -80px;
+      width: 160px;
+      height: 160px;
+    }
+
+    .action-buttons {
+      left: -28px;
+
+      .btn-icon {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    .product-details {
+      position: relative;
+      bottom: auto;
+      right: auto;
+      width: 100%;
+      max-width: none;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  #products-section {
+    gap: 1rem;
+  }
+
+  .product-card-horizontal {
+    flex: 0 0 100%;
+    padding-top: 80px;
+    margin-bottom: 2rem;
+
+    .action-buttons {
+      display: none;
+    }
+
+    .product-details {
+      padding: 0.75rem;
+
+      .product-name {
+        font-size: 0.95rem;
+      }
+
+      .pricing .price-current {
+        font-size: 1rem;
+      }
+
+      .btn-gradient {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1100px) {
+  .product-card-horizontal {
+    padding-bottom: 120px !important;
+
+    .product-details {
+      bottom: -60px !important;
+      right: 50% !important;
+      transform: translateX(50%);
+      width: 200px;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Keyframes for floating animation
+// ─────────────────────────────────────────────────────────────────
+@keyframes float-y {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.product-card-horizontal {
+  position: relative;
+
+  .emoji {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: float-y ease-in-out infinite;
+    pointer-events: none;
+    color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .emoji-1 {
+    top: 5%;
+    left: 10%;
+    --tx: 5%;
+  }
+
+  .emoji-2 {
+    top: 15%;
+    right: 12%;
+    --tx: -4%;
+  }
+
+  .emoji-3 {
+    top: 80%;
+    left: 40%;
+    --tx: 6%;
+  }
+
+  .emoji-4 {
+    top: 45%;
+    left: 25%;
+    --tx: -5%;
+  }
+
+  .emoji-5 {
+    bottom: 20%;
+    left: 15%;
+    --tx: 4%;
+  }
+
+  .emoji-6 {
+    bottom: 10%;
+    right: 20%;
+    --tx: -6%;
+  }
+
+  .emoji-7 {
+    top: 75%;
+    left: 40%;
+    --tx: 5%;
+  }
+
+  .emoji-8 {
+    top: 45%;
+    left: 20%;
+    --tx: 4%;
+  }
+
+  .emoji-9 {
+    top: 80%;
+    left: 85%;
+    --tx: -7%;
+  }
+
+  .emoji-10 {
+    bottom: 50%;
+    right: 10%;
+    --tx: 7%;
+  }
+}
+
+.products-carousel-wrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+
+  .products-section {
+    overflow: visible !important;
+  }
+}
+
+.banner {
+  position: relative;
+  margin: 0 auto;
+  width: 100%; // Ensures the banner spans the full width of the page
+
+  @media (max-width: 576px) {
+    padding: 0;
+  }
+
+  @media (min-width: 577px) and (max-width: 768px) {
+    padding: 0;
+  }
+
+  @media (min-width: 769px) and (max-width: 1100px) {
+    padding: 0;
+  }
+
+  @media (min-width: 1101px) {
+    padding: 0;
+  }
+}

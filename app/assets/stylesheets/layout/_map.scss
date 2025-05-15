@@ -1,0 +1,249 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.sandwich-map-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+  position: relative;
+  background-color: white;
+}
+
+.sandwich-map-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 1 / 1;
+  transform: translateX(-40px); // pushes slightly to the left
+
+  @media (max-width: 768px) {
+    transform: translateX(0);
+  }
+}
+
+#map {
+  position: absolute;
+  top: 180px;
+  left: 200px;
+  width: 400px;
+  height: 400px;
+  z-index: 10;
+  background: #ccc;
+  border-radius: 16px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+  }
+
+  @media (max-width: 480px) {
+    top: 80px;
+    width: 250px;
+    height: 250px;
+  }
+}
+
+.sandwich-frame {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+}
+
+#map .mapboxgl-map {
+  overflow: visible !important;
+}
+
+#map canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.mapboxgl-popup {
+  z-index: 9999 !important;
+}
+
+.map-info-box {
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 1rem;
+  padding-left: 1rem;
+
+  @media (max-width: 768px) {
+    padding-left: 0;
+    text-align: center;
+  }
+
+  .map-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #FE043C;
+    font-family: "Inter", sans-serif;
+  }
+
+  .zip-search {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+
+    .zip-input {
+      flex: 1;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .zip-button {
+      padding: 0.6rem 1rem;
+      background: #FE043C;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+    }
+  }
+
+  .pickup-tags {
+    list-style: disc inside;
+    margin-bottom: 1rem;
+
+    li {
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+  }
+
+  .testimonial {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 1rem;
+
+    .author {
+      display: block;
+      margin-top: 0.3rem;
+      font-weight: bold;
+    }
+  }
+
+  .extra-visual {
+    margin-top: 1rem;
+    text-align: center;
+
+    .pickup-bag {
+      width: 120px;
+      height: auto;
+      margin-bottom: 0.5rem;
+    }
+
+    .caption {
+      font-size: 0.85rem;
+      color: #666;
+    }
+  }
+
+  .pickup-testimonial {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 2rem;
+    gap: 1.5rem;
+    background: #fefefe;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .testimonial-quote {
+      flex: 1;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: #444;
+
+      span {
+        display: block;
+        font-weight: bold;
+        margin-top: 0.5rem;
+        color: #222;
+      }
+    }
+
+    .testimonial-image img {
+      max-width: 80px;
+      height: auto;
+      border-radius: 8px;
+    }
+  }
+
+  .testimonial-carousel {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    padding: 1rem 0;
+
+    .testimonial-track {
+      display: flex;
+      gap: 1.5rem;
+      scroll-snap-align: start;
+      padding-bottom: 1rem;
+      min-width: 100%;
+    }
+
+    .testimonial-card {
+      flex: 0 0 280px;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #eee;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      scroll-snap-align: start;
+      font-family: 'Inter', sans-serif;
+
+      .quote {
+        font-style: italic;
+        font-size: 0.95rem;
+        color: #333;
+        margin-bottom: 0.75rem;
+      }
+
+      .author {
+        font-weight: 600;
+        color: #222;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 8px;
+    }
+  }
+}

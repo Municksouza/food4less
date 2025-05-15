@@ -1,6 +1,10 @@
 module Stores
     class StoresController < ApplicationController
       before_action :authenticate_store_manager!
+
+      def index
+        @stores = Store.where(status: "active").where.not(latitude: nil, longitude: nil)
+      end
   
       def new
         @store = Store.new
