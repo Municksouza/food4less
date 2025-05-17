@@ -50,3 +50,6 @@ application.register("map", MapController)
 import ZipController from "./zip_controller"
 application.register("zip", ZipController)
 
+import TooltipsCcontroller from "./tooltips_controller.js"
+application.register("tooltips", TooltipsCcontroller)
+

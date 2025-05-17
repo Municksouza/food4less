@@ -5,10 +5,18 @@
         <div class="product-card-horizontal mx-auto">
           <!-- Image -->
           <div class="product-image text-center">
-            <% if product.images&.attached? %>
-              <%= image_tag product.images.first.variant(resize_to_fill: [180, 180]), alt: product.name, class: "img-fluid" %>
+            <% if product.images.attached? %>
+              <%= image_tag(
+                url_for(product.images.first),
+                alt:   product.name,
+                class: "img-fluid",
+              ) %>
             <% else %>
-              <%= image_tag "placeholder.jpeg", alt: "No image available", class: "img-fluid" %>
+              <%= image_tag(
+                "placeholder.jpeg",
+                alt: "No image available",
+                class: "img-fluid",
+              ) %>
             <% end %>
           </div>
 
@@ -17,39 +25,38 @@
             <% phone = product.store&.phone %>
             <% if phone&.present? %>
               <%= link_to "#",
-                          class: "btn-icon js-phone",
-                          data: { bs_toggle: "tooltip", phone: phone },
-                          title: "Store Phone" do %>
+                class: "btn-icon js-phone",
+                data: { bs_toggle: "tooltip", phone: phone },
+                title: "Store Phone" do %>
                 <i class="fas fa-phone"></i>
               <% end %>
             <% end %>
 
             <%= link_to "https://maps.google.com?q=#{URI.encode_www_form_component(product.store&.address.to_s || "Unknown Address")}",
-                        class: "btn-icon",
-                        data: { bs_toggle: "tooltip" },
-                        title: "Store Address",
-                        target: "_blank", rel: "noopener" do %>
+              class: "btn-icon",
+              data: { bs_toggle: "tooltip" },
+              title: "Store Address",
+              target: "_blank", rel: "noopener" do %>
               <i class="fas fa-map-marker-alt"></i>
             <% end %>
 
             <%= link_to product_path(product),
-                        class: "btn-icon",
-                        data: { bs_toggle: "tooltip" },
-                        title: "More Information" do %>
+              class: "btn-icon",
+              data: { bs_toggle: "tooltip" },
+              title: "More Information" do %>
               <i class="fas fa-info"></i>
             <% end %>
 
             <%= link_to add_item_customers_cart_path(product_id: product.id), method: :post,
-                        class: "btn-icon", 
-                        data: { bs_toggle: "tooltip" }, 
-                        title: "Add to Cart" do %>
+              class: "btn-icon",
+              data: { bs_toggle: "tooltip" },
+              title: "Add to Cart" do %>
               <i class="fas fa-shopping-cart"></i>
             <% end %>
           </div>
 
           <!-- Product Details -->
           <div class="product-details">
-            <!-- Discount Badge -->
             <% if product.old_price.present? && product.old_price > product.price %>
               <% discount = (((product.old_price - product.price) / product.old_price) * 100).round %>
               <div class="discount-badge d-flex justify-content-around mt-3">⚡ -<%= discount %>%</div>
@@ -97,6 +104,13 @@
                 <span class="price-old"><%= number_to_currency(product.old_price) %></span>
               <% end %>
               <span class="price-current"><%= number_to_currency(product.price) %></span>
+            </div>
+           <div class="disclaimer text-center mt-2">
+              <i class="fas fa-info-circle text-muted fs-7 me-1" 
+                data-bs-toggle="tooltip" 
+                title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility.">
+              </i>
+              <small class="text-muted">Terms</small>
             </div>
           </div> <!-- /.product-details -->
         </div>

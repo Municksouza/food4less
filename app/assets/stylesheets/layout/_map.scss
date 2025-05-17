@@ -12,7 +12,23 @@
   gap: 2rem;
   padding: 1rem;
   position: relative;
-  background-color: white;
+  background-color: #fff;
+
+  @media (max-width: 1024px) {
+    gap: 1.5rem;
+    padding: 0.75rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+    gap: 0.5rem;
+    padding: 0.25rem;
+  }
 }
 
 .sandwich-map-wrapper {
@@ -20,10 +36,22 @@
   width: 100%;
   max-width: 800px;
   aspect-ratio: 1 / 1;
-  transform: translateX(-40px); // pushes slightly to the left
+  transform: translateX(-40px);
+
+  @media (max-width: 1024px) {
+    max-width: 600px;
+    transform: translateX(-20px);
+  }
 
   @media (max-width: 768px) {
+    max-width: 100%;
     transform: translateX(0);
+    aspect-ratio: 1 / 1;
+  }
+
+  @media (max-width: 480px) {
+    aspect-ratio: unset;
+    min-width: 0;
   }
 }
 
@@ -38,18 +66,28 @@
   border-radius: 16px;
   overflow: hidden;
 
+  @media (max-width: 1024px) {
+    top: 120px;
+    left: 100px;
+    width: 350px;
+    height: 350px;
+  }
+
   @media (max-width: 768px) {
-    top: 100px;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    left: 0;
+    top: 0;
+    transform: none;
     width: 300px;
     height: 300px;
+    margin: 0 auto;
   }
 
   @media (max-width: 480px) {
-    top: 80px;
-    width: 250px;
-    height: 250px;
+    width: 100%;
+    min-width: 180px;
+    height: 180px;
+    max-width: 220px;
   }
 }
 
@@ -74,17 +112,31 @@
 
 .map-info-box {
   flex: 1;
-  min-width: 280px;
+  min-width: 220px;
   max-width: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding-top: 1rem;
   padding-left: 1rem;
+  padding-right: 2rem;
+
+  @media (max-width: 1024px) {
+    max-width: 350px;
+    min-width: 180px;
+    padding-right: 1rem;
+  }
 
   @media (max-width: 768px) {
     padding-left: 0;
+    padding-right: 0;
     text-align: center;
+    max-width: 100%;
+  }
+
+  @media (max-width: 480px) {
+    min-width: 0;
+    padding-top: 0.5rem;
   }
 
   .map-title {
@@ -93,6 +145,11 @@
     margin-bottom: 1rem;
     color: #FE043C;
     font-family: "Inter", sans-serif;
+
+    @media (max-width: 480px) {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
   }
 
   .zip-search {
@@ -102,6 +159,7 @@
 
     @media (max-width: 480px) {
       flex-direction: column;
+      gap: 0.3rem;
     }
 
     .zip-input {
@@ -110,6 +168,11 @@
       border: 1px solid #ccc;
       border-radius: 6px;
       font-size: 1rem;
+
+      @media (max-width: 480px) {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+      }
     }
 
     .zip-button {
@@ -117,9 +180,14 @@
       background: #FE043C;
       border: none;
       border-radius: 6px;
-      color: white;
+      color: #fff;
       font-weight: 600;
       cursor: pointer;
+
+      @media (max-width: 480px) {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.95rem;
+      }
     }
   }
 
@@ -130,6 +198,10 @@
     li {
       font-size: 0.95rem;
       margin-bottom: 0.3rem;
+
+      @media (max-width: 480px) {
+        font-size: 0.9rem;
+      }
     }
   }
 
@@ -154,11 +226,19 @@
       width: 120px;
       height: auto;
       margin-bottom: 0.5rem;
+
+      @media (max-width: 480px) {
+        width: 80px;
+      }
     }
 
     .caption {
       font-size: 0.85rem;
       color: #666;
+
+      @media (max-width: 480px) {
+        font-size: 0.8rem;
+      }
     }
   }
 
@@ -177,6 +257,13 @@
     @media (max-width: 768px) {
       flex-direction: column;
       text-align: center;
+      gap: 1rem;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      margin-top: 1rem;
+      padding: 0.5rem;
     }
 
     .testimonial-quote {
@@ -197,6 +284,10 @@
       max-width: 80px;
       height: auto;
       border-radius: 8px;
+
+      @media (max-width: 480px) {
+        max-width: 60px;
+      }
     }
   }
 
@@ -215,7 +306,7 @@
     }
 
     .testimonial-card {
-      flex: 0 0 280px;
+      flex: 0 0 300px;
       background: #fff;
       border-radius: 12px;
       border: 1px solid #eee;
@@ -223,17 +314,53 @@
       padding: 1rem;
       scroll-snap-align: start;
       font-family: 'Inter', sans-serif;
+      margin-right: 1rem;
+
+      @media (max-width: 480px) {
+        flex: 0 0 220px;
+        padding: 0.75rem;
+        margin-right: 0.5rem;
+      }
 
       .quote {
         font-style: italic;
         font-size: 0.95rem;
         color: #333;
         margin-bottom: 0.75rem;
+
+        @media (max-width: 480px) {
+          font-size: 0.9rem;
+        }
       }
 
       .author {
         font-weight: 600;
         color: #222;
+      }
+
+      .info-panel {
+        max-width: 100%;
+
+        h3 {
+          font-size: 1.75rem;
+
+          @media (max-width: 480px) {
+            font-size: 1.2rem;
+          }
+        }
+
+        .feature-list li {
+          font-size: 1rem;
+          margin-bottom: 0.75rem;
+
+          @media (max-width: 480px) {
+            font-size: 0.9rem;
+          }
+        }
+
+        .testimonial-card {
+          background-color: #f9f9f9;
+        }
       }
     }
 

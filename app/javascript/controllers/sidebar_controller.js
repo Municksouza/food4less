@@ -19,7 +19,7 @@ export default class extends Controller {
     event.preventDefault();
     const body = document.body;
     const expanded = body.classList.toggle('sidebar-expanded');
-  
+
     if (expanded) {
       this.toggleIconTarget.classList.remove('fa-angle-right');
       this.toggleIconTarget.classList.add('fa-angle-left');
@@ -28,28 +28,28 @@ export default class extends Controller {
       this.toggleIconTarget.classList.add('fa-angle-right');
     }
   }
-  
+
   handleLinkClick(event) {
     event.stopPropagation();
     const body = document.body;
     const url = event.currentTarget.getAttribute("data-url");
-  
-    // Se o sidebar NÃO está expandido, expande-o e impede o redirecionamento
+
+    // If the sidebar is NOT expanded, expand it and prevent redirection
     if (!body.classList.contains('sidebar-expanded')) {
       event.preventDefault();
       body.classList.add('sidebar-expanded');
       this.toggleIconTarget.classList.remove('fa-angle-right');
       this.toggleIconTarget.classList.add('fa-angle-left');
-    } 
-    // Se estiver expandido e houver uma URL, redireciona para ela
+    }
+    // If it is expanded and there is a URL, redirect to it
     else if (url) {
-      // Impede a ação padrão e redireciona:
+      // Prevent default action and redirect:
       event.preventDefault();
       window.location.href = url;
     }
   }
-  
-  // Adicionado método para toggle da área de busca
+
+  // Added method to toggle the search area
   toggleSearch(event) {
     event.stopPropagation();
     const searchWrapper = this.element.querySelector('.sidebar-search-wrapper');

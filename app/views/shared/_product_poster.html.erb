@@ -23,13 +23,12 @@
           <div class="product-poster product-poster--horizontal">
             <!-- Image + Badge + Favorite -->
             <div class="poster-image-wrapper position-relative">
-              <%= image_tag(
-                    product.images&.attached? ?
-                      url_for(product.images.first.variant(resize_to_fill: [405, 405])) :
-                      "placeholder.jpeg",
-                    alt: product.name,
-                    class: "poster-image img-fluid"
-                  ) %>
+             
+              <% if product.images&.attached? && product.images.any? %>
+                <%= image_tag url_for(product.images.first), alt: product.name, class: "poster-image img-fluid" %>
+              <% else %>
+                <%= image_tag "placeholder.jpeg", alt: product.name, class: "poster-image img-fluid" %>
+              <% end %>
                   
               <% if product.old_price.present? && product.old_price > product.price %>
                 <% discount = ((1 - product.price.to_f / product.old_price.to_f) * 100).round %>
@@ -46,7 +45,7 @@
               <% if product.store.present? %>
                 <div class="poster-store-info d-flex align-items-center">
                   <% if product.store&.logo&.attached? %>
-                    <%= image_tag product.store.logo.variant(resize_to_fill: [40, 40]),
+                    <%= image_tag url_for(product.store.logo),
                                   class: "store-logo me-2",
                                   alt: product.store.name %>
                   <% end %>
@@ -90,10 +89,20 @@
                   <span class="old text-muted"><%= number_to_currency(product.old_price) %></span>
                 <% end %>
               </div>
+              <div class="disclaimer small text-muted text-center mt-2">
+                <i class="fas fa-info-circle"></i>
+                <span
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility."
+                >
+                  Terms 📄
+                </span>
+              </div>
 
               <div class="poster-ratings mt-2">
-                <% avg = product.reviews.average(:rating)&.round || 0 %>
-                <% count = product.reviews.count %>
+                <% avg = (product.reviews&.average(:rating)&.round rescue 0) || 0 %>
+                <% count = product.reviews&.count || 0 %>
                 <div class="poster-rating d-flex justify-content-center">
                   <% 5.times do |i| %>
                     <i class="<%= i < avg ? 'fas' : 'far' %> fa-star text-warning"></i>
@@ -103,7 +112,7 @@
               </div>
 
               <%= link_to add_item_customers_cart_path(product), method: :post, class: "poster-cart-btn btn btn-primary mt-3" do %>
-                <i class="fas fa-shopping-basket"></i> Add to Cart
+                <i class="fas fa-shopping-basket"></i> 
               <% end %>
             </div>
           </div>

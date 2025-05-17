@@ -13,29 +13,49 @@
   </div>
 
   <!-- Right side with info -->
-  <div class="map-info-box" data-controller="zip">
-    <h6 class="map-title">Find a Pickup Spot Near You!</h6>
-    <div class="zip-search">
-      <input type="text" placeholder="Enter your ZIP code" class="zip-input" data-zip-target="input" />
-      <button class="zip-button" data-action="click->zip#search">Search</button>
-    </div>
+  <div class="col-lg-5 map-info-box">
+    <div class="info-panel bg-white rounded shadow-sm p-4">
+      <!-- Título -->
+      <h3 class="text-danger mb-4">Find a Pickup Spot Near You!</h3>
 
-    <ul class="pickup-tags">
-      <li>Fresh Sandwiches 🥪</li>
-      <li>Pizza Slices 🍕</li>
-      <li>Leftover Deals 🥡</li>
-    </ul>
+      <!-- Form de ZIP -->
+      <form class="d-flex mb-4" data-controller="zip">
+        <input
+          type="text"
+          class="form-control me-2"
+          placeholder="Enter your ZIP code"
+          data-zip-target="input"
+        />
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-action="click->zip#search"
+        >
+          Search
+        </button>
+      </form>
 
-    <!-- Highlighted testimonial -->
-    <div class="pickup-testimonial">
+      <!-- Lista de benefícios -->
+      <ul class="list-unstyled mb-4 feature-list">
+        <li><i class="fas fa-bread-slice text-success me-2"></i>Fresh Sandwiches</li>
+        <li><i class="fas fa-pizza-slice text-warning me-2"></i>Pizza Slices</li>
+        <li><i class="fas fa-box-open text-info me-2"></i>Leftover Deals</li>
+      </ul>
+
+      <!-- Depoimento em card -->
       <div class="testimonial-carousel">
         <div class="testimonial-track">
           <% testimonials = [
-            { quote: "Easy to order, and I picked up a hot meal in minutes. I love it!", author: "Emily R." },
-            { quote: "Great local deals and quick pickup. Very convenient!", author: "Jamal S." },
-            { quote: "I save money and reduce waste. Win-win!", author: "Sophie L." }
+          { quote: "Easy to order, and I picked up a hot meal in minutes. I love it!", author: "Emily R." },
+          { quote: "Great local deals and quick pickup. Very convenient!", author: "Jamal S." },
+          { quote: "I save money and reduce waste. Win-win!", author: "Sophie L." },
+          { quote: "The app is user-friendly, and the food is always fresh!", author: "Carlos M." },
+          { quote: "I love the variety of meals available. Highly recommend!", author: "Tina W." },
+          { quote: "The pickup process is seamless. I’m a fan!", author: "Nina K." },
+          { quote: "I love supporting local businesses while saving money!", author: "Jake P." },
+          { quote: "The food is always delicious and fresh. I’m hooked!", author: "Lily A." },
+          { quote: "I can’t believe how easy it is to get great food at a discount!", author: "Sam D." }
           ] %>
-
           <% testimonials.each do |t| %>
             <div class="testimonial-card">
               <p class="quote">“<%= t[:quote] %>”</p>
@@ -44,8 +64,13 @@
           <% end %>
         </div>
       </div>
-      <div class="testimonial-image">
-        <%= image_tag "pickup-bag.png", alt: "Pickup Bag" %>
+
+      <!-- Selo -->
+      <div class="text-center mt-3">
+        <%= image_tag "pickup-bag.png", alt: "Pickup Bag", class: "img-fluid", style: "max-width: 80px;" %>
+        <div class="mt-2">
+          <span class="badge bg-success">Preferred by Food4Less</span>
+        </div>
       </div>
     </div>
   </div>

@@ -1,9 +1,8 @@
 <div class="card product-card shadow-sm">
-
   <% if product.images.attached? %>
-    <%= image_tag product.images.first.variant(resize_to_limit: [300, 300], format: :webp).processed, alt: product.name, loading: "lazy", class: "img-fluid rounded mb-2" %>
+    <%= image_tag url_for(product.images.first), alt: product.name, class: "product-image" %>
   <% else %>
-    <img src="/default_product_image.png" alt="No Image Available" class="img-fluid rounded mb-2">
+    <%= image_tag "default_product_image.png", alt: product.name %>
   <% end %>
 
   <h6 class="text-dark fw-bold small"><%= product.name %></h6>
@@ -33,14 +32,23 @@
         <span class="price text-muted">Price Unavailable</span>
       <% end %>
     </div>
+      <div class="disclaimer text-center mt-2">
+        <i class="fas fa-info-circle text-muted fs-7 me-1" 
+          data-bs-toggle="tooltip" 
+          title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility.">
+        </i>
+        <small class="text-muted">Terms</small>
+      </div>  
 
     <p class="text-secondary mb-1">🧺 <strong>Stock:</strong> <%= product.stock %></p>
 
     <hr class="my-2">
 
     <div class="store-info d-flex align-items-center gap-2 mb-2">
-      <% if product.store.logo.attached? %>
-        <%= image_tag product.store.logo.variant(resize_to_fill: [28, 28]), class: "store-logo" %>
+      <% if store.logo.attached? %>
+        <%= image_tag url_for(store.logo), alt: store.name, class: "store-logo" %>
+      <% else %>
+        <%= image_tag "default_store_logo.png", alt: store.name %>
       <% end %>
       <span class="store-name fw-medium"><%= product.store.name %></span>
     </div>
@@ -64,10 +72,17 @@
     <% end %>
 
     <% unless business_admin_signed_in? || store_manager_signed_in? %>
-      <%= button_to "🛒 Add to cart", add_item_customers_cart_path,
-          method: :post,
-          params: { product_id: product.id },
-          class: "btn btn-danger w-100 mt-2" %>
+      <%= button_to "🛒", add_item_customers_cart_path,
+        method: :post,
+        params: { product_id: product.id },
+        class: "btn btn-danger w-100 mt-2" %>
     <% end %>
+    <div class="disclaimer small text-muted mt-2">
+      <i class="fas fa-info-circle"></i>
+      <span data-bs-toggle="tooltip" data-bs-placement="top"
+            title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility.">
+        Terms 📄
+      </span>
+    </div>
   </div>
 </div>
