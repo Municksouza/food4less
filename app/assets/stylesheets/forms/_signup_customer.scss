@@ -1,0 +1,45 @@
+.signup-page {
+    min-height: 100vh;
+    position: relative;
+
+    .bg-overlay {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: rgba(255, 255, 255, 0.6); // semi-transparent white layer
+        z-index: 0;
+    }
+
+    .signup-form-container {
+        position: relative;
+        z-index: 1;
+        padding: 3rem 2rem;
+        margin: 2rem auto;
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    // Responsive styles
+    @media (max-width: 992px) {
+        .signup-form-container {
+            max-width: 600px;
+            padding: 2.5rem 1.5rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .signup-form-container {
+            max-width: 90%;
+            padding: 2rem 1rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .signup-form-container {
+            max-width: 100%;
+            padding: 1.5rem 0.5rem;
+            margin: 1rem 0;
+        }
+    }
+}

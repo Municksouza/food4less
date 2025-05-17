@@ -39,6 +39,8 @@
 
 // // Forms
 @use "forms/simple_form";
+@use "forms/signup_modal";
+@use "forms/signup_customer";
 
 // // Partials
 @use "partials/print";
