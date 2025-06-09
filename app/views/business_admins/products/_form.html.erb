@@ -1,14 +1,36 @@
-<%= simple_form_for [:business_admins, @store, @product], html: { multipart: true } do |f| %>
-    <%= f.error_notification %>
-    <div class="form-inputs">
-      <%= f.input :name %>
-      <%= f.input :description, as: :text %>
-      <%= f.input :old_price %>
-      <%= f.input :price %>
-      <%= f.input :stock %>
-      <%= f.input :images, as: :file, input_html: { multiple: true } %>
+<%= simple_form_for [:business_admins, @store, @product], html: { multipart: true, class: "product-form" } do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs row g-3">
+    <div class="col-md-6">
+      <%= f.input :name, label: "Product Name", input_html: { placeholder: "e.g. Chocolate Bar" } %>
     </div>
-    <div class="form-actions">
-      <%= f.button :submit %>
+    <div class="col-md-6">
+      <%= f.input :stock, label: "Stock Quantity" %>
     </div>
-  <% end %>
+    <div class="col-md-6">
+      <%= f.input :price, label: "Current Price ($)", input_html: { step: 0.01 } %>
+    </div>
+    <div class="col-md-6">
+      <%= f.input :old_price, label: "Previous Price (optional)", input_html: { step: 0.01 } %>
+    </div>
+    <div class="col-12">
+      <%= f.input :description, as: :text, label: "Product Description", input_html: { rows: 4 } %>
+    </div>
+
+    <div class="col-12">
+      <div data-controller="preview">
+        <%= f.input :images, as: :file, input_html: { multiple: true, data: { preview_target: "input" } } %>
+        <div id="image-preview" class="row mt-2" data-preview-target="preview"></div>
+      </div>    
+    </div>
+
+    <div class="col-12">
+      <div id="image-preview" class="row g-2"></div>
+    </div>
+  </div>
+
+  <div class="form-actions mt-4 text-end">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>

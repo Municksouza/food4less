@@ -1,0 +1,15 @@
+<h1><%= @product.name %></h1>
+<p><%= @product.description %></p>
+<p>Price: <%= number_to_currency(@product.price) %></p>
+<p>Previous Price: <%= number_to_currency(@product.old_price) %></p>
+<p>Stock: <%= @product.stock %></p>
+
+<div class="product-images">
+  <% if @product.images.present? %>
+    <% @product.images.each do |image| %>
+      <%= cl_image_tag image.key, width: 300, height: 300, crop: :fill %>
+    <% end %>
+  <% end %>
+</div>
+
+<%= link_to "Back", store_managers_area_products_path(slug: current_store_manager.store.slug) %>

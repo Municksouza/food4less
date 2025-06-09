@@ -1,0 +1,22 @@
+<li class="sidebar-item">
+  <a href="#" class="sidebar-link tooltip" data-action="click->sidebar#toggleSubmenu">
+    <i class="fas fa-box-open me-2"></i>
+    <span class="link sidebar-label">Products</span>
+    <i class="fas fa-chevron-down submenu-toggle-icon"></i>
+    <span class="tooltip__content">Products</span>
+  </a>
+  <ul class="submenu collapse">
+    <% stores.each do |store| %>
+      <li>
+        <%= link_to business_admins_store_products_path(store), class: "submenu-link" do %>
+          <i class="fas fa-box me-2"></i><%= store.name %> - View
+        <% end %>
+      </li>
+      <li>
+        <%= link_to new_business_admins_store_product_path(store), class: "submenu-link" do %>
+          <i class="fas fa-plus me-2"></i><%= store.name %> - Add
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</li>

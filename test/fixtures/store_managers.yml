@@ -9,9 +9,7 @@ one:
   encrypted_password: <%= Devise::Encryptor.digest(StoreManager, '123456') %>
   store: one
 
-
 two:
   email: store_manager_2@example.com
-  encrypted_password: <%= Devise::Encryptor.digest(StoreManager, '123456') %>  
+  encrypted_password: <%= Devise::Encryptor.digest(StoreManager, '123456') %>
   store: two
-  

@@ -1,89 +1,64 @@
 .main-content {
   flex-grow: 1;
-  padding: 1rem; // Base padding for small screens
+  padding: 2rem 1rem;
   width: 100%;
-  max-width: 1200px; // Maximum width for large screens
-  margin: 0 auto; // Center horizontally
-  flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  min-width: 0;
   transition: margin-left 0.3s ease;
+  margin-top: 3rem;
+
+  // Responsive padding for tablets
+  @media (max-width: 1024px) {
+    padding: 1.5rem 1rem;
+    max-width: 1000px;
+  }
+
+  // Responsive padding for small tablets and large phones
+  @media (max-width: 768px) {
+    padding: 1rem;
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+
+  // Responsive padding for mobile devices
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
 }
 
-// Sidebar adjustments for different states
-body.sidebar-expanded .main-content {
-  margin-left: 200px; // Default expanded margin
+// Sidebar expanded
+body.with-sidebar.sidebar-expanded .main-content {
+  margin-left: 250px;
+
+  @media (max-width: 1024px) {
+    margin-left: 200px;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 }
 
-body.sidebar-closed .main-content {
-  margin-left: 60px; // Default closed margin
+// Sidebar closed
+body.with-sidebar.sidebar-closed .main-content {
+  margin-left: 60px;
+
+  @media (max-width: 1024px) {
+    margin-left: 40px;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
 }
 
+// No sidebar
+body.no-sidebar .main-content {
+  margin-left: 0 !important;
+}
+
+// Special case for stores-show page
 body.stores-show .main-content {
   padding-top: 0 !important;
-}
-
-// Responsive adjustments
-@media (max-width: 600px) {
-  .main-content {
-    padding: 0.5rem; // Smaller padding for very small screens
-  }
-
-  body.sidebar-expanded .main-content {
-    margin-left: 160px; // Reduced margin for small screens
-  }
-
-  body.sidebar-closed .main-content {
-    margin-left: 40px; // Reduced margin for small screens
-  }
-
-  .sidebar {
-    width: 40px; // Smaller sidebar for small screens
-  }
-
-  body.sidebar-expanded .sidebar {
-    width: 160px; // Smaller expanded sidebar for small screens
-  }
-}
-
-@media (min-width: 601px) and (max-width: 991px) {
-  .main-content {
-    padding: 1rem; // Adjust padding for medium screens
-  }
-
-  body.sidebar-expanded .main-content {
-    margin-left: 180px; // Adjusted margin for medium screens
-  }
-
-  body.sidebar-closed .main-content {
-    margin-left: 50px; // Adjusted margin for medium screens
-  }
-
-  .sidebar {
-    width: 50px; // Medium sidebar width
-  }
-
-  body.sidebar-expanded .sidebar {
-    width: 180px; // Medium expanded sidebar width
-  }
-}
-
-@media (min-width: 992px) {
-  .main-content {
-    padding: 2rem 1rem; // Larger padding for large screens
-  }
-
-  body.sidebar-expanded .main-content {
-    margin-left: 250px; // Default margin for large screens
-  }
-
-  body.sidebar-closed .main-content {
-    margin-left: 80px; // Default margin for large screens
-  }
-
-  .sidebar {
-    width: 80px; // Default sidebar width
-  }
-
-  body.sidebar-expanded .sidebar {
-    width: 250px; // Default expanded sidebar width
-  }
 }

@@ -1,0 +1,27 @@
+<h1 class="mb-4">Refund Details</h1>
+
+<table class="table">
+  <tr>
+    <th>Order</th>
+    <td><%= @refund.order_id %></td>
+  </tr>
+  <tr>
+    <th>Amount</th>
+    <td><%= number_to_currency(@refund.amount) %></td>
+  </tr>
+  <tr>
+    <th>Reason</th>
+    <td><%= @refund.reason %></td>
+  </tr>
+  <tr>
+    <th>Status</th>
+    <td><%= @refund.status %></td>
+  </tr>
+  <tr>
+    <th>Created At</th>
+    <td><%= l(@refund.created_at, format: :long) %></td>
+  </tr>
+</table>
+
+<%= link_to 'Edit', edit_business_admins_store_refund_path(@store, @refund), class: "btn btn-warning me-2" %>
+<%= link_to 'Back', business_admins_store_refunds_path(@store), class: "btn btn-secondary" %>

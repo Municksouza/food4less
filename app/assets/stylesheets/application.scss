@@ -3,6 +3,7 @@
 @use "../../../node_modules/bootstrap/scss/bootstrap" as *;
 @use "../../../node_modules/bootstrap-icons/font/bootstrap-icons";
 // @use "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+
 // // Layout
 @use "layout/body";
 @use "layout/header";
@@ -17,6 +18,9 @@
 @use "layout/hero_and_cards";
 @use "layout/cuisine";
 @use "layout/map";
+@use "layout/flash-banner";
+@use "layout/variables";
+@use "layout/testimonials";
 
 // // Components
 @use "components/product_card";
@@ -29,6 +33,7 @@
 @use "components/buttons";
 @use "components/ticker";
 @use "components/disclaimer";
+@use "components/shimmer";
 
 // // Pages
 @use "pages/home";
@@ -36,12 +41,18 @@
 @use "pages/customer_dashboard";
 @use "pages/business_admin_dashboard";
 @use "pages/store_profile";
+@use "pages/admin_stores";
+
 
 // // Forms
 @use "forms/simple_form";
 @use "forms/signup_modal";
 @use "forms/signup_customer";
 @use "forms/login_page";
+@use "forms/business_signup";
+@use "forms/admin_store_form";
+@use "forms/edit-store-form";
+@use "forms/edit-credentials-form";
 
 // // Partials
 @use "partials/print";

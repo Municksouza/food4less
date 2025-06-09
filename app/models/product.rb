@@ -1,6 +1,7 @@
 class Product < ApplicationRecord
   belongs_to :store
   belongs_to :category, optional: true
+  belongs_to :cuisine, optional: true
   
   has_many :order_items
   has_many :reviews, dependent: :nullify

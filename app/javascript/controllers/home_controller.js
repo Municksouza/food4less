@@ -12,51 +12,57 @@ export default class extends Controller {
 
   connect() {
     console.log('Home controller connected');
-    // Inicializa os carrosséis após um pequeno atraso para garantir que o DOM esteja pronto
+    // Initialize carousels after a short delay to ensure the DOM is ready
     setTimeout(() => {
       this.initProductsSection();
       this.initCuisinesCarousel();
     }, 100);
+  }
 
-    // Configura a revelação do mini carrossel via scroll
+  // Add the missing method to prevent errors
+  initProductsSection() {
+    // Add your initialization logic here if needed
+    console.log('Initializing products section');
+
+    // Set up mini carousel reveal on scroll
     this._boundRevealMiniCategories = this.revealMiniCategories.bind(this);
     window.addEventListener('scroll', this._boundRevealMiniCategories);
     this.revealMiniCategories();
+
+    $('.products-section').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      centerMode: true,
+      infinite: true,
+      arrows: true,
+      dots: false,
+      autoplay: true,
+      autoplaySpeed: 3000,
+      prevArrow: '<button type="button" class="slick-prev product-arrow product-arrow--left"><i class="fas fa-chevron-left"></i></button>',
+      nextArrow: '<button type="button" class="slick-next product-arrow product-arrow--right"><i class="fas fa-chevron-right"></i></button>',
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 1,
+            arrows: false
+          }
+        }
+      ]
+    });
   }
 
-  initProductsSection() {
-    console.log('Slick initialization starting');
-    const $productsSection = $('.products-section');
-    console.log('Products section found:', $productsSection.length);
-
-    if ($productsSection.length > 0) {
-      $productsSection.slick({
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        centerMode: false,
-        infinite: true,
-        variableWidth: false,
-        centerPadding: '0px',
-        arrows: true,
-        dots: true,
-        autoplay: true,
-        autoplaySpeed: 4000,
-        accessibility: false,
-        prevArrow: '<button type="button" class="slick-prev product-arrow product-arrow--left"><i class="fas fa-chevron-left"></i></button>',
-        nextArrow: '<button type="button" class="slick-next product-arrow product-arrow--right"><i class="fas fa-chevron-right"></i></button>',
-        responsive: [
-          { breakpoint: 768, settings: { arrows: false, dots: true } }
-        ]
-      });
-      console.log('Products-section carousel initialized');
-    } else {
-      console.error("Products-section carousel not found.");
-    }
-  }
-
+  // Initializes the cuisines carousel
   initCuisinesCarousel() {
     console.log('Initializing cuisines carousel');
     const $cuisinesCarousel = $('.cuisines-carousel');
+    
     console.log('Cuisines carousel element found:', $cuisinesCarousel.length);
     if ($cuisinesCarousel.length > 0) {
       $cuisinesCarousel.slick({
@@ -87,6 +93,7 @@ export default class extends Controller {
     }
   }
 
+  // Animates product cards in the hero section
   animateProductsInHero() {
     if (this.hasProductCardTarget) {
       this.productCardTargets.forEach((card, index) => {
@@ -97,9 +104,10 @@ export default class extends Controller {
     }
   }
 
-  addToCart(event) {
-    event.preventDefault();
-    const button = event.currentTarget;
+  // Handles add to cart button click
+  addToCart(e) {
+    e.preventDefault();
+    const button = e.currentTarget;
   
     button.classList.add("btn-added");
     button.innerHTML = "✅ Added";
@@ -113,7 +121,7 @@ export default class extends Controller {
     // Continue form submission
     button.closest("form").submit();
   }
-
+  // Reveals the mini categories carousel when scrolled into view
   revealMiniCategories() {
     const miniCarousel = document.querySelector('.cuisines-carousel');
     if (!miniCarousel) return;

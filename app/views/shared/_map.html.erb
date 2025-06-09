@@ -1,77 +1,111 @@
-<div class="sandwich-map-section">
-  <script>
-    window.stores = <%= raw(@stores.to_json(only: [:name, :address, :latitude, :longitude])) %>;
-  </script>
-
-  <!-- Map inside the sandwich -->
-  <div class="sandwich-map-wrapper">
-    <div id="map"
-         data-controller="map"
-         data-map-api-key-value="<%= ENV['MAPBOX_API_TOKEN'] %>">
-    </div>
-    <%= image_tag "sandwich-map.png", class: "sandwich-frame", alt: "Map inside the sandwich" %>
+<section class="pickup-map-section" data-aos="zoom-in" data-aos-delay="400">
+  <!-- Fun Title -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold display-5">Where's the Sandwich?</h2>
+    <p class="lead text-muted">Find your nearest pickup location in Saskatoon and surrounding areas.</p>
   </div>
 
-  <!-- Right side with info -->
-  <div class="col-lg-5 map-info-box">
-    <div class="info-panel bg-white rounded shadow-sm p-4">
-      <!-- Título -->
-      <h3 class="text-danger mb-4">Find a Pickup Spot Near You!</h3>
+  <!-- Postal Code Search -->
+  <div class="zip-search d-flex flex-column align-items-center mb-4">
+    <h3 class="mb-2">
+      <i class="bi bi-geo-alt-fill text-danger me-2"></i> Find a Pickup Spot
+    </h3>
+    <form data-controller="zip" class="d-flex gap-2 flex-wrap justify-content-center w-100" style="max-width: 500px;">
+      <input type="text" placeholder="Enter your Postal Code" class="form-control flex-grow-1" data-zip-target="input" maxlength="10" />
+      <button type="button" class="btn btn-primary" data-action="click->zip#search">
+        Search
+      </button>
+    </form>
+  </div>
 
-      <!-- Form de ZIP -->
-      <form class="d-flex mb-4" data-controller="zip">
-        <input
-          type="text"
-          class="form-control me-2"
-          placeholder="Enter your ZIP code"
-          data-zip-target="input"
-        />
-        <button
-          type="button"
-          class="btn btn-danger"
-          data-action="click->zip#search"
-        >
-          Search
-        </button>
-      </form>
+  <!-- Map Controller wraps all interactive elements -->
+  <div data-controller="map"
+       data-map-api-key-value="<%= ENV['MAPBOX_API_TOKEN'] %>"
+       data-map-stores-value='<%= raw @stores.to_json %>'>
+    <!-- Map Container -->
+    <div class="map-container position-relative mx-auto" style="max-width: 100%; width: 100%; min-height: 300px;">
+      <div id="map" class="rounded shadow"></div>
 
-      <!-- Lista de benefícios -->
-      <ul class="list-unstyled mb-4 feature-list">
-        <li><i class="fas fa-bread-slice text-success me-2"></i>Fresh Sandwiches</li>
-        <li><i class="fas fa-pizza-slice text-warning me-2"></i>Pizza Slices</li>
-        <li><i class="fas fa-box-open text-info me-2"></i>Leftover Deals</li>
-      </ul>
+      <div id="unsupported-message" class="text-danger text-center mt-3" style="display: none;">
+        Your browser does not support Mapbox GL.
+      </div>
 
-      <!-- Depoimento em card -->
-      <div class="testimonial-carousel">
-        <div class="testimonial-track">
-          <% testimonials = [
-          { quote: "Easy to order, and I picked up a hot meal in minutes. I love it!", author: "Emily R." },
-          { quote: "Great local deals and quick pickup. Very convenient!", author: "Jamal S." },
-          { quote: "I save money and reduce waste. Win-win!", author: "Sophie L." },
-          { quote: "The app is user-friendly, and the food is always fresh!", author: "Carlos M." },
-          { quote: "I love the variety of meals available. Highly recommend!", author: "Tina W." },
-          { quote: "The pickup process is seamless. I’m a fan!", author: "Nina K." },
-          { quote: "I love supporting local businesses while saving money!", author: "Jake P." },
-          { quote: "The food is always delicious and fresh. I’m hooked!", author: "Lily A." },
-          { quote: "I can’t believe how easy it is to get great food at a discount!", author: "Sam D." }
-          ] %>
-          <% testimonials.each do |t| %>
-            <div class="testimonial-card">
-              <p class="quote">“<%= t[:quote] %>”</p>
-              <span class="author">— <%= t[:author] %></span>
+      <%= image_tag "sandwich-map.png", class: "sandwich-frame img-fluid", alt: "Map inside the sandwich" %>
+
+      <!-- Interactive Links -->
+      <div class="interacte-links d-flex justify-content-center">
+        <div class="text-center text-muted small">
+          <a href="javascript:void(0)" data-action="click->map#centerSaskatoon" class="mx-2">
+            <i class="bi bi-compass text-danger"></i> Saskatoon
+          </a>
+          <a href="javascript:void(0)" data-action="click->map#scrollToMap" class="mx-2">
+            <i class="bi bi-geo-alt-fill text-primary"></i> Your search
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clickable Store List -->
+    <div class="store-list text-center mt-4">
+      <ul class="list-group list-group-flush w-100 mt-4" style="max-height: 260px; overflow-y: auto;">
+        <% @stores.each do |store| %>
+          <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center flex-wrap">
+            <div class="mb-2 mb-md-0 text-start w-100 w-md-auto">
+              <strong><%= store.name %></strong><br>
+              <%= store.address %>
             </div>
-          <% end %>
-        </div>
-      </div>
-
-      <!-- Selo -->
-      <div class="text-center mt-3">
-        <%= image_tag "pickup-bag.png", alt: "Pickup Bag", class: "img-fluid", style: "max-width: 80px;" %>
-        <div class="mt-2">
-          <span class="badge bg-success">Preferred by Food4Less</span>
-        </div>
-      </div>
+            <div class="mt-2 mt-md-0">
+              <%= link_to(
+                "Open in Maps",
+                "https://www.google.com/maps/search/?api=1&query=#{ERB::Util.url_encode(store.address)}",
+                {
+                  class: "btn btn-outline-success btn-sm",
+                  target: "_blank",
+                  rel: "noopener",
+                  aria: { label: "Open location for #{store.name} on Google Maps" }
+                }
+              ) %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
     </div>
   </div>
-</div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    .pickup-map-section .display-5 {
+      font-size: 2rem;
+    }
+    .map-container {
+      min-height: 200px;
+    }
+    #map {
+      height: 200px !important;
+    }
+    .store-list ul {
+      font-size: 0.95rem;
+    }
+    .list-group-item {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
+    .sandwich-frame {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+  @media (max-width: 480px) {
+    .pickup-map-section .display-5 {
+      font-size: 1.5rem;
+    }
+    .zip-search form {
+      flex-direction: column !important;
+      gap: 0.5rem !important;
+    }
+    .store-list ul {
+      font-size: 0.9rem;
+    }
+  }
+</style>

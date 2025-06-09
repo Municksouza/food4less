@@ -14,12 +14,19 @@ class Customer < ApplicationRecord
   validates :name, presence: true
   validates :email, presence: true, uniqueness: true
   validates :phone, presence: true
+  validates :password, presence: true, on: :create
+  validates :password, length: { minimum: 8 }, allow_nil: true
+  validates_format_of :password,
+    with: /\A(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z0-9]).+\z/,
+    message: "must include at least one letter, one number and one special character",
+    allow_nil: true
+  
 
   def avatar_url
     if photo.attached?
       Rails.application.routes.url_helpers.url_for(photo)
     else
-      "/assets/images/default-avatar.png"  # Caminho da imagem padrão
+      "/assets/images/default-avatar.png"  
     end
   end
 end

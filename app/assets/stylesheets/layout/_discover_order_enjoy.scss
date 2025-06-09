@@ -1,113 +1,113 @@
-.discover-section {
-  background-color: #f4f4f4;
-  padding: 5rem 0;
+// .discover-section {
+//   background-color: #f4f4f4;
+//   padding: 5rem 0;
 
-  h2 {
-    text-align: center;
-    font-weight: 600;
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 1rem;
-    font-family: "Inter", sans-serif;
-  }
+//   h2 {
+//     text-align: center;
+//     font-weight: 600;
+//     font-size: 2.5rem;
+//     color: #333;
+//     margin-bottom: 1rem;
+//     font-family: "Inter", sans-serif;
+//   }
 
-  p {
-    text-align: center;
-    font-size: 1.1rem;
-    color: #6c757d;
-    margin-bottom: 2rem;
-    font-family: "Inter", sans-serif;
-  }
+//   p {
+//     text-align: center;
+//     font-size: 1.1rem;
+//     color: #6c757d;
+//     margin-bottom: 2rem;
+//     font-family: "Inter", sans-serif;
+//   }
 
-  .store-carousel {
-    display: flex;
-    justify-content: center;
-    gap: 3rem;
+//   .store-carousel {
+//     display: flex;
+//     justify-content: center;
+//     gap: 3rem;
 
-    @media (max-width: 768px) {
-      flex-wrap: wrap;
-      gap: 1.5rem;
-    }
-  }
+//     @media (max-width: 768px) {
+//       flex-wrap: wrap;
+//       gap: 1.5rem;
+//     }
+//   }
 
-  .custom-prev,
-  .custom-next {
-    background: none;
-    border: none;
-    position: absolute;
-    top: 45%;
-    transform: translateY(-50%);
-    z-index: 2;
+//   .custom-prev,
+//   .custom-next {
+//     background: none;
+//     border: none;
+//     position: absolute;
+//     top: 45%;
+//     transform: translateY(-50%);
+//     z-index: 2;
 
-    img {
-      width: 36px;
-      height: 36px;
-      filter: invert(24%) sepia(89%) saturate(2848%) hue-rotate(339deg) brightness(90%) contrast(100%);
-    }
-  }
+//     img {
+//       width: 36px;
+//       height: 36px;
+//       filter: invert(24%) sepia(89%) saturate(2848%) hue-rotate(339deg) brightness(90%) contrast(100%);
+//     }
+//   }
 
-  .custom-prev {
-    left: -50px;
+//   .custom-prev {
+//     left: -50px;
 
-    @media (max-width: 768px) {
-      left: -30px;
-    }
-  }
+//     @media (max-width: 768px) {
+//       left: -30px;
+//     }
+//   }
 
-  .custom-next {
-    right: -50px;
+//   .custom-next {
+//     right: -50px;
 
-    @media (max-width: 768px) {
-      right: -30px;
-    }
-  }
+//     @media (max-width: 768px) {
+//       right: -30px;
+//     }
+//   }
 
-  .slick-dots {
-    position: absolute;
-    bottom: -40px; // Position below the carousel
-    left: 0;
-    right: 0;
-    margin: auto;
-    text-align: center;
+//   .slick-dots {
+//     position: absolute;
+//     bottom: -40px; // Position below the carousel
+//     left: 0;
+//     right: 0;
+//     margin: auto;
+//     text-align: center;
 
-    li {
-      margin: 0 5px;
-      display: inline-block;
+//     li {
+//       margin: 0 5px;
+//       display: inline-block;
 
-      button {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background-color: #e63946;
-        border: none;
-        font-size: 0;
-        line-height: 0;
-        padding: 0;
+//       button {
+//         width: 12px;
+//         height: 12px;
+//         border-radius: 50%;
+//         background-color: #e63946;
+//         border: none;
+//         font-size: 0;
+//         line-height: 0;
+//         padding: 0;
 
-        &:before {
-          display: none; // Remove the blue numbers
-        }
-      }
+//         &:before {
+//           display: none; // Remove the blue numbers
+//         }
+//       }
 
-      &.slick-active button {
-        background-color: #c82333;
-      }
-    }
-  }
+//       &.slick-active button {
+//         background-color: #c82333;
+//       }
+//     }
+//   }
 
-  @media (max-width: 576px) {
-    padding: 3rem 1rem;
+//   @media (max-width: 576px) {
+//     padding: 3rem 1rem;
 
-    h2 {
-      font-size: 2rem;
-    }
+//     h2 {
+//       font-size: 2rem;
+//     }
 
-    p {
-      font-size: 1rem;
-    }
+//     p {
+//       font-size: 1rem;
+//     }
 
-    .slick-dots {
-      bottom: -30px; // Adjust position for smaller screens
-    }
-  }
-}
+//     .slick-dots {
+//       bottom: -30px; // Adjust position for smaller screens
+//     }
+//   }
+// }

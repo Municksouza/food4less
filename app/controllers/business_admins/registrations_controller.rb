@@ -9,15 +9,12 @@ class BusinessAdmins::RegistrationsController < Devise::RegistrationsController
   def create
     super do |business_admin|
       if business_admin.persisted?
-        # Não cria a loja automaticamente.
-        # O business poderá criar lojas no dashboard posteriormente.
-        sign_in(:business_admin, business_admin)
+        # Does not create the store automatically.
+        # The business admin can create stores later in the dashboard.
         flash[:notice] = "Welcome, #{business_admin.name}! Please complete your profile."
-        redirect_to after_sign_up_path_for(business_admin)
       else
-        # Se o registro falhar, renderiza o formulário novamente.
+        # If registration fails, renders the form again.
         flash[:alert] = "There was a problem creating your account. Please try again."
-        redirect_to new_business_admin_registration_path
       end
     end
   end
@@ -25,12 +22,15 @@ class BusinessAdmins::RegistrationsController < Devise::RegistrationsController
   private
 
   def after_sign_up_path_for(resource)
-    business_dashboard_path  # ou o root_path, conforme sua necessidade
+     business_admins_business_dashboard_path  # or root_path, as needed
   end
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys: [
-      :name, :address, :zip_code, :phone, :logo, :email, :password, :password_confirmation
+      :name, :address, :zip_code, :phone, :business_number, :logo
+    ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [
+      :name, :address, :zip_code, :phone, :business_number, :logo
     ])
   end
 end

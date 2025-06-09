@@ -1,7 +1,12 @@
 class ApplicationController < ActionController::Base
-  before_action :configure_permitted_parameters, if: :devise_controller?
   include Pundit::Authorization
+  include ActiveStorage::SetCurrent
+
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_active_storage_url_options
+
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
 
   rescue_from ActionController::Redirecting::UnsafeRedirectError do
     if Rails.env.test?
@@ -89,5 +94,14 @@ class ApplicationController < ActionController::Base
   def user_not_authorized
     flash[:alert] = "You do not have permission to access this page."
     redirect_to(request.referer || root_path)
+  end
+
+
+  def set_active_storage_url_options
+    ActiveStorage::Current.url_options = {
+      protocol: request.protocol.delete_suffix('://'),
+      host: request.host,
+      port: request.optional_port
+    }
   end
 end

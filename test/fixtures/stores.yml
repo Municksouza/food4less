@@ -3,27 +3,29 @@
 # test/fixtures/stores.yml
 
 one:
-  name: MyString
-  address: MyString
-  phone: MyString
-  zip_code: MyString
-  business_admin: one
-  manager_email: MyString
-  description: MyString
+  name: one
+  address: 123 Example Ave, Saskatoon, SK
+  slug: toasty-central
+  latitude: 52.133
+  longitude: -106.634
+  description: Best toasties in town.
+  email: toast@toasty.ca
+  phone: 306-555-7890
+  zip_code: S7K 1N2
   status: active
-  email: store1@example.com
-  latitude: 0.0
-  longitude: 0.0
+  business_admin: one
+  business_number: "123456789"
 
 two:
-  name: MyString
-  address: MyString
-  phone: MyString
-  zip_code: MyString
+  name: "Second Store"
+  address: "456 Second St, Saskatoon, SK"
+  slug: "second-store"
+  latitude: 52.124
+  longitude: -106.640
+  description: "Another great place to shop."
+  email: second@store.ca
+  phone: "306-555-2222"
+  zip_code: "S7K 2N3"
+  status: active
   business_admin: two
-  manager_email: MyString
-  description: MyString
-  status: inactive
-  email: store2@example.com
-  latitude: 0.0
-  longitude: 0.0
+  business_number: "987654321"

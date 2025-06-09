@@ -1,21 +1,23 @@
 .c-outer-ticker {
   width: 100%;
   overflow: hidden;
-  background-color: white;
+  background-color: #fff;
   color: #FE043C;
-  padding: 0.5rem 0;
+  padding: 0.8rem 0;
 }
 
 .c-ticker {
   display: flex;
   align-items: center;
 
-  &--small .c-ticker__item {
-    margin: 0 1.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    white-space: nowrap;
+  &--small {
+    .c-ticker__item {
+      margin: 0 1.5rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
   }
 
   // Continuous animation
@@ -35,12 +37,31 @@
 }
 
 // Responsive adjustments
+@media (max-width: 1200px) {
+  .c-ticker--small .c-ticker__item {
+    margin: 0 1.3rem;
+    font-size: 1.35rem;
+  }
+  .c-outer-ticker {
+    padding: 0.6rem 0;
+  }
+}
+
 @media (max-width: 1024px) {
   .c-ticker--small .c-ticker__item {
-    margin: 0 1.25rem;
-    font-size: 1.4rem;
+    margin: 0 1.1rem;
+    font-size: 1.2rem;
   }
+  .c-outer-ticker {
+    padding: 0.5rem 0;
+  }
+}
 
+@media (max-width: 900px) {
+  .c-ticker--small .c-ticker__item {
+    margin: 0 0.9rem;
+    font-size: 1.1rem;
+  }
   .c-outer-ticker {
     padding: 0.4rem 0;
   }
@@ -48,33 +69,50 @@
 
 @media (max-width: 768px) {
   .c-ticker--small .c-ticker__item {
-    margin: 0 1rem;
-    font-size: 1.2rem;
+    margin: 0 0.7rem;
+    font-size: 1rem;
   }
-
   .c-outer-ticker {
     padding: 0.3rem 0;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .c-ticker--small .c-ticker__item {
     margin: 0 0.5rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
-
   .c-outer-ticker {
-    padding: 0.2rem 0;
+    padding: 0.22rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .c-ticker--small .c-ticker__item {
+    margin: 0 0.3rem;
+    font-size: 0.8rem;
+  }
+  .c-outer-ticker {
+    padding: 0.15rem 0;
+  }
+}
+
+@media (max-width: 375px) {
+  .c-ticker--small .c-ticker__item {
+    margin: 0 0.15rem;
+    font-size: 0.7rem;
+  }
+  .c-outer-ticker {
+    padding: 0.1rem 0;
   }
 }
 
 @media (max-width: 320px) {
   .c-ticker--small .c-ticker__item {
-    margin: 0 0.25rem;
-    font-size: 0.9rem;
+    margin: 0 0.08rem;
+    font-size: 0.6rem;
   }
-
   .c-outer-ticker {
-    padding: 0.15rem 0;
+    padding: 0.06rem 0;
   }
 }

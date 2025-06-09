@@ -1,13 +1,11 @@
-<div class="sidebar" data-sidebar-target="sidebar">
-  <!-- Floating mini button -->
-  <div class="sidebar-toggle-top" data-action="click->sidebar#toggleSidebar">
-    <button type="button">
+<div class="sidebar d-flex flex-column" data-sidebar-target="sidebar">
+  <div class="sidebar-toggle-top d-flex justify-content-end p-2" data-action="click->sidebar#toggleSidebar">
+    <button type="button" class="btn btn-light btn-sm">
       <i data-sidebar-target="toggleIcon" class="fas fa-angle-right"></i>
     </button>
   </div>
 
-  <!-- Search -->
-  <div class="sidebar-search-wrapper">
+  <div class="sidebar-search-wrapper px-3">
     <div class="input-group">
       <span class="input-group-text" data-action="click->sidebar#toggleSearch">
         <i class="fas fa-search"></i>
@@ -16,72 +14,39 @@
     </div>
   </div>
 
-  <!-- Menu -->
-  <div class="sidebar-menu-wrapper" style="flex: 1;">
-    <ul class="sidebar-menu mt-4">
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: root_path }, title: "Home" do %>
-          <i class="fas fa-home"></i>
-          <span class="sidebar-label">Home</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: stores_store_dashboard_path }, title: "Dashboard" do %>
-          <i class="fas fa-tachometer-alt"></i>
-          <span class="sidebar-label">Dashboard</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: stores_products_path }, title: "Products" do %>
-          <i class="fas fa-box-open"></i>
-          <span class="sidebar-label">Products</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: stores_orders_path }, title: "Orders" do %>
-          <i class="fas fa-receipt"></i>
-          <span class="sidebar-label">Orders</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: stores_payments_path }, title: "Payments" do %>
-          <i class="fas fa-credit-card"></i>
-          <span class="sidebar-label">Payments</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: stores_sales_path }, title: "Sales" do %>
-          <i class="fas fa-chart-line"></i>
-          <span class="sidebar-label">Sales</span>
-        <% end %>
-      </li>
-
-      <li>
-        <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: edit_store_path(current_store_manager.store) }, title: "Edit Store" do %>
-          <i class="fas fa-cog"></i>
-          <span class="sidebar-label">Edit</span>
-        <% end %>
-      </li>
+  <div class="sidebar-menu-wrapper flex-grow-1 px-2">
+    <ul class="sidebar-menu mt-4 list-unstyled">
+      <li><%= link_to store_managers_area_store_dashboard_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-tachometer-alt me-2"></i><span class="sidebar-label">Dashboard</span>
+      <% end %></li>
+      <li><%= link_to store_managers_area_products_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-box-open me-2"></i><span class="sidebar-label">Products</span>
+      <% end %></li>
+      <li><%= link_to store_managers_area_orders_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-receipt me-2"></i><span class="sidebar-label">Orders</span>
+      <% end %></li>
+      <li><%= link_to store_managers_area_payments_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-credit-card me-2"></i><span class="sidebar-label">Payments</span>
+      <% end %></li>
+      <li><%= link_to sales_store_managers_area_store_path(current_store_manager.store), class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-chart-line me-2"></i><span class="sidebar-label">Sales</span>
+      <% end %></li>
+      <li><%= link_to edit_store_managers_area_store_path(current_store_manager.store), class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-cog me-2"></i><span class="sidebar-label">Edit</span>
+      <% end %></li>
     </ul>
   </div>
 
-  <!-- Footer -->
   <div class="sidebar-footer d-flex flex-column align-items-center mt-auto p-3">
     <% if current_store_manager&.store&.logo&.attached? %>
-      <%= image_tag current_store_manager.store.logo.variant(resize_to_fill: [40, 40]), class: "rounded-circle sidebar-user-photo" %>
+      <%= image_tag current_store_manager.store.logo.variant(resize_to_fill: [40, 40]), class: "rounded-circle sidebar-user-photo mb-2" %>
     <% else %>
-      <%= image_tag "placeholder.jpeg", class: "rounded-circle sidebar-user-photo" %>
+      <%= image_tag "placeholder.jpeg", class: "rounded-circle sidebar-user-photo mb-2" %>
     <% end %>
     <div class="sidebar-footer-info text-center">
       <strong class="sidebar-username"><%= current_store_manager&.store&.name || "Store" %></strong>
-      <%= link_to destroy_store_manager_session_path,
-                  method: :delete,
-                  class: "btn btn-sm btn-outline-danger mt-2",
+      <%= link_to destroy_store_manager_session_path, method: :delete,
+                  class: "btn btn-sm btn-outline-danger mt-2 w-100",
                   data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" } do %>
         <i class="fas fa-sign-out-alt me-1"></i> Logout
       <% end %>

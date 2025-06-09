@@ -1,120 +1,87 @@
-<div class="products-carousel-wrapper">
-  <div class="products-section row">
-    <% @products.each do |product| %>
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
-        <div class="product-card-horizontal mx-auto">
-          <!-- Image -->
-          <div class="product-image text-center">
-            <% if product.images.attached? %>
-              <%= image_tag(
-                url_for(product.images.first),
-                alt:   product.name,
-                class: "img-fluid",
-              ) %>
-            <% else %>
-              <%= image_tag(
-                "placeholder.jpeg",
-                alt: "No image available",
-                class: "img-fluid",
-              ) %>
-            <% end %>
-          </div>
+<% @products.limit(12).each do |product| %>
+  <div class="product-slide">
+    <div class="product-card-horizontal mx-auto">
+      <!-- Image -->
+      <div class="product-image text-center">
+        <% if product.images.attached? %>
+          <%= image_tag url_for(product.images.first), alt: product.name, class: "img-fluid" %>
+        <% else %>
+          <%= image_tag "placeholder.jpeg", alt: "No image available", class: "img-fluid" %>
+        <% end %>
+      </div>
 
-          <!-- Action Buttons -->
-          <div class="action-buttons d-flex justify-content-around mt-3" data-controller="sidebar phone">
-            <% phone = product.store&.phone %>
-            <% if phone&.present? %>
-              <%= link_to "#",
-                class: "btn-icon js-phone",
-                data: { bs_toggle: "tooltip", phone: phone },
-                title: "Store Phone" do %>
-                <i class="fas fa-phone"></i>
+      <!-- Action Buttons -->
+      <div class="action-buttons d-flex justify-content-around mt-3" data-controller="sidebar phone">
+        <% phone = product.store&.phone %>
+        <% if phone.present? %>
+          <%= link_to "#", class: "btn-icon js-phone", data: { bs_toggle: "tooltip", phone: phone }, title: "Store Phone" do %>
+            <i class="fas fa-phone"></i>
+          <% end %>
+        <% end %>
+        <%= link_to "https://maps.google.com?q=#{URI.encode_www_form_component(product.store&.address.to_s || "Unknown Address")}", class: "btn-icon", data: { bs_toggle: "tooltip" }, title: "Store Address", target: "_blank", rel: "noopener" do %>
+          <i class="fas fa-map-marker-alt"></i>
+        <% end %>
+        <%= link_to product_path(product), class: "btn-icon", data: { bs_toggle: "tooltip" }, title: "More Information" do %>
+          <i class="fas fa-info"></i>
+        <% end %>
+        <%= link_to add_item_customers_cart_path(product_id: product.id), method: :post, class: "btn-icon", data: { bs_toggle: "tooltip" }, title: "Add to Cart" do %>
+          <i class="fas fa-shopping-cart"></i>
+        <% end %>
+      </div>
+
+      <!-- Product Details -->
+      <div class="product-details">
+        <% if product.old_price.present? && product.old_price > product.price %>
+          <% discount = (((product.old_price - product.price) / product.old_price) * 100).round %>
+          <div class="discount-badge">⚡ -<%= discount %>%</div>
+        <% end %>
+
+        <% if product.store&.name.present? %>
+          <div class="store-details-box text-center">
+            <h6><i class="fas fa-store"></i> <%= product.store.name %></h6>
+          </div>
+        <% end %>
+
+        <div class="product-reviews text-center mb-2">
+          <% avg = product.reviews.any? ? product.reviews.average(:rating).to_f.round(1) : 0 %>
+          <span class="stars">
+            <% 5.times do |i| %>
+              <% if avg >= i + 1 %>
+                <i class="fas fa-star"></i>
+              <% elsif avg > i && avg < i + 1 %>
+                <i class="fas fa-star-half-alt"></i>
+              <% else %>
+                <i class="far fa-star"></i>
               <% end %>
             <% end %>
+          </span>
+          <span class="review-count">
+            <%= product.reviews.count > 0 ? pluralize(product.reviews.count, 'review') : '' %>
+          </span>
+        </div>
 
-            <%= link_to "https://maps.google.com?q=#{URI.encode_www_form_component(product.store&.address.to_s || "Unknown Address")}",
-              class: "btn-icon",
-              data: { bs_toggle: "tooltip" },
-              title: "Store Address",
-              target: "_blank", rel: "noopener" do %>
-              <i class="fas fa-map-marker-alt"></i>
-            <% end %>
+        <h5 class="product-name text-center"><%= truncate(product.name, length: 30) %></h5>
 
-            <%= link_to product_path(product),
-              class: "btn-icon",
-              data: { bs_toggle: "tooltip" },
-              title: "More Information" do %>
-              <i class="fas fa-info"></i>
-            <% end %>
+        <% if product.description.present? %>
+          <p class="product-description text-center">
+            <%= truncate(product.description, length: 60) %>
+          </p>
+        <% end %>
 
-            <%= link_to add_item_customers_cart_path(product_id: product.id), method: :post,
-              class: "btn-icon",
-              data: { bs_toggle: "tooltip" },
-              title: "Add to Cart" do %>
-              <i class="fas fa-shopping-cart"></i>
-            <% end %>
-          </div>
+        <div class="pricing text-center">
+          <% if product.old_price.present? && product.old_price.to_f > product.price.to_f %>
+            <span class="price-old"><%= number_to_currency(product.old_price) %></span>
+          <% end %>
+          <span class="price-current"><%= number_to_currency(product.price) %></span>
+        </div>
 
-          <!-- Product Details -->
-          <div class="product-details">
-            <% if product.old_price.present? && product.old_price > product.price %>
-              <% discount = (((product.old_price - product.price) / product.old_price) * 100).round %>
-              <div class="discount-badge d-flex justify-content-around mt-3">⚡ -<%= discount %>%</div>
-            <% end %>
-
-            <!-- Store Name -->
-            <% if product.store&.name.present? %>
-              <div class="store-details-box text-center">
-                <h6><i class="fas fa-store"></i> <%= product.store.name %></h6>
-              </div>
-            <% end %>
-
-            <!-- Reviews -->
-            <div class="product-reviews text-center mb-2">
-              <% avg = product.reviews.any? ? product.reviews.average(:rating).to_f.round(1) : 0 %>
-              <span class="stars">
-                <% 5.times do |i| %>
-                  <% if avg >= i + 1 %>
-                    <i class="fas fa-star"></i>
-                  <% elsif avg > i && avg < i + 1 %>
-                    <i class="fas fa-star-half-alt"></i>
-                  <% else %>
-                    <i class="far fa-star"></i>
-                  <% end %>
-                <% end %>
-              </span>
-              <span class="review-count">
-                <%= product.reviews.count > 0 ? pluralize(product.reviews.count, 'review') : '' %>
-              </span>
-            </div>
-
-            <!-- Product Name -->
-            <h5 class="product-name text-center"><%= truncate(product.name, length: 30) %></h5>
-
-            <!-- Description -->
-            <% if product.description.present? %>
-              <p class="product-description text-center">
-                <%= truncate(product.description, length: 60) %>
-              </p>
-            <% end %>
-
-            <!-- Pricing -->
-            <div class="pricing text-center">
-              <% if product.old_price.present? && product.old_price.to_f > product.price.to_f %>
-                <span class="price-old"><%= number_to_currency(product.old_price) %></span>
-              <% end %>
-              <span class="price-current"><%= number_to_currency(product.price) %></span>
-            </div>
-           <div class="disclaimer text-center mt-2">
-              <i class="fas fa-info-circle text-muted fs-7 me-1" 
-                data-bs-toggle="tooltip" 
-                title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility.">
-              </i>
-              <small class="text-muted">Terms</small>
-            </div>
-          </div> <!-- /.product-details -->
+        <div class="disclaimer text-center mt-2">
+          <i class="fas fa-info-circle text-muted fs-7 me-1"
+             data-bs-toggle="tooltip"
+             title="Food4Less is just a facilitator; order accuracy and quality are the store’s responsibility."></i>
+          <small class="text-muted">Terms</small>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>

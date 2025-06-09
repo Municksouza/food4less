@@ -1,79 +1,259 @@
-<div class="sidebar" data-sidebar-target="sidebar">
-  <!-- Floating mini button -->
-  <div class="sidebar-toggle-top" data-action="click->sidebar#toggleSidebar">
-    <button type="button">
-      <i data-sidebar-target="toggleIcon" class="fas fa-angle-right"></i>
-    </button>
-  </div>
-
-  <!-- Search -->
-  <div class="sidebar-search-wrapper">
-    <div class="input-group">
-      <span class="input-group-text" data-action="click->sidebar#toggleSearch">
-        <i class="fas fa-search"></i>
-      </span>
-      <input type="text" class="form-control sidebar-search-input" placeholder="Search...">
+  <nav class="sidebar">
+    <div class="sidebar-top-wrapper">
+      <div class="sidebar-top">
+        <%= link_to root_path, class: "logo__wrapper" do %>
+        <% if current_business_admin.logo.attached? && current_business_admin.logo.present? %>
+          <%= image_tag current_business_admin.logo.variant(resize_to_limit: [300, 100]), class: "logo-small", alt: "Business Logo" %>
+        <% else %>
+          <%= image_tag "placeholder.jpeg", width: 300, height: 100, class: "logo-small", alt: "Business Logo" %>
+        <% end %>
+          <span class="hide company-name"><%= current_business_admin&.name || "Business Admin" %></span>
+        <% end %>
+      </div>
+      <button class="expand-btn" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="exp-btn" role="img">
+          <title id="exp-btn">Expand/Collapse Menu</title>
+          <path d="M6.00979 2.72L10.3565 7.06667C10.8698 7.58 10.8698 8.42 10.3565 8.93333L6.00979 13.28"
+            stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
     </div>
-  </div>
+    <div class="search__wrapper">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-labelledby="search-icon" role="img">
+        <title id="search-icon">Search</title>
+        <path
+          d="M9 9L13 13M5.66667 10.3333C3.08934 10.3333 1 8.244 1 5.66667C1 3.08934 3.08934 1 5.66667 1C8.244 1 10.3333 3.08934 10.3333 5.66667C10.3333 8.244 8.244 10.3333 5.66667 10.3333Z"
+          stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <input type="text" placeholder="Search..." aria-labelledby="search-icon">
+    </div>
 
-  <!-- Menu -->
-  <ul class="sidebar-menu mt-4">
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: root_path }, title: "Home" do %>
-        <i class="fas fa-home"></i>
-        <span class="sidebar-label">Home</span>
+    <div class="sidebar-links">
+      <ul>
+        <li>
+          <a href="#home" title="Home" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M4 4h6v8h-6z" />
+              <path d="M4 16h6v4h-6z" />
+              <path d="M14 12h6v8h-6z" />
+              <path d="M14 4h6v4h-6z" />
+            </svg>
+            <span class="link hide">Home</span>
+            <span class="tooltip__content">Home</span>
+          </a>
+        </li>
+        <li>
+          <%= link_to business_admins_business_dashboard_path, class: "tooltip", title: "Dashboard" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+              height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round" aria-hidden="true">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <path d="M3 12m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+              <path d="M9 8m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v10a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+              <path d="M15 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v14a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+              <path d="M4 20l14 0" />
+            </svg>
+            <span class="link hide">Dashboard</span>
+            <span class="tooltip__content">Dashboard</span>
+          <% end %>
+        </li>
+        <li>
+          <a class="tooltip" data-bs-toggle="collapse" href="#storesSubmenu" role="button" aria-expanded="false" aria-controls="storesSubmenu">
+            <i class="fas fa-store me-2"></i>
+            <span class="link hide">Stores</span>
+            <span class="tooltip__content">Stores</span>
+          </a>
+          <ul class="collapse list-unstyled ps-3" id="storesSubmenu">
+            <li>
+              <%= link_to new_business_admins_store_path, class: "tooltip", title: "New Store" do %>
+                <i class="fas fa-plus me-2"></i>
+                <span class="link hide">New Store</span>
+                <span class="tooltip__content">New Store</span>
+              <% end %> 
+            </li>
+            <% if current_business_admin && current_business_admin.stores.present? %>
+              <% current_business_admin.stores.each do |store| %>
+                <li>
+                  <a class="sidebar-link py-2 tooltip" data-bs-toggle="collapse" href="#store-<%= store.id %>-submenu" role="button" aria-expanded="false" aria-controls="store-<%= store.id %>-submenu">
+                    <i class="fas fa-store me-2"></i>
+                    <span class="link hide"><%= store.name %></span>
+                    <span class="tooltip__content"><%= store.name %></span>
+                  </a>
+                  <% if store.persisted? %>
+                    <ul class="collapse list-unstyled ps-3" id="store-<%= store.id %>-submenu">
+                      <li>
+                        <%= link_to dashboard_business_admins_store_path(store), class: "tooltip" do %>
+                          <i class="fas fa-tachometer-alt me-2"></i>
+                          <span class="tooltip__content"><%= store.name %></span>
+                          Dashboard
+                        <% end %>
+                      </li>
+                      <li>
+                        <%= link_to business_admins_store_sales_path(store), class: "tooltip" do %>
+                          <i class="fas fa-dollar-sign me-2"></i>
+                          Sales
+                        <% end %>
+                      </li>
+                      <li>
+                        <a class="sidebar-link py-2 tooltip" data-bs-toggle="collapse" href="#financial-<%= store.id %>-submenu" role="button" aria-expanded="false" aria-controls="financial-<%= store.id %>-submenu">
+                          <i class="fas fa-file-invoice-dollar me-2"></i>
+                          <span class="link hide">Financial</span>
+                          <span class="tooltip__content">Financial</span>
+                        </a>
+                        <ul class="collapse list-unstyled ps-3" id="financial-<%= store.id %>-submenu">
+                          <li>
+                            <%= link_to business_admins_store_financial_path(store), class: "sidebar-link py-1" do %>
+                              <i class="fas fa-chart-line me-2"></i>
+                              Overview
+                            <% end %>
+                          </li>
+                          <li>
+                            <%= link_to business_admins_store_receipts_path(store), class: "sidebar-link py-1" do %>
+                              <i class="fas fa-file-invoice me-2"></i>
+                              <span class="link hide">Receipts</span>
+                              <span class="tooltip__content">Receipts</span>
+                            <% end %>
+                          </li>
+                          <li>
+                            <%= link_to business_admins_store_refunds_path(store), class: "sidebar-link py-1" do %>
+                              <i class="fas fa-undo me-2"></i>
+                              <span class="link hide">Refunds</span>
+                              <span class="tooltip__content">Refunds</span>
+                            <% end %>
+                          </li>
+                          <li>
+                            <%= link_to business_admins_store_payments_path(store), class: "sidebar-link py-1" do %>
+                              <i class="fas fa-credit-card me-2"></i>
+                              <span class="link hide">Payments</span>
+                              <span class="tooltip__content">Payments</span>
+                            <% end %>
+                          </li>
+                          <li>
+                            <%= link_to business_admins_store_reports_path(store), class: "sidebar-link py-1" do %>
+                              <i class="fas fa-file-alt me-2"></i>
+                              <span class="link hide">Reports</span>
+                              <span class="tooltip__content">Reports</span>
+                            <% end %>
+                          </li>
+                        </ul>
+                      </li>
+
+                      <li>
+                        <%= link_to orders_business_admins_store_path(store), class: "sidebar-link py-1" do %>
+                          <i class="fas fa-shopping-cart me-2"></i>
+                          Orders
+                        <% end %>
+                      </li>
+                    </ul>
+                  <% end %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
+        <li>
+          <a href="#tasks" title="Tasks" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-checkbox">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M9 11l3 3l8 -8" />
+              <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" />
+            </svg>
+            <span class="link hide">Tasks</span>
+            <span class="tooltip__content">Tasks</span>
+          </a>
+        </li>
+        <li>
+          <%= link_to public_customers_path, title: "Customers", class: "tooltip" do %>              
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-users">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+              <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+            </svg>
+            <span class="link hide">Customers</span>
+            <span class="tooltip__content">Customers</span>
+          <% end %>
+        </li>
+        <li>
+          <a href="#notification" title="Notification" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-bell">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+              <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+            </svg>
+            <span class="link hide">Notifications</span>
+            <span class="tooltip__content">Notifications</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="separator"></div>
+    <div class="sidebar-links">
+      <ul>
+        <li>
+          <a href="#settings" title="Settings" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+              stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path
+                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
+              </path>
+              <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+            </svg>
+            <span class="link hide">Settings</span>
+            <span class="tooltip__content">Settings</span>
+          </a>
+        </li>
+        <li>
+          <a href="#report" title="Report" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-flag-3">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M5 14h14l-4.5 -4.5l4.5 -4.5h-14v16" />
+            </svg>
+            <span class="link hide">Report</span>
+            <span class="tooltip__content">Report</span>
+          </a>
+        </li>
+        <li>
+          <a href="#support" title="Support" class="tooltip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-info-square-rounded">
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+              <path d="M12 9h.01" />
+              <path d="M11 12h1v4h1" />
+              <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9 -9 9s-9 -1.8 -9 -9s1.8 -9 9 -9z" />
+            </svg>
+            <span class="link hide">Support</span>
+            <span class="tooltip__content">Support</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="avatar__wrapper">
+      <% if current_business_admin.logo.attached? && current_business_admin.logo.present? %>
+        <%= image_tag current_business_admin.logo.variant(resize_to_limit: [100, 100]), class: "avatar", alt: "Business Avatar" %>
+      <% else %>
+        <%= image_tag "placeholder.jpeg", width: 100, height: 100, class: "avatar", alt: "Business Avatar" %>
       <% end %>
-    </li>
-
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: business_admins_business_dashboard_path }, title: "Admin Dashboard" do %>
-        <i class="fas fa-user-shield"></i>
-        <span class="sidebar-label">Dashboard</span>
-      <% end %>
-    </li>
-
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: business_admins_stores_path }, title: "Manage Stores" do %>
-        <i class="fas fa-store"></i>
-        <span class="sidebar-label">Stores</span>
-      <% end %>
-    </li>
-
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: business_admins_receipts_path }, title: "Receipts" do %>
-        <i class="fas fa-file-invoice"></i>
-        <span class="sidebar-label">Receipts</span>
-      <% end %>
-    </li>
-
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: public_customers_path }, title: "Search Customers" do %>
-        <i class="fas fa-search"></i>
-        <span class="sidebar-label">Customers</span>
-      <% end %>
-    </li>
-
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: edit_business_admin_registration_path }, title: "Settings" do %>
-        <i class="fas fa-cog"></i>
-        <span class="sidebar-label">Settings</span>
-      <% end %>
-    </li>
-  </ul>
-
-  <!-- Footer -->
-  <div class="sidebar-footer d-flex flex-column align-items-center mt-auto">
-    <% if current_business_admin&.logo&.attached? %>
-      <%= image_tag current_business_admin.logo, class: "sidebar-user-photo" %>
-    <% else %>
-      <%= image_tag "placeholder.jpeg", class: "sidebar-user-photo" %>
+      <div class="online__status"></div>
+    </div>
+    <div class="avatar__name hide">
+      <div class="user-name"><%= current_business_admin&.name || "Admin" %></div>
+      <div class="email"><%= current_business_admin&.email || "" %></div>
+    </div>
+    <%= link_to destroy_business_admin_session_path, method: :delete, class: "logout hide", title: "Logout" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-logout" width="24" height="24"
+        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+        stroke-linejoin="round" aria-labelledby="logout-icon" role="img">
+        <title id="logout-icon">log out</title>
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+        <path d="M9 12h12l-3 -3"></path>
+        <path d="M18 15l3 -3"></path>
+      </svg>
     <% end %>
-
-    <div class="sidebar-footer-info">
-      <span class="sidebar-username"><%= current_business_admin&.name || "Admin" %></span>
-      <%= link_to destroy_business_admin_session_path, method: :delete, class: "logout-link ms-2", data: { bs_toggle: "tooltip" }, title: "Logout" do %>
-        <i class="fas fa-sign-out-alt"></i>
-      <% end %>
-    </div>
-  </div>
-</div>
+  </nav>
+ 

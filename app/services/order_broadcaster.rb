@@ -8,7 +8,7 @@ class OrderBroadcaster
     @dom_id = "order-#{order.id}"
   end
 
-  # 1. NEW ORDER → append em pending + tocar som
+  # 1. NEW ORDER → append to pending + play sound
   def broadcast_new
     rendered = render_partial(play_sound: true)
 
@@ -19,11 +19,11 @@ class OrderBroadcaster
       content: rendered
     )
 
-    # <-- aqui, payload como Hash posicional:
+    # <-- here, payload as positional Hash:
     ActionCable.server.broadcast(@stream, { playSound: true })
   end
 
-  # 2. ACCEPT → remove de pending + append em in‑progress + parar som
+  # 2. ACCEPT → remove from pending + append to in-progress + stop sound
   def broadcast_accept
     rendered = render_partial(play_sound: false)
 
@@ -43,7 +43,7 @@ class OrderBroadcaster
     ActionCable.server.broadcast(@stream, { stopSound: true })
   end
 
-  # 3. REJECT → remove de pending + parar som
+  # 3. REJECT → remove from pending + stop sound
   def broadcast_reject
     Turbo::StreamsChannel.broadcast_action_to(
       @stream,
@@ -58,7 +58,7 @@ class OrderBroadcaster
 
   def render_partial(play_sound:)
     ApplicationController.renderer.render(
-      partial: "stores/orders/order",
+      partial: "store_managers_area/orders/order",
       formats: [:html],
       locals:  { order: @order, play_sound: play_sound }
     )

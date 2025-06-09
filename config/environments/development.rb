@@ -1,7 +1,10 @@
 require "active_support/core_ext/integer/time"
+require "active_storage/engine"
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
+
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
   # Make code changes take effect immediately without server restart.
   config.enable_reloading = true
@@ -32,11 +35,7 @@ Rails.application.configure do
 
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
-  Rails.application.routes.default_url_options = {
-    host: "localhost",
-    port: 3000,
-    protocol: "http"
-  }
+  config.active_storage.variant_processor = :mini_magick
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
@@ -83,5 +82,6 @@ Rails.application.configure do
   # config.generators.apply_rubocop_autocorrect_after_generate!
 
   # Set detailed logging to help troubleshoot server errors
-  config.log_level = :debug
+  # config.logger = Logger.new(STDOUT)
+  # config.log_level = :debugend
 end

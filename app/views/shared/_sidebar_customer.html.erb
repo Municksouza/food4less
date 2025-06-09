@@ -1,13 +1,11 @@
-<div class="sidebar" data-sidebar-target="sidebar">
-  <!-- Floating mini button to expand/collapse -->
-  <div class="sidebar-toggle-top" data-action="click->sidebar#toggleSidebar">
-    <button type="button">
+<div class="sidebar d-flex flex-column" data-sidebar-target="sidebar">
+  <div class="sidebar-toggle-top d-flex justify-content-end p-2" data-action="click->sidebar#toggleSidebar">
+    <button type="button" class="btn btn-light btn-sm">
       <i data-sidebar-target="toggleIcon" class="fas fa-angle-right"></i>
     </button>
   </div>
 
-  <!-- Search -->
-  <div class="sidebar-search-wrapper">
+  <div class="sidebar-search-wrapper px-3">
     <div class="input-group">
       <span class="input-group-text" data-action="click->sidebar#toggleSearch">
         <i class="fas fa-search"></i>
@@ -16,57 +14,35 @@
     </div>
   </div>
 
-  <!-- Main menu -->
-  <ul class="sidebar-menu mt-4">
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: root_path }, title: "Home" do %>
-        <i class="fas fa-home"></i>
-        <span class="sidebar-label">Home</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: customers_dashboard_path }, title: "Dashboard" do %>
-        <i class="fas fa-tachometer-alt"></i>
-        <span class="sidebar-label">Dashboard</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: customers_orders_path }, title: "My Orders" do %>
-        <i class="fas fa-shopping-cart"></i>
-        <span class="sidebar-label">Orders</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: customers_cart_path }, title: "Cart" do %>
-        <i class="fas fa-shopping-bag"></i>
-        <span class="sidebar-label">Cart</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: customers_reviews_path }, title: "Reviews" do %>
-        <i class="fas fa-star"></i>
-        <span class="sidebar-label">Reviews</span>
-      <% end %>
-    </li>
-    <li>
-      <%= link_to "#", class: "sidebar-link", data: { action: "click->sidebar#handleLinkClick", bs_toggle: "tooltip", url: edit_customer_registration_path }, title: "Settings" do %>
-        <i class="fas fa-cog"></i>
-        <span class="sidebar-label">Settings</span>
-      <% end %>
-    </li>
-  </ul>
+  <div class="sidebar-menu-wrapper flex-grow-1 px-2">
+    <ul class="sidebar-menu mt-4 list-unstyled">
+      <li><%= link_to customers_dashboard_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-tachometer-alt me-2"></i><span class="sidebar-label">Dashboard</span>
+      <% end %></li>
+      <li><%= link_to customers_orders_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-shopping-cart me-2"></i><span class="sidebar-label">Orders</span>
+      <% end %></li>
+      <li><%= link_to customers_cart_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-shopping-bag me-2"></i><span class="sidebar-label">Cart</span>
+      <% end %></li>
+      <li><%= link_to edit_customer_registration_path, class: "sidebar-link d-flex align-items-center py-2 px-2" do %>
+        <i class="fas fa-cog me-2"></i><span class="sidebar-label">Settings</span>
+      <% end %></li>
+    </ul>
+  </div>
 
-  <!-- Footer -->
-  <div class="sidebar-footer d-flex flex-column align-items-center mt-auto">
+  <div class="sidebar-footer d-flex flex-column align-items-center mt-auto p-3">
     <% if current_customer.photo.present? %>
-      <%= image_tag current_customer.photo, class: "sidebar-user-photo" %>
+      <%= image_tag current_customer.photo, class: "rounded-circle sidebar-user-photo mb-2" %>
+    <% else %>
+      <%= image_tag "placeholder.jpeg", class: "rounded-circle sidebar-user-photo mb-2" %>
     <% end %>
-    <div class="sidebar-footer-info">
-      <% if current_customer.name.present? %>
-        <span class="sidebar-username"><%= current_customer.name %></span>
-      <% end %>
-      <%= link_to destroy_customer_session_path, method: :delete, class: "logout-link ms-2", data: { bs_toggle: "tooltip" }, title: "Logout" do %>
-        <i class="fas fa-sign-out-alt"></i>
+    <div class="sidebar-footer-info text-center">
+      <strong class="sidebar-username"><%= current_customer.name || "Customer" %></strong>
+      <%= link_to destroy_customer_session_path, method: :delete,
+                  class: "btn btn-sm btn-outline-danger mt-2 w-100",
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" } do %>
+        <i class="fas fa-sign-out-alt me-1"></i> Logout
       <% end %>
     </div>
   </div>

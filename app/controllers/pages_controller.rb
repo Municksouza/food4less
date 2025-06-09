@@ -21,7 +21,8 @@ class PagesController < ApplicationController
       { image: "cuisine-steahouse.webp",label: "Steakhouse", category: "steakhouse" },
       { image: "cuisine-korean.webp", label: "Korean", category: "korean" },
     ]
-    
+    @testimonials = Testimonial.where(visible: true)
+
   end
   
   def about

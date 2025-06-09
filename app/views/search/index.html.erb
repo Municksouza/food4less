@@ -12,7 +12,7 @@
         <ul class="list-group">
           <% @product_results.each do |product| %>
             <li class="list-group-item">
-              <%= link_to product.name, stores_product_path(product), class: "text-decoration-none" %>
+              <%= link_to product.name, store_managers_area_products_path(product), class: "text-decoration-none" %>
             </li>
           <% end %>
         </ul>

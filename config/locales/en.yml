@@ -29,3 +29,12 @@
 
 en:
   hello: "Hello world"
+  goodbye: "Goodbye world"
+  activerecord:
+    errors:
+      models:
+        address:
+          attributes:
+            postal_code:
+              invalid: "must be a valid Canadian postal code"
+ 

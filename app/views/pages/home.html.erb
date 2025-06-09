@@ -1,5 +1,5 @@
 <%= render "shared/hero" %>
-
+<%= render "shared/ticker" %>
 <div class="mini-carousel-container">
   <!-- Mini Carousel -->
   <% mini_carousel_items = [
@@ -15,8 +15,6 @@
   <%= render "shared/mini_cuisines", mini_carousel_items: mini_carousel_items %>
 </div>
 
-<%= render "shared/ticker" %>
-
 <%= render "shared/product_poster", product: @product %>
 
 <div class="banner" style="padding-top: 5%;">
@@ -27,4 +25,5 @@
 </div>
 
 <%= render "shared/map" %>
+<%= render "shared/testimonials" %>
 <%= render "shared/marketplace_solution" %>

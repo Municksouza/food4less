@@ -67,7 +67,7 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
   gem "letter_opener"
-  gem "redis" # Use Redis for caching and Action Cable
+  gem 'redis', '~> 4.0' # Use Redis for caching and Action Cable
  
 end
 
@@ -85,3 +85,7 @@ gem "chartkick", "~> 5.1"
 gem "groupdate", "~> 6.5"
 gem "minitest", "~> 5.25"
 gem "open-uri-cached"
+gem 'friendly_id', '~> 5.4.0'
+gem "whenever", require: false
+gem "mini_magick"
+gem 'validates_zipcode'

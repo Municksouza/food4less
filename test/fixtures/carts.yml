@@ -2,8 +2,8 @@
 
 one:
   customer: one
-  status: MyString
+  status: active
 
 two:
   customer: two
-  status: MyString
+  status: active

@@ -14,7 +14,7 @@
     <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_TOKEN'] %>">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#dc3545">
-    <%= favicon_link_tag "icon-.png" %>
+    <%= favicon_link_tag "food4less-logo.jpg" %>
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -24,52 +24,45 @@
 
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
-
-
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
-    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.css" rel="stylesheet" />  
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    
   </head>
-  
-  <body class="<%= "#{params[:controller]}-#{params[:action]} " + ((current_customer || current_store_manager || current_business_admin) ? (sidebar_closed? ? 'sidebar-closed' : 'sidebar-expanded') : '') %> d-flex flex-column min-vh-100" data-controller="sidebar" data-store-id="<%= current_store_manager&.store&.id %>">
-    <%# Notification Sound for Store Manager %>
+
+  <body class="<%= "#{controller.controller_name}-#{controller.action_name} " + 
+    (current_customer || current_store_manager || current_business_admin ? 'with-sidebar sidebar-closed' : 'no-sidebar') %> d-flex flex-column min-vh-100"
+    data-controller="sidebar"
+    data-store-id="<%= current_store_manager&.store&.id %>">
+
+    <% if flash.any? %>
+      <%= render 'shared/flash' %>
+    <% end %>
+
     <% if current_store_manager %>
       <audio id="notification-sound" src="/sounds/alert-loop.mp3" loop></audio>
     <% end %>
 
-   <% unless current_customer || current_store_manager || current_business_admin  %>
-    <%= render "shared/navbar" %>
-   <% end %>
-
-    <%# Flash Messages %>
-    <% flash.each do |type, message| %>
-      <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert">
-        <%= message %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    <% end %>
-
     <% if current_page?(root_path) %>
-      <%# HOME: NAVBAR + NORMAL CONTENT (without sidebar) %>
+      <%= render "shared/navbar" %>
       <main class="container-fluid p-0">
         <%= yield %>
       </main>
-
     <% else %>
-      <%# DASHBOARD: NO NAVBAR, ONLY SIDEBAR + MAIN CONTENT %>
       <div class="d-flex flex-grow-1">
         <% if current_customer || current_store_manager || current_business_admin %>
-          <aside id="sidebarMenu" class="sidebar" data-sidebar-target="sidebar">
+          <aside id="sidebarMenu" data-sidebar-target="sidebar">
             <%= render "shared/sidebar_customer" if current_customer %>
             <%= render "shared/sidebar_store_manager" if current_store_manager %>
             <%= render "shared/sidebar_business_admin" if current_business_admin %>
           </aside>
         <% end %>
-
         <main class="main-content">
           <%= yield %>
         </main>
@@ -82,5 +75,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.min.js"></script>
+    
   </body>
 </html>

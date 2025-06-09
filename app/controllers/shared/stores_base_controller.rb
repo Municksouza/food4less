@@ -3,6 +3,7 @@ module Shared
     before_action :set_store
   
     def show
+      @store = Store.find_by!(slug: params[:slug])
       @products = @store.products
       @reviews = @store.reviews.includes(:customer).order(created_at: :desc)
     end

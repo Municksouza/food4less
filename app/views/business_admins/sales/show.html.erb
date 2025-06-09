@@ -1,0 +1,6 @@
+<h1>Order Details</h1>
+
+<p><strong>ID:</strong> <%= @sale.id %></p>
+<p><strong>Status:</strong> <%= @sale.status %></p>
+<p><strong>Total:</strong> <%= number_to_currency(@sale.total_price) %></p>
+<p><strong>Created At:</strong> <%= l(@sale.created_at, format: :long) %></p>

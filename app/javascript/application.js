@@ -6,9 +6,16 @@ import "./poppers/my-get-base-placement.js"; // Customized Popper
 import "./mapbox_geocode";
 import "./channels";
 import "@hotwired/turbo-rails"
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./register_service_worker";
 import "./modal/show_no_results_modal.js"; // Import the modal script
+import "./popover.js"; // Import the popover script
+import "./store_form.js"; // Import the store form script
+// import "./flyout.js"; // Import the flyout script
+import { initAOS } from "./lib/aos_init";
+
+document.addEventListener('turbo:load', () => {
+    initAOS();
+});
 
 
 // slick-carousel must be imported from node_modules:
@@ -22,7 +29,6 @@ import * as ActiveStorage from "@rails/activestorage";
 import * as bootstrap from "bootstrap";
 window.bootstrap = bootstrap;
 import "chartkick/chart.js"
-import "@fortawesome/fontawesome-free/js/all";
 
 // Initialize Rails modules
 Rails.start();

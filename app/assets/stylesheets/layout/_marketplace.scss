@@ -1,11 +1,11 @@
 .marketplace-solution {
-  padding: 7rem 0; // more vertical spacing
+  padding: 8rem 0 5rem; // More vertical spacing
 
   .container {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 640px; // increased to resemble the Hero section
+    min-height: 640px; // Increased to resemble the Hero section
   }
 
   .row {
@@ -59,58 +59,96 @@
     justify-content: center;
 
     img {
-      max-height: 480px; // further increased
+      max-height: 480px;
       width: auto;
       object-fit: cover;
       border-radius: 0.5rem;
     }
   }
 
-  @media (max-width: 1024px) {
-    .text-content h2 {
-      font-size: 2rem;
+  // Responsive styles
+  @media (max-width: 1200px) {
+    .row {
+      max-width: 960px;
     }
-
-    .text-content p {
-      font-size: 1rem;
+    .text-content {
+      padding: 0 2rem;
     }
-
     .image-content img {
       max-height: 400px;
     }
   }
 
+  @media (max-width: 992px) {
+    .row {
+      max-width: 720px;
+    }
+    .text-content h2 {
+      font-size: 2rem;
+    }
+    .text-content p {
+      font-size: 1rem;
+    }
+    .image-content img {
+      max-height: 350px;
+    }
+  }
+
   @media (max-width: 768px) {
+    .container {
+      min-height: 400px;
+    }
     .row {
       flex-direction: column-reverse;
+      max-width: 100%;
+      align-items: stretch;
     }
-
     .text-content {
       text-align: center;
       padding: 0 1rem;
+      max-width: 100%;
     }
-
     .image-content img {
-      max-height: 300px;
+      max-height: 250px;
+      width: 100%;
+      border-radius: 0.5rem 0.5rem 0 0;
     }
   }
 
   @media (max-width: 480px) {
-    .text-content h2 {
-      font-size: 1.8rem;
+    padding: 4rem 0 2rem;
+    .container {
+      min-height: 200px;
     }
-
+    .text-content h2 {
+      font-size: 1.5rem;
+    }
     .text-content p {
       font-size: 0.95rem;
     }
-
     .btn-get-in-touch {
       font-size: 0.8rem;
       padding: 5px 12px;
     }
-
     .image-content img {
-      max-height: 250px;
+      max-height: 150px;
+      border-radius: 0.5rem;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .text-content h2 {
+      font-size: 1.2rem;
+    }
+    .text-content p {
+      font-size: 0.85rem;
+    }
+    .btn-get-in-touch {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+    }
+    .image-content img {
+      max-height: 100px;
     }
   }
 }

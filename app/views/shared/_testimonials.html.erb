@@ -1,0 +1,49 @@
+<section class="testimonial-banner-section data-aos="fade-up" data-aos-delay="300" d-flex align-items-center" data-controller="carousel"
+  data-carousel-interval-value="6000">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- ESQUERDA: Imagem -->
+      <div class="col-md-6 position-relative">
+        <div class="testimonial-image-wrapper">
+          <%= image_tag("rateus.webp", class: "img-fluid" ) %>
+            <div class="bg-decor"></div>
+        </div>
+      </div>
+
+      <!-- DIREITA: Testemunhos com carrossel -->
+      <div class="col-md-6">
+        <div class="testimonial-carousel-content text-center">
+          <div class="testimonial-title">Testimonial</div>
+          <div class="testimonial-subtitle">Customer Say About Us</div>
+          <div class="carousel-body" data-carousel-target="carousel">
+            <% Array(@testimonials).each do |t| %>
+              <div class="testimonial-card">
+                <p class="testimonial-quote">“<%= t.quote %>”</p>
+                <div class="testimonial-stars mb-2">
+                  <% 5.times do |i| %>
+                    <i class="<%= i < (t.try(:rating) || 5) ? 'fas' : 'far' %> fa-star text-warning"></i>
+                    <% end %>
+                </div>
+                <p class="testimonial-author fw-bold">
+                  <%= t.author %>
+                    <% if t.respond_to?(:source) && t.source.present? %>
+                      – From <%= t.source %>
+                        <% end %>
+                </p>
+              </div>
+              <% end %>
+          </div>
+
+          <div class="testimonial-indicators mt-3">
+            <% Array(@testimonials).each_with_index do |_, i| %>
+              <button class="indicator <%= 'active' if i == 0 %>" data-action="click->carousel"
+                data-index="<%= i %>"></button>
+              <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
