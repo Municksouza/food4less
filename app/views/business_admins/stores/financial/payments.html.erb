@@ -1,0 +1,20 @@
+<h1 class="mb-4">Payments</h1>
+
+<table class="table table-striped table-responsive">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Supplier</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @pagamentos.each do |pagamento| %>
+            <tr>
+                <td><%= l(pagamento.data) %></td>
+                <td><%= number_to_currency(pagamento.valor) %></td>
+                <td><%= pagamento.fornecedor.nome %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>

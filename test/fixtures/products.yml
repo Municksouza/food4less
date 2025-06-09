@@ -7,6 +7,7 @@ one:
   old_price: 9.99
   stock: 1
   store: one
+  category: one
 
 two:
   name: MyString
@@ -15,3 +16,4 @@ two:
   old_price: 9.99
   stock: 1
   store: two
+  category: two

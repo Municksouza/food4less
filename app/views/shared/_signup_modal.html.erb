@@ -1,0 +1,44 @@
+<!-- app/views/shared/_signup_modal.html.erb -->
+<div
+  class="modal fade"
+  id="signupModal"
+  tabindex="-1"
+  aria-labelledby="signupModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <!-- HEADER -->
+      <div class="modal-header bg-white border-bottom-0 px-4 pt-4">
+        <h5 class="modal-title fw-bold" id="signupModalLabel">Welcome to Food4Less!</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body text-center px-4 pb-4">
+        <p class="mb-4 text-secondary">
+          New here? Choose your path and start saving on delicious local meals.
+        </p>
+
+        <div class="d-grid gap-3">
+          <%= link_to new_customer_registration_path,
+                      class: "btn btn-lg btn-outline-danger rounded-pill fw-semibold" do %>
+            <i class="fas fa-user me-2"></i> Sign Up
+          <% end %>
+        </div>
+
+        <hr class="my-4">
+
+        <p class="small text-muted">
+          Already have an account?
+          <%= link_to "Log in here", new_customer_session_path, class: "fw-semibold text-decoration-none" %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

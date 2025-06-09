@@ -1,10 +1,25 @@
-<%= simple_form_for [:business_admins, store], html: { multipart: true } do |f| %>
-    <%= f.input :name %>
-    <%= f.input :email %>
-    <%= f.input :phone %>
-    <%= f.input :address %>
-    <%= f.input :zip_code %>
-    <%= f.input :description %>
-    <%= f.input :logo, as: :file %>
-    <%= f.button :submit, "Salvar", class: "btn btn-success" %>
-  <% end %>
+<%= simple_form_for [:business_admins, @store], html: { multipart: true, class: "edit-store-form needs-validation" } do |f| %>
+  <div class="form-section">
+    <h2><i class="fas fa-edit me-2"></i> Edit Store</h2>
+    <div class="row g-4">
+      <div class="col-md-6">
+        <%= f.input :name %>
+        <%= f.input :email %>
+        <%= f.input :phone %>
+        <%= f.input :business_number, label: "Business Number" %>
+      </div>
+      <div class="col-md-6">
+        <%= f.input :address %>
+        <%= f.input :zip_code %>
+        <%= f.input :description %>
+        <%= f.input :cuisine_id, collection: Cuisine.all, prompt: "Select Cuisine", label: "Cuisine", required: true %>
+        <%= f.input :category_id, collection: Category.all, prompt: "Select Category", label: "Category", required: true %> 
+        <%= f.input :logo, as: :file %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-actions text-end mt-4">
+    <%= f.button :submit, "Save", class: "btn btn-outline-danger" %>
+  </div>
+<% end %>

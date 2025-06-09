@@ -1,10 +1,57 @@
-<h2>Products</h2>
-<% if @product_results.any? %>
-  <ul>
-    <% @product_results.each do |product| %>
-      <li><%= link_to product.name, stores_product_path(product) %></li>
+<section class="container py-4">
+  <h2 class="mb-4">
+    <i class="bi bi-search me-2"></i>Search Results for "<strong><%= params[:query] %></strong>"
+  </h2>
+
+  <% if @product_results.any? || @store_results.any? || @cuisine_results.any? %>
+    <% if @product_results.any? %>
+      <div class="mb-4">
+        <h4 class="text-primary">
+          <i class="bi bi-box-seam me-1"></i>Products
+        </h4>
+        <ul class="list-group">
+          <% @product_results.each do |product| %>
+            <li class="list-group-item">
+              <%= link_to product.name, store_managers_area_products_path(product), class: "text-decoration-none" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     <% end %>
-  </ul>
-<% else %>
-  <p>No products found.</p>
-<% end %>
+
+    <% if @store_results.any? %>
+      <div class="mb-4">
+        <h4 class="text-success">
+          <i class="bi bi-shop me-1"></i>Stores
+        </h4>
+        <ul class="list-group">
+          <% @store_results.each do |store| %>
+            <li class="list-group-item">
+              <%= link_to store.name, store_path(store), class: "text-decoration-none" %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if @cuisine_results.any? %>
+      <div class="mb-4">
+        <h4 class="text-danger">
+          <i class="bi bi-egg-fried me-1"></i>Cuisines
+        </h4>
+        <ul class="list-group">
+          <% @cuisine_results.each do |cuisine| %>
+            <li class="list-group-item">
+              <%= cuisine.name %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% else %>
+    <div class="alert alert-warning mt-4 d-flex align-items-center" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      No results found for "<strong><%= params[:query] %></strong>".
+    </div>
+  <% end %>
+</section>

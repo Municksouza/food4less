@@ -1,0 +1,30 @@
+<div class="flip-card">
+    <div class="flip-card-inner">
+        <!-- Front -->
+        <div class="flip-card-front d-flex align-items-center justify-content-center p-4">
+            <div class="circle-wrapper">
+                <% if store.logo.attached? %>
+                    <%= image_tag store.logo.variant(resize_to_fill: [300, 300]), alt: store.name, class: "img-fluid" %>
+                <% else %>
+                    <%= image_tag "placeholder.jpeg", width: 300, height: 300, alt: store.name, class: "img-fluid" %>
+                <% end %>
+            </div>
+        </div>
+
+        <!-- Back -->
+        <div class="flip-card-back p-4 d-flex flex-column justify-content-center align-items-center text-dark text-center">
+            <h5 class="fw-semibold display-6 mb-2"><%= store.name %></h5>
+            <% if store.description.present? %>
+                <p class="text-muted lead small"><%= truncate(store.description, length: 100) %></p>
+            <% end %>
+            <p class="small">
+                <strong>📍 Address:</strong>
+                <%= link_to store.address,
+                                        "https://www.google.com/maps/search/?api=1&query=#{URI.encode_www_form_component(store.address)}",
+                                        target: "_blank", rel: "noopener", class: "text-decoration-none text-primary" %>
+            </p>
+            <p class="small"><strong>📞 Phone:</strong> <%= store.phone %></p>
+            <%= link_to "Visit Store", store_path(store), class: "btn btn-sm btn-danger mt-2" %>
+        </div>
+    </div>
+</div>

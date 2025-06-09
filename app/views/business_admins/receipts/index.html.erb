@@ -1,6 +1,6 @@
 <h1 class="mb-4">Receipts Overview</h1>
 
-<%= simple_form_for :filters, url: business_admins_receipts_path, method: :get, html: { class: "row g-3 align-items-end mb-4" } do |f| %>
+<%= simple_form_for :filters, url: business_admins_store_receipts_path(@store ), method: :get, html: { class: "row g-3 align-items-end mb-4" } do |f| %>
   <div class="col-md-3">
     <%= f.input :store_id,
       collection: current_business_admin.stores.map { |store| [store.name, store.id] },
@@ -37,7 +37,7 @@
 
   <div class="col-md-3 d-grid gap-2">
     <%= f.button :submit, "Apply Filters", class: "btn btn-primary" %>
-    <%= link_to "Clear", business_admins_receipts_path, class: "btn btn-outline-secondary" %>
+    <%= link_to "Clear", business_admins_store_receipts_path, class: "btn btn-outline-secondary" %>
   </div>
 <% end %>
 

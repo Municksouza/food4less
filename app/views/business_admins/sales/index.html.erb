@@ -1,0 +1,20 @@
+<h1>Sales for <%= @store.name %></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Total</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @sales.each do |sale| %>
+      <tr>
+        <td><%= sale.id %></td>
+        <td><%= number_to_currency(sale.total_amount) %></td>
+        <td><%= sale.status %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

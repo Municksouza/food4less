@@ -1,0 +1,3 @@
+<h1 class="mb-4">Monthly Report - <%= l(Date.today, format: :month_and_year) %></h1>
+
+<%= render partial: 'report_table', locals: { registros: @registros_mensais } %>

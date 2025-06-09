@@ -1,11 +1,29 @@
-<div class="container mt-4">
-  <h1 class="mb-4">Featured Products</h1>
+<%= render "shared/hero" %>
+<%= render "shared/ticker" %>
+<div class="mini-carousel-container">
+  <!-- Mini Carousel -->
+  <% mini_carousel_items = [
+    { image: "cuisine-burgers.webp",  label: "Burgers",   category: "burgers"  },
+    { image: "cuisine-sushi.webp",    label: "Sushi",     category: "sushi"    },
+    { image: "cuisine-pizza.webp",    label: "Pizza",     category: "pizza"    },
+    { image: "cuisine-salad.webp",    label: "Salad",     category: "salad"    },
+    { image: "cuisine-taco.webp",     label: "Tacos",     category: "tacos"    },
+    { image: "cuisine-pasta.webp",    label: "Pasta",     category: "pasta"    },
+    { image: "cuisine-shawarma.webp", label: "Shawarma",  category: "shawarma" }
+  ] %>
 
-  <div class="row">
-    <% @products.each do |product| %>
-      <div class="col-md-4">
-        <%= render partial: "stores/products/product_card", locals: { product: product } %>
-      </div>
-    <% end %>
-  </div>
+  <%= render "shared/mini_cuisines", mini_carousel_items: mini_carousel_items %>
 </div>
+
+<%= render "shared/product_poster", product: @product %>
+
+<div class="banner" style="padding-top: 5%;">
+  <%= image_tag "Section.png",
+                alt: "Promotional Section",
+                aria: { hidden: true },
+                class: "banner-image" %>
+</div>
+
+<%= render "shared/map" %>
+<%= render "shared/testimonials" %>
+<%= render "shared/marketplace_solution" %>

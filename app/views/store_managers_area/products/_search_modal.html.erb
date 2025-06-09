@@ -1,0 +1,35 @@
+<%= turbo_frame_tag "product_search_modal" do %>
+  <% if show_modal && products.any? %>
+    <div class="modal fade show" id="productSearchModal" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Search Results</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="document.getElementById('productSearchModal').remove()"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+              <%= render partial: "stores/products/product_card", collection: products, as: :product %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% elsif show_modal == false %>
+    <div class="modal fade show" id="noResultsModal" tabindex="-1" style="display: block;" aria-modal="true" role="dialog">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Product Not Found</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onclick="document.getElementById('noResultsModal').remove()"></button>
+          </div>
+          <div class="modal-body">
+            No products found for "<strong><%= query %></strong>".
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>

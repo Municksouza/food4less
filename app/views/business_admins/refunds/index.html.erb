@@ -1,0 +1,32 @@
+<h1 class="mb-4">Refund List</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order</th>
+            <th>Amount</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @refunds.each do |refund| %>
+            <tr>
+                <td><%= refund.order_id %></td>
+                <td><%= number_to_currency(refund.amount) %></td>
+                <td><%= refund.reason %></td>
+                <td><%= refund.status %></td>
+                <td><%= l(refund.created_at, format: :short) %></td>
+                <td>
+                    <%= link_to 'View', business_admins_store_refund_path(@store, refund), class: "btn btn-sm btn-info" %>
+                    <%= link_to 'Edit', edit_business_admins_store_refund_path(@store, refund), class: "btn btn-sm btn-warning" %>
+                    <%= link_to 'Delete', business_admins_store_refund_path(@store, refund), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+
+<%= link_to 'New Refund', new_business_admins_store_refund_path(@store), class: "btn btn-primary mt-3" %>

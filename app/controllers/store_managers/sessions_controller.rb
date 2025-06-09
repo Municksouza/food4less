@@ -1,21 +1,20 @@
+# app/controllers/store_managers/sessions_controller.rb
 class StoreManagers::SessionsController < Devise::SessionsController
-  # GET /store_managers/sign_in
-  def new
-    super
-  end
-  
-  # POST /store_managers/sign_in
   def create
     self.resource = warden.authenticate!(auth_options)
     set_flash_message!(:notice, :signed_in)
-    sign_in(:store_manager, resource)
+    sign_in(resource_name, resource)
     yield resource if block_given?
-    # Redirects to the store manager's dashboard (adjust the path as needed)
-    redirect_to stores_store_dashboard_path
+    respond_with resource, location: after_sign_in_path_for(resource)
   end
-  
-  # DELETE /store_managers/sign_out
-  def destroy
-    super
+
+  protected
+
+  def after_sign_in_path_for(resource)
+    stores_store_dashboard_path
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    root_path
   end
 end

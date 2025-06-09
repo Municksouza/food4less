@@ -1,19 +1,15 @@
 class Customers::SessionsController < Devise::SessionsController
   def create
-    customer = Customer.find_by(email: params[:customer][:email])
+    self.resource = warden.authenticate(auth_options)
 
-    if customer&.valid_password?(params[:customer][:password])
-      sign_in_and_redirect customer, event: :authentication
-      flash[:notice] = "Login successful!"
+    if resource
+      set_flash_message!(:notice, :signed_in)
+      sign_in(resource_name, resource)
+      respond_with resource, location: after_sign_in_path_for(resource)
     else
-      flash[:alert] = "Invalid email or password"
-      render :new
+      flash.now[:alert] = "Invalid email or password."
+      render :new, status: :unprocessable_entity
     end
-  end
-
-  def destroy
-    sign_out(:customer)
-    redirect_to root_path, notice: "You have successfully logged out."
   end
 
   protected
@@ -22,7 +18,7 @@ class Customers::SessionsController < Devise::SessionsController
     customers_dashboard_path
   end
 
-  def after_sign_out_path_for(resource)
+  def after_sign_out_path_for(resource_or_scope)
     root_path
   end
 end

@@ -1,7 +1,9 @@
 module Customers
-  class DashboardsController < ApplicationController  
+  class DashboardsController < ApplicationController
+    layout "application"
     before_action :authenticate_customer!
     before_action :ensure_customer!
+    before_action :set_sidebar_type
 
     def show
       cart = Cart.find_by(customer_id: current_customer.id, status: 'open')
@@ -24,6 +26,10 @@ module Customers
 
     def ensure_customer!
       redirect_to root_path, alert: "Unauthorized access" unless current_customer
+    end
+
+    def set_sidebar_type
+      @sidebar_type = "customer"
     end
   end
 end

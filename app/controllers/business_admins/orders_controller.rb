@@ -6,15 +6,31 @@ module BusinessAdmins
 
     def index
       @orders = @store.orders
+      @status = params[:status]
+
+      @orders = @orders.where(status: @status) if @status.present?
+
+      if request.xhr?
+        partial_name = "stores/orders/#{@status.presence || 'default'}"
+        if lookup_context.exists?(partial_name, [], true)
+          render partial: partial_name, locals: { orders: @orders }
+        else
+          render partial: "stores/orders/default", locals: { orders: @orders }
+        end
+      else
+        render :index
+      end
     end
 
     def show
+      @pending_orders = @store.orders.where(status: "pending")
+      @accepted_orders = @store.orders.where(status: "accepted")
+      @completed_orders = @store.orders.where(status: "completed")
+
+      render "stores/orders/show"
     end
 
     def update
-      @store = current_business_admin.stores.find(params[:store_id])
-      @order = @store.orders.find(params[:id])
-    
       if @order.update(order_params)
         redirect_to business_admins_store_orders_url(@store), notice: "Order successfully updated."
       else
@@ -38,8 +54,6 @@ module BusinessAdmins
     end
 
     def generate_invoice
-      @order = Order.find(params[:id])
-      @store = Store.find(params[:store_id])
       pdf = Prawn::Document.new
       pdf.text "Invoice - Order ##{@order.id}"
       send_data pdf.render, filename: "invoice_#{@order.id}.pdf", type: "application/pdf"
@@ -47,10 +61,12 @@ module BusinessAdmins
 
     def live
       @live_orders = @store.orders.where(status: "pending")
+      render "stores/orders/live"
     end
 
     def history
       @order_history = @store.orders.where(status: "completed")
+      render "stores/orders/history"
     end
 
     def destroy
@@ -61,7 +77,19 @@ module BusinessAdmins
     private
 
     def set_store
-      @store = current_business_admin.stores.find(params[:store_id])
+      Rails.logger.debug "PARAMS: #{params.inspect}"
+
+      # Tenta usar :store_slug ou :id; se não houver, usa a primeira loja do admin
+      identifier = params[:store_slug] || params[:id]
+
+      if identifier.present?
+        @store = current_business_admin.stores.friendly.find(identifier)
+      else
+        @store = current_business_admin.stores.first
+        unless @store
+          redirect_to business_admins_business_dashboard_path, alert: 'Store not specified.' and return
+        end
+      end
     end
 
     def set_order

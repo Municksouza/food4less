@@ -1,0 +1,7 @@
+<%= simple_form_for [:business_admins, @report] do |f| %>
+  <%= f.input :title %>
+  <%= f.input :description %>
+  <%= f.input :report_type %>
+  <%= f.input :store_id, collection: current_business_admin.stores.map { |s| [s.name, s.id] }, prompt: "Select Store" %>
+  <%= f.button :submit, class: "btn btn-primary" %>
+<% end %>

@@ -1,14 +1,12 @@
+# app/controllers/business_admins/receipts_controller.rb
 require Rails.root.join("app/services/pdf_receipt_generator")
 
 class BusinessAdmins::ReceiptsController < ApplicationController
   before_action :authenticate_business_admin!
-
+  before_action :set_store
 
   def index
-    @stores = current_business_admin.stores
-    store_ids = @stores.pluck(:id)
-
-    @receipts = Receipt.where(store_id: store_ids)
+    @receipts = @store.receipts
 
     if params.dig(:filters, :store_id).present?
       @receipts = @receipts.where(store_id: params[:filters][:store_id])
@@ -34,21 +32,29 @@ class BusinessAdmins::ReceiptsController < ApplicationController
       @receipts = @receipts.order(created_at: :desc)
     end
   end
-  
+
   def show
-    store_ids = current_business_admin.stores.pluck(:id)
-    @receipt = Receipt.includes(:store, order: :customer).find_by(id: params[:id], store_id: store_ids)
-  
+    @receipt = @store.receipts.includes(:store, order: :customer).find_by(id: params[:id])
+
     unless @receipt
-      redirect_to business_admins_receipts_path, alert: "Access denied." and return
+      redirect_to business_admins_store_receipts_path(@store), alert: "Access denied." and return
     end
-  
+
     respond_to do |format|
       format.html
       format.pdf do
         pdf = PdfReceiptGenerator.generate(@receipt)
         send_data pdf, filename: "Receipt_#{@receipt.id}.pdf", type: "application/pdf", disposition: "inline"
       end
+    end
+  end
+
+  private
+
+  def set_store
+    @store = current_business_admin.stores.friendly.find_by(slug: params[:store_slug])
+    unless @store
+      redirect_to business_admins_stores_path, alert: "Store not found." and return
     end
   end
 end

@@ -1,0 +1,7 @@
+<h1><%= @report.title %></h1>
+<p><strong>Type:</strong> <%= @report.report_type %></p>
+<p><strong>Description:</strong> <%= @report.description %></p>
+<p><strong>Store:</strong> <%= @report.store&.name %></p>
+
+<%= link_to 'Edit', edit_business_admins_report_path(@report), class: "btn btn-warning" %>
+<%= link_to 'Back', business_admins_reports_path, class: "btn btn-secondary" %>

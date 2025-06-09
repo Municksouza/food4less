@@ -52,7 +52,10 @@ class Customers::CartsControllerTest < ActionDispatch::IntegrationTest
       price: 10.0,
       stock: 10,
       description: "A test product",
-      store: @store
+      store: @store,
+      category: Category.create!(
+        name: "Test",
+      ),
     )
 
   end

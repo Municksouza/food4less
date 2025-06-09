@@ -1,0 +1,64 @@
+<div class="offcanvas offcanvas-end business-panel" tabindex="-1" id="offcanvasBusiness" aria-labelledby="offcanvasBusinessLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title text-white fw-semibold" id="offcanvasBusinessLabel">For Partners</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body text-white">
+    <!-- Login Buttons -->
+    <div class="mb-4 d-grid gap-2">
+      <%= link_to "Business Login", new_business_admin_session_path, class: "btn btn-outline-light" %>
+      <%= link_to "Store Login",   new_store_manager_session_path, class: "btn btn-outline-light" %>
+    </div>
+
+    <hr class="text-secondary mt-4">
+
+    <h6 class="text-light mt-4 mb-3">Why Join Food4Less?</h6>
+
+    <div class="business-benefits">
+      <!-- Boost Your Revenue -->
+      <div
+        class="benefit-card d-flex align-items-center mb-3"
+        data-bs-toggle="popover"
+        data-bs-trigger="hover focus"
+        data-bs-html="true"
+        title="Boost Your Revenue"
+        data-bs-content="Sell your surplus or canceled meals in seconds — turn potential waste into extra income."
+      >
+        <i class="fas fa-dollar-sign benefit-icon me-3"></i>
+        <h6 class="mb-0">Boost Your Revenue</h6>
+      </div>
+
+      <!-- Reach New Customers -->
+      <div
+        class="benefit-card d-flex align-items-center mb-3"
+        data-bs-toggle="popover"
+        data-bs-trigger="hover focus"
+        data-bs-html="true"
+        title="Reach New Customers"
+        data-bs-content="Put yours products in front of food lovers looking for great local deals. Connect with local bargain seekers."
+      >
+        <i class="fas fa-chart-line benefit-icon me-3"></i>
+        <h6 class="mb-0">Reach New Customers</h6>
+      </div>
+
+      <!-- Partner With Us -->
+      <div
+        class="benefit-card d-flex align-items-center"
+        data-bs-toggle="popover"
+        data-bs-trigger="hover focus"
+        data-bs-html="true"
+        title="Partner With Us"
+        data-bs-content="Let us handle the tech — you focus on cooking. Join our growing network today."
+      >
+        <i class="fas fa-handshake benefit-icon me-3"></i>
+        <h6 class="mb-0">Partner With Us</h6>
+      </div>
+    </div>
+
+    <!-- Sign Up Button -->
+    <div class="text-center mt-4">
+      <%= link_to "Sign Up as a Business", new_business_admin_registration_path, class: "btn btn-red w-100" %>
+    </div>
+  </div>
+</div>

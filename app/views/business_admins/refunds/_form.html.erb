@@ -1,0 +1,17 @@
+<%= simple_form_for([:business_admins, @store, refund], html: { class: "row g-3" }) do |f| %>
+  <div class="col-md-6">
+    <%= f.input :order_id %>
+  </div>
+  <div class="col-md-6">
+    <%= f.input :amount %>
+  </div>
+  <div class="col-12">
+    <%= f.input :reason, as: :text %>
+  </div>
+  <div class="col-md-6">
+    <%= f.input :status, collection: ['pending', 'approved', 'rejected'], prompt: "Select status" %>
+  </div>
+  <div class="col-12">
+    <%= f.button :submit, class: "btn btn-primary" %>
+  </div>
+<% end %>

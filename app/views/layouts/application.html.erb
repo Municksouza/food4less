@@ -2,54 +2,79 @@
 <html>
   <head>
     <title><%= content_for(:title) || "Food4less" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_TOKEN'] %>"> 
-    <%= favicon_link_tag "logo.food.png" %>    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Food4Less - Save big and discover delicious meals near you! Best local food deals and exclusive discounts.">
+    <meta name="keywords" content="food deals, local meals, discounts, restaurants, Food4Less">
+    <meta name="author" content="Food4Less Team">
+    <meta property="og:title" content="Food4Less - Save Big on Local Meals!">
+    <meta property="og:description" content="Find amazing deals on your favorite meals with Food4Less. Explore and save!">
+    <meta property="og:image" content="https://yourdomain.com/path/to/featured-image.jpg">
+    <meta property="og:url" content="https://yourdomain.com/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="mapbox-token" content="<%= ENV['MAPBOX_API_TOKEN'] %>">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#dc3545">
+    <%= favicon_link_tag "food4less-logo.jpg" %>
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= action_cable_meta_tag %>
-   
-    <%= yield :head %>
 
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
+    <%= yield :head %>
 
     <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload" %>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
+    <link href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    
   </head>
 
-  <body data-store-id="<%= current_store_manager&.store&.id %>"> 
+  <body class="<%= "#{controller.controller_name}-#{controller.action_name} " + 
+    (current_customer || current_store_manager || current_business_admin ? 'with-sidebar sidebar-closed' : 'no-sidebar') %> d-flex flex-column min-vh-100"
+    data-controller="sidebar"
+    data-store-id="<%= current_store_manager&.store&.id %>">
+
+    <% if flash.any? %>
+      <%= render 'shared/flash' %>
+    <% end %>
+
     <% if current_store_manager %>
       <audio id="notification-sound" src="/sounds/alert-loop.mp3" loop></audio>
-    <% end %>   
-    <% flash.each do |type, message| %>
-      <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert">
-        <%= message %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <% end %>
+
+    <% if current_page?(root_path) %>
+      <%= render "shared/navbar" %>
+      <main class="container-fluid p-0">
+        <%= yield %>
+      </main>
+    <% else %>
+      <div class="d-flex flex-grow-1">
+        <% if current_customer || current_store_manager || current_business_admin %>
+          <aside id="sidebarMenu" data-sidebar-target="sidebar">
+            <%= render "shared/sidebar_customer" if current_customer %>
+            <%= render "shared/sidebar_store_manager" if current_store_manager %>
+            <%= render "shared/sidebar_business_admin" if current_business_admin %>
+          </aside>
+        <% end %>
+        <main class="main-content">
+          <%= yield %>
+        </main>
       </div>
     <% end %>
 
-    <% unless current_customer || current_store_manager || current_business_admin %>
-      <%= render "shared/navbar" %>
-    <% end %>
+    <%= render "shared/footer" %>
 
-    <div class="container-fluid mt-4">
-      <% if current_customer || current_store_manager || current_business_admin %>
-        <div class="row">
-          <div class="col-md-3">
-            <%= render "shared/sidebar" %>
-          </div>
-          <div class="col-md-9">
-            <%= yield %>
-          </div>
-        </div>
-      <% else %>
-        <%= yield %>
-      <% end %>
-        <%= render "shared/footer" %>
-    </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.1.2/mapbox-gl-geocoder.min.js"></script>
+    
   </body>
 </html>

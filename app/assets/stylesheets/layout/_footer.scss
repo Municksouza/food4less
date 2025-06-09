@@ -1,0 +1,29 @@
+.footer {
+  background-color: #212529;
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.85rem;
+  width: 100%;
+  margin-top: auto;
+  padding: 1rem;
+
+  // Adjust font size for smaller screens
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+
+  // Adjust padding for very small screens
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+  }
+}
+
+.footer a {
+  color: #e74c3c;
+  font-weight: bold;
+  text-decoration: none;
+
+  &:hover {
+    color: #ffffff;
+  }
+}

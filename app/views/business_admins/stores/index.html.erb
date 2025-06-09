@@ -1,41 +1,52 @@
-<h1>My Stores</h1>
+<div class="admin-stores-page container my-5">
+  <div class="admin-stores-header d-flex justify-content-between align-items-center mb-4">
+    <h1 class="admin-stores-title mb-0">My Stores</h1>
+    <%= link_to "➕ Create New Store", new_business_admins_store_path, class: "btn btn-success btn-lg admin-stores-create-btn" %>
+  </div>
 
-<%= link_to "Create New Store", new_business_admins_store_path, class: "btn btn-primary mb-3" %>
-
-<table class="table table-striped">
-    <thead>
+  <div class="admin-stores-table-wrapper table-responsive">
+    <table class="table table-bordered table-hover align-middle shadow-sm admin-stores-table">
+      <thead class="table-light">
         <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Email</th>
-            <th></th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Email</th>
+          <th>Actions</th>
         </tr>
-    </thead>
-    <tbody>
-        <% @stores.each do |store| %>
-            <tr>
-                <td><%= store.name %></td>
-                <td><%= store.address %></td>
-                <td><%= store.email %></td>
-                <td>
-                    <%= link_to "Dashboard", business_admins_store_dashboard_path(store), class: "btn btn-sm btn-outline-info" %>
-                    <%= link_to "Edit", edit_business_admins_store_path(store), class: "btn btn-sm btn-warning" %>
-                </td>
-            </tr>
+      </thead>
+      <tbody>
+        <% active_stores = @stores.respond_to?(:where) ? @stores.where(active: true) : @stores.select { |store| store.active } %>
+        <% active_stores.each do |store| %>
+          <tr>
+            <td><%= store.name %></td>
+            <td><%= store.address %></td>
+            <td><%= store.email %></td>
+            <td class="admin-stores-actions">
+              <%= link_to "Dashboard", dashboard_business_admins_store_path(store), class: "btn btn-outline-info btn-sm me-1" %>              
+              <%= link_to "Edit", edit_business_admins_store_path(store), class: "btn btn-warning btn-sm" %>
+            </td>
+          </tr>
         <% end %>
-        <h2 class="mt-5">Archived Stores</h2>
-        <% archived_stores = current_business_admin.stores.where(active: false) %>
-        <% if archived_stores.any? %>
-        <ul>
-            <% archived_stores.each do |store| %>
-            <li>
-                <%= store.name %>
-                <%= button_to "Restore", restore_business_admins_store_path(store), method: :patch, class: "btn btn-sm btn-success" %>
-            </li>
-            <% end %>
-        </ul>
-        <% else %>
-        <p>No archived stores.</p>
-        <% end %>
-    </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 class="admin-stores-archived-title mt-5">Archived Stores</h2>
+  <% archived = @stores.respond_to?(:where) ? @stores.where(active: false) : @stores.select { |store| !store.active } %>
+  <% if archived.any? %>
+    <div class="admin-stores-archived row">
+      <% archived.each do |store| %>
+        <div class="col-md-6 col-lg-4 mb-3">
+          <div class="card h-100 shadow-sm admin-store-card">
+            <div class="card-body">
+              <h5 class="card-title"><%= store.name %></h5>
+              <%= button_to "Restore", restore_business_admins_store_path(store), method: :patch, class: "btn btn-success btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">No archived stores.</p>
+  <% end %>
+</div>

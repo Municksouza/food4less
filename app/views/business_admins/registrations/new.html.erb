@@ -1,20 +1,78 @@
-<h2>Sign Up as a Business</h2>
+<div class="business-signup-page d-flex align-items-center justify-content-center min-vh-100">
+  <div class="business-signup-card shadow-lg">
+    <!-- Header with gradient -->
+    <div class="card-header text-center text-white">
+      <h2 class="mb-0">Join Food4Less</h2>
+      <p class="small">Grow your business. Reach hungry customers.</p>
+    </div>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { multipart: true }) do |f| %>
-  <%= f.error_notification %>
+    <!-- Card body -->
+    <div class="card-body p-4">
+      <%= simple_form_for(resource, as: resource_name,
+             url: registration_path(resource_name),
+             html: { multipart: true, class: "business-signup-form" }) do |f| %>
+        <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name, label: "Business Name", required: true %>
-    <%= f.input :address, label: "Business Address", required: true %>
-    <%= f.input :zip_code, label: "ZIP Code", required: true %>
-    <%= f.input :phone, label: "Phone Number", required: true %>
-    <%= f.input :email, label: "Email Address", required: true %>
-    <%= f.input :password, label: "Password", required: true %>
-    <%= f.input :password_confirmation, label: "Confirm Password", required: true %>
-    <%= f.input :logo, as: :file, label: "Business Logo (optional)" %>
+        <div class="row g-3">
+          <div class="col-12">
+            <%= f.input :name,
+                        label: "Business Name",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+          <div class="col-12">
+            <%= f.input :address,
+                        label: "Address",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :zip_code,
+                        label: "ZIP Code",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :business_number,
+                        label: "SK Business #",
+                        hint: "9-digit number",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :phone,
+                        label: "Phone Number",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :email,
+                        label: "Email Address",
+                        input_html: { class: "form-control form-control-lg" } %>
+          </div>
+
+          <div class="col-md-6">
+            <%= f.input :password,
+                        label: "Password",
+                        hint: "Min. 8 characters, including 1 letter, 1 number & 1 special char",
+                        input_html: { class: "form-control form-control-lg", autocomplete: "new-password" } %>
+          </div>
+
+          <div class="col-md-6">
+            <%= f.input :password_confirmation,
+                        label: "Confirm Password",
+                        input_html: { class: "form-control form-control-lg", autocomplete: "new-password" } %>
+          </div>
+
+          <div class="col-12">
+            <%= f.input :logo,
+                        as: :file,
+                        label: "Business Logo (optional)",
+                        input_html: { class: "form-control" } %>
+          </div>
+        </div>
+
+        <div class="mt-4 text-center">
+          <%= f.button :submit,
+                       "Sign Up",
+                       class: "btn btn-primary btn-lg w-100" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Sign Up", class: "btn btn-primary" %>
-  </div>
-<% end %>
+</div>

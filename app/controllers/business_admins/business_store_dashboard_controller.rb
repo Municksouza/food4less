@@ -1,9 +1,10 @@
-# app/controllers/business_store_dashboards_controller.rb
+# app/controllers/business_admins/business_store_dashboard_controller.rb
 class BusinessAdmins::BusinessStoreDashboardController < ApplicationController
+  before_action :authenticate_business_admin!
   before_action :set_store
 
   def show
-    @store = Store.find(params[:store_id])
+    @store = current_business_admin.stores.friendly.find(params[:slug])    
     @orders = @store.orders
     @total_sales = @orders.where(status: 'accepted').sum(:total_amount)
     @accepted_orders = @orders.where(status: 'accepted').count
@@ -16,14 +17,14 @@ class BusinessAdmins::BusinessStoreDashboardController < ApplicationController
     @store_receipts = Receipt.where(receipt_type: 'store', store_id: @store.id)
     @customers = @store.customers.distinct
 
-    # Aqui, você também pode preparar dados para gerenciar produtos:
+    # Here, you can also prepare data to manage products:
     @products = @store.products
   end
 
   private
-
   def set_store
-    # O BusinessAdmin só pode acessar as lojas que lhe pertencem
-    @store = current_business_admin.stores.find(params[:store_id])
+    @store = current_business_admin.stores.friendly.find(params[:slug])  
+  rescue ActiveRecord::RecordNotFound
+    redirect_to business_admins_stores_path, alert: "Store not found or does not belong to you."
   end
 end

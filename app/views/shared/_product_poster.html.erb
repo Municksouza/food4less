@@ -1,0 +1,130 @@
+<!-- filepath: /Users/munickfreitas/code/Municksouza/food4less/app/views/shared/_product_poster.html.erb -->
+<div class="container py-5">
+  <div class="row align-items-center mb-5" style="margin-top: 5rem;">
+    <div class="col-md-6">
+      <h6 class="text-muted mb-1">Fresh Finds</h6>
+      <h2 class="fw-bold mb-0">Explore Top Deals from Local Restaurants</h2>
+    </div>
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+      <div class="search-bar">
+        <form class="search-pill" action="/search" method="get" accept-charset="UTF-8">
+          <input type="text" name="query" placeholder="Search..." class="form-control" />
+          <button type="submit" class="btn btn-outline-secondary">
+            <i class="bi bi-search"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="product-list-scrollable mt-4">
+    <div class="row g-3" data-controller="shimmer">
+      <!-- Shimmer placeholders -->
+      <% 6.times do %>
+        <div class="col-12 col-sm-6 col-lg-4 mb-4" data-shimmer-target="shimmer">
+          <div class="product-poster product-poster--horizontal">
+            <div class="poster-image-wrapper shimmer-image"></div>
+            <div class="poster-info">
+              <div class="shimmer-line w-75 mb-2"></div>
+              <div class="shimmer-line w-50 mb-2"></div>
+              <div class="shimmer-line w-100 mb-2"></div>
+              <div class="shimmer-line w-25"></div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Product cards (initially with opacity 0 for fade-in) -->
+      <% @products.each do |product| %>
+        <div class="col-12 col-sm-6 col-lg-4 mb-4 fade-in-section" data-shimmer-target="poster">
+          <div class="product-poster product-poster--horizontal">
+            <div class="poster-image-wrapper position-relative">
+              <% image = product.images.attached? ? product.images.first : nil %>
+              <% if image.present? %>
+                <%= image_tag url_for(image.variant(resize_to_limit: [300, 300]).processed), class: "poster-image" %>
+              <% else %>
+                <%= image_tag "placeholder.jpeg", class: "poster-image" %>
+              <% end %>
+
+              <% if product.old_price.present? && product.old_price > product.price %>
+                <% discount = ((1 - product.price.to_f / product.old_price.to_f) * 100).round %>
+                <div class="poster-badge">⚡ -<%= discount %>%</div>
+              <% end %>
+
+              <button class="poster-fav" type="button">
+                <i class="far fa-heart"></i>
+              </button>
+            </div>
+
+            <div class="poster-info">
+              <% if product.store.present? %>
+                <div class="poster-store-info text-center flex-column align-items-center mb-3">
+                  <% if product.store.logo.attached? %>
+                    <%= image_tag url_for(product.store.logo.variant(resize_to_limit: [60, 60]).processed), class: "store-logo mx-auto mb-1" %>
+                  <% else %>
+                    <%= image_tag "placeholder.jpeg", class: "store-logo mx-auto mb-1" %>
+                  <% end %>
+                  <p class="store-name mb-1 fw-bold"><%= product.store.name %></p>
+
+                  <% if product.store.phone.present? %>
+                    <p class="store-phone mb-1 small">
+                      <i class="fas fa-phone-alt text-muted me-1"></i>
+                      <%= link_to product.store.phone, "tel:#{product.store.phone}", class: "phone-link text-decoration-none text-muted" %>
+                    </p>
+                  <% end %>
+
+                  <% if product.store.address.present? %>
+                    <p class="store-address mb-0 small">
+                      <i class="fas fa-map-marker-alt text-muted me-1"></i>
+                      <%= link_to product.store.address,
+                                  "https://maps.google.com?q=#{URI.encode_www_form_component(product.store.address)}",
+                                  target: "_blank", rel: "noopener", class: "text-decoration-none text-muted" %>
+                    </p>
+                  <% end %>
+                </div>
+              <% end %>
+
+              <h5 class="poster-name text-center"><%= product.name %></h5>
+
+              <% if product.description.present? %>
+                <p class="poster-desc text-center"><%= truncate(product.description, length: 60) %></p>
+              <% end %>
+
+              <% if product.stock.present? && product.stock > 0 %>
+                <p class="product-stock text-success text-center small">
+                  <i class="fas fa-box"></i> <%= product.stock %> in stock
+                </p>
+              <% else %>
+                <span class="product-stock badge bg-danger text-center">
+                  <i class="fas fa-box-open"></i> Out of Stock
+                </span>
+              <% end %>
+
+              <div class="poster-prices justify-content-center d-flex gap-2">
+                <span class="current"><%= number_to_currency(product.price) %></span>
+                <% if product.old_price.present? && product.old_price > product.price %>
+                  <span class="old"><%= number_to_currency(product.old_price) %></span>
+                <% end %>
+              </div>
+
+              <div class="poster-ratings justify-content-center">
+                <% avg = (product.reviews&.average(:rating)&.round rescue 0) || 0 %>
+                <% count = product.reviews&.count || 0 %>
+                <% 5.times do |i| %>
+                  <i class="<%= i < avg ? 'fas' : 'far' %> fa-star text-warning"></i>
+                <% end %>
+                <span class="ms-2 text-muted">(<%= count %>)</span>
+              </div>
+
+              <div class="d-flex justify-content-end mt-auto">
+                <%= link_to add_item_customers_cart_path(product), method: :post, class: "poster-cart-btn small-button" do %>
+                  <i class="fas fa-shopping-basket"></i>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

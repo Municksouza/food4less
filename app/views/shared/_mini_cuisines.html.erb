@@ -1,0 +1,30 @@
+<!-- Mini Carousel -->
+<div class="mini-carousel-wrapper">
+
+  <% mini_carousel_items = [
+    { image: "burgers.webp", label: "Burgers", category: "burgers" },
+    { image: "sushi.webp", label: "Sushi", category: "sushi" },
+    { image: "pizza-shop.webp", label: "Pizza", category: "pizza" },
+    { image: "salad.webp", label: "Salad", category: "salad" },
+    { image: "taco.webp", label: "Tacos", category: "tacos" },
+    { image: "pasta.webp", label: "Pasta", category: "pasta" },
+    { image: "shawarma.webp", label: "Shawarma", category: "shawarma" },
+    { image: "korean.webp", label: "Korean", category: "korean" },
+    { image: "burritos.webp", label: "Burrito", category: "burrito" }
+  ] %>
+
+  <div class="cuisines-carousel">
+    <% mini_carousel_items.each do |item| %>
+      <div class="cuisine-main-card">
+        <%= link_to products_path(category: item[:category]), class: "cuisine-link" do %>
+          <div class="cuisine-image-wrapper">
+            <%= image_tag "cuisines/#{item[:image]}", alt: item[:label], class: "cuisine-image" %>
+            <div class="cuisine-overlay">
+              <h5 class="cuisine-name"><%= item[:label] %></h5>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

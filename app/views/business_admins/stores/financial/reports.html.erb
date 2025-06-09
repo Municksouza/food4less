@@ -1,0 +1,10 @@
+<h1 class="mb-4">Financial Reports</h1>
+
+<ul class="list-group">
+    <li class="list-group-item">
+        <%= link_to 'Monthly Report', financial_monthly_report_path(@store.slug), class: 'btn btn-outline-primary' %>
+    </li>
+    <li class="list-group-item">
+        <%= link_to 'Annual Report', financial_yearly_report_path(@store.slug), class: 'btn btn-outline-primary' %>
+    </li>
+</ul>

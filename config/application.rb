@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "active_storage/engine"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -18,16 +19,11 @@ module Food4less
 
     # Configuration for the application, engines, and railties goes here.
     config.autoload_paths += Dir[Rails.root.join('app', 'policies', '*.rb')]
+    config.assets.paths << Rails.root.join("app", "assets", "fonts", "images", "cuisines", "javascripts", "stylesheets")
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-    if defined?(SolidCable::Record)
-      config.after_initialize do
-        db_config = Rails.configuration.database_configuration[Rails.env.to_s]
-        SolidCable::Record.establish_connection(db_config)
-      end
-    end
   end
 end
