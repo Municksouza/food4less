@@ -1,6 +1,6 @@
 // app/assets/stylesheets/application.scss
 
-@use "../../../node_modules/bootstrap/scss/bootstrap" as *;
+@use "bootstrap/scss/bootstrap" as *;
 @use "../../../node_modules/bootstrap-icons/font/bootstrap-icons";
 // @use "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
@@ -26,7 +26,7 @@
 @use "components/product_card";
 @use "components/avatar";
 @use "components/new_order_card";
-@use "components/store_card"; 
+@use "components/store_card";
 @use "components/store_flip_card";
 @use "components/product_poster";
 @use "components/category";
