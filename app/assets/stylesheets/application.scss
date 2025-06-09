@@ -1,6 +1,5 @@
 // app/assets/stylesheets/application.scss
-@use "../../../node_modules/bootstrap/scss/bootstrap" as *;
-// @use "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
+@use "bootstrap/scss/bootstrap" as *;
 
 // // Layout
 @use "layout/body";
