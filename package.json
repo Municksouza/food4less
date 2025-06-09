@@ -30,7 +30,7 @@
     "actioncable": "^5.2.8-1",
     "aos": "^2.3.4",
     "autoprefixer": "^10.4.21",
-    "bootstrap": "^5.3.5",
+    "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.11.3",
     "chart.js": "^4.4.8",
     "chartkick": "^5.0.1",
