@@ -1,7 +1,6 @@
 // app/assets/stylesheets/application.scss
 
 @use "bootstrap/scss/bootstrap" as *;
-@use "../../../node_modules/bootstrap-icons/font/bootstrap-icons";
 // @use "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 // // Layout
@@ -56,3 +55,5 @@
 
 // // Partials
 @use "partials/print";
+
+@import "bootstrap-icons/font/bootstrap-icons.css";
