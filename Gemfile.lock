@@ -75,13 +75,13 @@ GEM
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     ast (2.4.2)
-    base64 (0.2.0)
+    base64 (0.3.0)
     bcrypt (3.1.20)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
     bcrypt_pbkdf (1.1.1-x86_64-darwin)
-    benchmark (0.4.0)
-    bigdecimal (3.1.9)
+    benchmark (0.4.1)
+    bigdecimal (3.2.2)
     bindex (0.8.1)
     bootsnap (1.18.4)
       msgpack (~> 1.2)
@@ -102,7 +102,7 @@ GEM
       logger (~> 1.5)
     chronic (0.10.2)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.0)
+    connection_pool (2.5.3)
     crass (1.0.6)
     cssbundling-rails (1.4.3)
       railties (>= 6.0.0)
@@ -124,7 +124,7 @@ GEM
     dotenv-rails (3.1.7)
       dotenv (= 3.1.7)
       railties (>= 6.1)
-    drb (2.2.1)
+    drb (2.2.3)
     ed25519 (1.3.0)
     erubi (1.13.1)
     et-orbi (1.2.11)
@@ -164,8 +164,8 @@ GEM
     google-protobuf (4.30.1-x86_64-linux)
       bigdecimal
       rake (>= 13)
-    groupdate (6.5.1)
-      activesupport (>= 7)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     hotwire-rails (0.1.3)
       rails (>= 6.0.0)
       stimulus-rails
@@ -205,7 +205,7 @@ GEM
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
     lint_roller (1.1.0)
-    logger (1.6.6)
+    logger (1.7.0)
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -487,7 +487,7 @@ DEPENDENCIES
   faker
   friendly_id (~> 5.4.0)
   geocoder
-  groupdate (~> 6.5)
+  groupdate (~> 6.7)
   hotwire-rails
   image_processing (~> 1.2)
   jbuilder

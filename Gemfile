@@ -82,7 +82,7 @@ gem "geocoder"
 gem "jsbundling-rails", "~> 1.3"
 gem "cssbundling-rails", "~> 1.3"
 gem "chartkick", "~> 5.1"
-gem "groupdate", "~> 6.5"
+gem "groupdate", "~> 6.7"
 gem "minitest", "~> 5.25"
 gem "open-uri-cached"
 gem 'friendly_id', '~> 5.4.0'
