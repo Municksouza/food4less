@@ -5,7 +5,7 @@ class Customers::DashboardsControllerTest < ActionDispatch::IntegrationTest
   include Rails.application.routes.url_helpers
   setup do
     Rails.application.reload_routes!
-    @customer = customers(:one) # Assuming you have a fixture for customers
+    @customer = Customer.first || Customer.create!(email: "test@example.com", password: "password")
     sign_in @customer
   end
 

@@ -1,5 +1,6 @@
 <%# app/views/stores/orders/_order.html.erb %>
 <%# Receives as locals: order, play_sound (boolean) %>
+<% play_sound = false if local_assigns[:play_sound].nil? %>
 
 <%# Builds the data-attributes for the Stimulus countdown only if the order is accepted and has ready_in_minutes %>
 <% countdown_attrs = {} %>
@@ -40,9 +41,9 @@
   </div>
 
   <!-- Store Information -->
-  <% if order.store %>
+  <% if order.store.present? %>
     <% if order.store.logo.attached? %>
-      <%= image_tag url_for(order.store.logo.variant(resize_to_limit: [150, 150])) %>
+      <%= image_tag(url_for(order.store.logo.variant(resize_to_limit: [150, 150]))) %>
     <% else %>
       <%= image_tag "placeholder.jpeg", width: 150, height: 150 %>
     <% end %>

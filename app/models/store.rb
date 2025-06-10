@@ -21,8 +21,8 @@ class Store < ApplicationRecord
   has_many :payments, dependent: :destroy
   has_many :refunds, dependent: :destroy
   has_many :products, dependent: :destroy
-  has_many :receipts
-  has_many :reviews
+  has_many :receipts, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   # Validações
   validates :name, :address, :description, :email, presence: true

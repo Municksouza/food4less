@@ -4,35 +4,41 @@ require_relative "../config/environment"
 require "rails/test_help"
 require "bcrypt"
 
-# Recarrega as rotas para garantir que estão atualizadas
+# Reload routes to ensure they are up to date
 Rails.application.routes.default_url_options[:host] = 'localhost:3000'
 
-# Configuração do Devise para testes
+# Devise configuration for tests
 # Devise.setup do |config|
 #   config.router_name = :main_app if defined?(main_app)
 # end
 
 module ActiveSupport
   class TestCase
-    # Executa os testes em paralelo com o número de processadores disponíveis
+    # Run tests in parallel with the number of available processors
     parallelize(workers: :number_of_processors)
 
-    # Carrega todos os fixtures em test/fixtures/*.yml para todos os testes
+    # Load all fixtures in test/fixtures/*.yml for all tests
     fixtures :all
 
-    # Inclui os helpers do Devise para facilitar o login nos testes
-    # Inclui os helpers do Devise para facilitar o login nos testes
+    # Include Devise helpers for easier login in tests
     include Devise::Test::IntegrationHelpers
 
-    # Inclui os helpers do Warden, se necessário
+    # Include Warden helpers if needed
     include Warden::Test::Helpers
     Warden.test_mode!
 
-    # Inclui os helpers de rotas do Rails
+    # Include Rails route helpers
     include Rails.application.routes.url_helpers
+    setup do
+      DatabaseCleaner.strategy = :transaction
+      DatabaseCleaner.start
+    end
 
-    # Adicione mais métodos auxiliares para serem usados em todos os testes aqui...
-  end
+    teardown do
+      DatabaseCleaner.clean
+    end
+      # Add more helper methods to be used by all tests here...
+    end
 end
 
 Geocoder.configure(lookup: :test)

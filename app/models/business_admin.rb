@@ -5,8 +5,9 @@ class BusinessAdmin < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one_attached :logo
-  has_many :receipts
-  has_many :stores, autosave: false
+  has_many :receipts, dependent: :destroy
+  has_many :stores, dependent: :destroy
+  
   
   validates :name, presence: true
   validates :address, presence: true

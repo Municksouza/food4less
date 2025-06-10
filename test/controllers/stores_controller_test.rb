@@ -5,15 +5,24 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   def setup
+    unique_business_number = nil
+    loop do
+      candidate = rand(100_000_000..999_999_999).to_s
+      unless BusinessAdmin.exists?(business_number: candidate)
+        unique_business_number = candidate
+        break
+      end
+    end
+
     @business_admin = BusinessAdmin.create!(
       name: "Admin Teste",
       address: "Rua Teste, 123, Mountain View, CA",
       phone: "123456789",
       zip_code: "94043",
       logo: fixture_file_upload(Rails.root.join("test", "fixtures", "files", "placeholder.jpeg"), "image/png"),
-      email: "admin@example.com",
-      password: "Password1!",  # Senha para BusinessAdmin, se necessário
-      business_number: "123456901"
+      email: "admin_test_#{SecureRandom.hex(4)}@example.com",
+      password: "Password1!",  
+      business_number: unique_business_number
     )
 
    @store = Store.create!(

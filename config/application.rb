@@ -21,6 +21,9 @@ module Food4less
     config.autoload_paths += Dir[Rails.root.join('app', 'policies', '*.rb')]
     config.assets.paths << Rails.root.join("app", "assets", "fonts", "images", "cuisines", "javascripts", "stylesheets")
     Rails.application.config.assets.paths << Rails.root.join("node_modules")
+    # Rails.application.configure do
+    #   config.active_record.database_selector = { delay: 2.seconds }
+    # end
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #

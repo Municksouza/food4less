@@ -24,9 +24,11 @@ module StoreManagersArea
 
     def approve
       if params[:order].present? && params[:order][:ready_in_minutes].present? &&
-        @order.update!(status: :accepted,
-        ready_in_minutes: params[:order][:ready_in_minutes],
-        countdown_end_time: Time.current + params[:order][:ready_in_minutes].to_i.minutes)
+        @order.update(
+          status: :accepted,
+          ready_in_minutes: params[:order][:ready_in_minutes],
+          countdown_end_time: Time.current + params[:order][:ready_in_minutes].to_i.minutes
+        )
 
         OrderBroadcaster.new(@order).broadcast_accept
 
@@ -36,8 +38,17 @@ module StoreManagersArea
         end
       else
         respond_to do |format|
-          format.turbo_stream { render turbo_stream: turbo_stream.replace("order-#{@order.id}", partial: "stores/orders/order", locals: { order: @order }) }
-          format.html { redirect_to store_managers_area_orders_path(slug: @order.store.slug), alert: 'Error approving the order.' }
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace(
+              "order-#{@order.id}",
+              partial: "store_managers_area/orders/order",
+              locals: { order: @order, play_sound: false }
+            )
+          end
+          format.html do
+            flash[:alert] = "Error approving the order: #{@order.errors.full_messages.to_sentence}"
+            redirect_to store_managers_area_orders_path(slug: @order.store.slug)
+          end
         end
       end
     end

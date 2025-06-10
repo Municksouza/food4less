@@ -1,4 +1,4 @@
-module Stores
+module StoreManagersArea
   class SettingsController < ApplicationController
     before_action :authenticate_store_manager!
     before_action :set_store

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_04_030111) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_10_055039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -210,6 +210,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_030111) do
     t.datetime "updated_at", null: false
     t.decimal "amount"
     t.datetime "issued_at"
+    t.bigint "business_admin_id"
+    t.index ["business_admin_id"], name: "index_receipts_on_business_admin_id"
     t.index ["order_id"], name: "index_receipts_on_order_id"
     t.index ["store_id"], name: "index_receipts_on_store_id"
   end
@@ -333,6 +335,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_04_030111) do
   add_foreign_key "payments", "stores"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "stores"
+  add_foreign_key "receipts", "business_admins"
   add_foreign_key "receipts", "orders"
   add_foreign_key "receipts", "stores"
   add_foreign_key "refunds", "orders"
