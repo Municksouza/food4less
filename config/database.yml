@@ -14,7 +14,16 @@ test:
   database: food4less_test
 
 production:
-  <<: *default
-  database: food4less_production
-  username: food4less
-  password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: food4less_production
+    username: food4less
+    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
+    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
+
+  queue:
+    <<: *default
+    database: food4less_production
+    username: food4less
+    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
+    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
