@@ -2,24 +2,20 @@ services:
   - type: web
     name: food4less
     env: ruby
-    buildCommand: ./bin/render-build.sh
+    plan: free
+    buildCommand: |
+      ./bin/render-build.sh
     startCommand: bundle exec puma -C config/puma.rb
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: food4less-db
           property: connectionString
-
-      - key: CACHE_DATABASE_URL
-        fromDatabase:
-          name: food4less-db
-          property: connectionString
-
       - key: RAILS_MASTER_KEY
         sync: false
-      - key: RAILS_ENV
-        value: production
       - key: RACK_ENV
+        value: production
+      - key: RAILS_ENV
         value: production
       - key: NODE_ENV
         value: production

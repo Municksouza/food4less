@@ -1,11 +1,12 @@
-const esbuild = require("esbuild");
+const esbuild = require('esbuild');
+const { stimulusPlugin } = require('esbuild-plugin-stimulus');
 
 esbuild.build({
-  entryPoints: ["app/javascript/application.js"], // Main entry point for the application 
+  entryPoints: ["app/javascript/application.js"],
   bundle: true,
-  format: "esm",
   sourcemap: "inline",
-  minify: false, 
+  plugins: [stimulusPlugin()],
+  minify: false,
   target: ["esnext"],
   outdir: "app/assets/builds",
   publicPath: "/assets",
@@ -16,8 +17,8 @@ esbuild.build({
     "@popperjs/core/dist/esm/utils/getBasePlacement.js": "./app/javascript/poppers/my-get-base-placement.js"
   },
   loader: {
-    ".js": "jsx",           // if you need JSX support
-    ".css": "css",          // if you import CSS
+    ".js": "jsx",
+    ".css": "css",
     ".png": "file",
     ".svg": "file",
     ".jpg": "file",

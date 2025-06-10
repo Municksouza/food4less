@@ -1,10 +1,8 @@
 {
   "name": "app",
   "private": true,
-  "type": "module",
   "devDependencies": {
     "@types/mapbox__mapbox-sdk": "^0.16.3",
-    "esbuild": "^0.25.1",
     "esbuild-plugin-stimulus": "^0.1.5",
     "jquery": "^3.7.1"
   },
@@ -18,6 +16,7 @@
     "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\""
   },
   "dependencies": {
+    "esbuild": "^0.25.5",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo": "^8.0.0",
