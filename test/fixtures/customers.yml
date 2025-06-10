@@ -5,13 +5,13 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  name: Customer One
+  name: One
   phone: 1234567890
   email: customer1@example.com
   encrypted_password: <%= Devise::Encryptor.digest(Customer, 'password') %>
 
 two:
-  name: Customer Two
+  name: Two
   phone: 0987654321
   email: customer2@example.com
   encrypted_password: <%= Devise::Encryptor.digest(Customer, 'password') %>

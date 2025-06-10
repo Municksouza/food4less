@@ -7,9 +7,10 @@ module StoreManagersArea
     fixtures :store_managers, :stores, :categories, :products
 
     def setup
-      @manager = store_managers(:one)
-      sign_in @manager
-      @store = @manager.store
+     
+      @store_manager = store_managers(:one)
+      sign_in @store_manager
+      @store = @store_manager.store
       @category = categories(:one)
 
       @product = @store.products.create!(

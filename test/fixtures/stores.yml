@@ -3,7 +3,7 @@
 # test/fixtures/stores.yml
 
 one:
-  name: one
+  name: "One"
   address: 123 Example Ave, Saskatoon, SK
   slug: toasty-central
   latitude: 52.133
@@ -17,7 +17,7 @@ one:
   business_number: "123456789"
 
 two:
-  name: "Second Store"
+  name: "two"
   address: "456 Second St, Saskatoon, SK"
   slug: "second-store"
   latitude: 52.124

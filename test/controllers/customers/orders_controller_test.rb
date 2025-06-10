@@ -8,6 +8,8 @@ class Customers::OrdersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @store   = stores(:one)
     @product = products(:one)
+    @order = orders(:one)
+    @customer = customers(:one)
     sign_in customers(:one)
   end
 

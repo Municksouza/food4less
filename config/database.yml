@@ -13,6 +13,14 @@ test:
   <<: *default
   database: food4less_test
 
+  writing:
+    <<: *default
+    database: food4less_test
+
+  reading:
+    <<: *default
+    database: food4less_test
+
 production:
   primary:
     <<: *default
@@ -29,6 +37,13 @@ production:
     host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
 
   cache:
+    <<: *default
+    database: food4less_production
+    username: food4less
+    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
+    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
+
+  reading:
     <<: *default
     database: food4less_production
     username: food4less

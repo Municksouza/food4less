@@ -6,7 +6,7 @@ class Customers::CartsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @customer = customers(:one) || Customer.create!(
-      name: "Test Customer",
+      name: "Customer One",
       email: "customer@example.com",
       phone: "1234567890",
       password: "password123"
@@ -47,16 +47,16 @@ class Customers::CartsControllerTest < ActionDispatch::IntegrationTest
     )
     @store.confirm if @store.respond_to?(:confirm)
 
-    @product = Product.create!(
-      name: "Test Product",
-      price: 10.0,
-      stock: 10,
-      description: "A test product",
-      store: @store,
-      category: Category.create!(
-        name: "Test",
-      ),
+   @product = Product.create!(
+    name: "Test Product #{SecureRandom.hex(4)}",
+    price: 10.0,
+    stock: 10,
+    description: "A test product",
+    store: @store,
+    category: Category.create!(
+      name: "Test Category #{SecureRandom.hex(4)}"
     )
+  )
 
   end
 

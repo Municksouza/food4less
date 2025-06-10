@@ -1,6 +1,7 @@
 # app/services/order_broadcaster.rb
 class OrderBroadcaster
   include Rails.application.routes.url_helpers
+  Rails.application.routes.default_url_options[:host] ||= 'http://localhost:3000'
 
   def initialize(order)
     @order  = order
