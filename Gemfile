@@ -53,14 +53,13 @@ gem 'hotwire-rails'
 
 group :development, :test do
   # Debugging tools for Rails applications
-  gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
-
+  gem "debug", platforms: %i[ mri windows ]
   # Static analysis for security vulnerabilities
   gem "brakeman", require: false
 
   # Ruby style guide enforcement
   gem "rubocop-rails-omakase", require: false
-  gem "dotenv-rails"
+  gem "dotenv-rails", "~> 2.7"
 end
 
 group :development do

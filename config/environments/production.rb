@@ -94,4 +94,15 @@ Rails.application.configure do
   config.public_file_server.headers = {
     'Cache-Control' => "public, max-age=#{2.days.to_i}"
   }
+  if defined?(ActiveSupport::Notifications)
+    ActiveSupport::Notifications.subscribe("cache_read.active_support") do |*args|
+      event = ActiveSupport::Notifications::Event.new(*args)
+      Rails.logger.debug "[CACHE READ] #{event.payload[:key]}"
+    end
+
+    ActiveSupport::Notifications.subscribe("cache_write.active_support") do |*args|
+      event = ActiveSupport::Notifications::Event.new(*args)
+      Rails.logger.debug "[CACHE WRITE] #{event.payload[:key]}"
+    end
+  end
 end
