@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 development:
   <<: *default
@@ -13,39 +13,6 @@ test:
   <<: *default
   database: food4less_test
 
-  writing:
-    <<: *default
-    database: food4less_test
-
-  reading:
-    <<: *default
-    database: food4less_test
-
 production:
-  primary:
-    <<: *default
-    database: food4less_production
-    username: food4less
-    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
-    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
-
-  queue:
-    <<: *default
-    database: food4less_production
-    username: food4less
-    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
-    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
-
-  cache:
-    <<: *default
-    database: food4less_production
-    username: food4less
-    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
-    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
-
-  reading:
-    <<: *default
-    database: food4less_production
-    username: food4less
-    password: <%= ENV["FOOD4LESS_DATABASE_PASSWORD"] %>
-    host: <%= ENV["FOOD4LESS_DATABASE_HOST"] %>
+  <<: *default
+  url: <%= ENV["DATABASE_URL"] %>

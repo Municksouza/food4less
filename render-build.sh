@@ -2,8 +2,8 @@
 set -e
 
 echo "→ Installing dependencies"
-yarn install
-bundle install
+yarn install --frozen-lockfile
+bundle install --without development test
 
 echo "→ Building JS and CSS"
 yarn build
@@ -11,4 +11,4 @@ yarn build
 echo "→ Preparing database"
 bundle exec rails db:prepare
 
-echo "→ Done"
+echo "✓ Build completed successfully"
