@@ -38,10 +38,10 @@
   </div>
 
   <div class="sidebar-footer d-flex flex-column align-items-center mt-auto p-3">
-    <% if current_store_manager&.store&.logo&.attached? %>
-      <%= image_tag current_store_manager.store.logo.variant(resize_to_fill: [40, 40]), class: "rounded-circle sidebar-user-photo mb-2" %>
+    <% if current_store_manager&.store&.logo&.content_type == "image/svg+xml" %>
+      <%= image_tag current_store_manager.store.logo %>
     <% else %>
-      <%= image_tag "placeholder.jpeg", class: "rounded-circle sidebar-user-photo mb-2" %>
+      <%= image_tag current_store_manager.store.logo.variant(resize_to_limit: [100, 100]) if current_store_manager&.store&.logo&.attached? %>
     <% end %>
     <div class="sidebar-footer-info text-center">
       <strong class="sidebar-username"><%= current_store_manager&.store&.name || "Store" %></strong>

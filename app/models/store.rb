@@ -8,7 +8,7 @@ class Store < ApplicationRecord
   extend FriendlyId
   friendly_id :name, use: :slugged
 
-  # Associações
+  # Associations
   belongs_to :business_admin
   belongs_to :cuisine, optional: true
   belongs_to :category, optional: true
@@ -24,9 +24,9 @@ class Store < ApplicationRecord
   has_many :receipts, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
-  # Validações
+  # Validations
   validates :name, :address, :description, :email, presence: true
-  validates :status, inclusion: { in: %w[active inactive] }
+  validates :status, inclusion: { in: %w[active inactive open closed archived] }
   validates :latitude, :longitude, numericality: true, allow_nil: true
   validates :phone, format: { with: /\A\+?[0-9\s\-()]+\z/, message: "must be a valid phone number" }
   validates :zip_code, zipcode: { country_code: :ca }
@@ -40,13 +40,15 @@ class Store < ApplicationRecord
   before_validation :generate_slug, on: :create
   before_validation :cast_receive_notifications
 
-# geocoded_by :address
+  # geocoded_by :address
   after_validation :geocode_address, if: :will_save_change_to_address?
 
-# Métodos de instância
-def to_param
-  slug
-end
+  # Removed duplicate has_one_attached :logo to prevent errors
+
+  # Instance methods
+  def to_param
+    slug
+  end
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed?
@@ -64,7 +66,7 @@ end
       if json["features"].any?
         self.longitude, self.latitude = json["features"][0]["center"]
       else
-        # Tentar geocodificar pelo código postal
+        # Try geocoding by zip code
         escaped_zip = ERB::Util.url_encode(zip_code)
         uri = URI("https://api.mapbox.com/geocoding/v5/mapbox.places/#{escaped_zip}.json?access_token=#{ENV['MAPBOX_ACCESS_TOKEN']}")
         response = Net::HTTP.get_response(uri)
@@ -88,7 +90,7 @@ end
 
   def validate_geocoding
     if latitude.blank? || longitude.blank?
-      errors.add(:address, "não pôde ser geocodificado. Verifique se o endereço é válido.")
+      errors.add(:address, "could not be geocoded. Please check if the address is valid.")
     end
   end
 

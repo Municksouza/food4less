@@ -2,26 +2,34 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  timeout: 5000
+  host: <%= ENV.fetch("DB_HOST", "localhost") %>
+  port: <%= ENV.fetch("DB_PORT", 5432) %>
+  username: <%= ENV.fetch("DB_USERNAME", "munickfreitas") %>
+  password: <%= ENV.fetch("DB_PASSWORD", "Munick1.") %>
 
 development:
   <<: *default
   database: food4less_development
-  username: munickfreitas
-  password: Munick1.
 
 test:
   <<: *default
   database: food4less_test
+  username: <%= ENV.fetch("TEST_DB_USERNAME", "railsadmin") %>
+  password: <%= ENV.fetch("TEST_DB_PASSWORD", "rails123") %>
 
 production:
   primary:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
+    database: food4less_production
 
   queue:
     <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
-  
+    url: <%= ENV["DATABASE_QUEUE_URL"] %>
+    database: food4less_queue
+
   cache:
     <<: *default
-    url: <%= ENV["DATABASE_URL"] %>
+    url: <%= ENV["DATABASE_CACHE_URL"] %>
+    database: food4less_cache

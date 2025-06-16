@@ -5,9 +5,9 @@
 <p>Stock: <%= @product.stock %></p>
 
 <div class="product-images">
-  <% if @product.images.present? %>
+  <% if @product.images.attached? %>
     <% @product.images.each do |image| %>
-      <%= cl_image_tag image.key, width: 300, height: 300, crop: :fill %>
+      <%= image_tag image, class: "product-image" %>
     <% end %>
   <% end %>
 </div>

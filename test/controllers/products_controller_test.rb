@@ -1,15 +1,13 @@
 require "test_helper"
 
 class ProductsControllerTest < ActionDispatch::IntegrationTest
-  fixtures :products
 
   def setup
-    @product = products(:one)
+    @product = FactoryBot.create(:product)
   end
   
   test "should get show" do
-    product = products(:one) 
-    get products_url(product)                           
+    get product_path(@product)
     assert_response :success
   end
 end

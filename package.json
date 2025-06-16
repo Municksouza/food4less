@@ -3,7 +3,6 @@
   "private": true,
   "devDependencies": {
     "@types/mapbox__mapbox-sdk": "^0.16.3",
-    "esbuild-plugin-stimulus": "^0.1.5",
     "jquery": "^3.7.1"
   },
   "scripts": {
@@ -16,7 +15,6 @@
     "watch:css": "nodemon --watch ./app/assets/stylesheets/ --ext scss --exec \"yarn build:css\""
   },
   "dependencies": {
-    "esbuild": "^0.25.5",
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo": "^8.0.0",
@@ -34,6 +32,8 @@
     "bootstrap-icons": "^1.13.1",
     "chart.js": "^4.4.8",
     "chartkick": "^5.0.1",
+    "esbuild": "^0.25.5",
+    "esbuild-plugin-stimulus": "^0.1.5",
     "eslint": "^9.23.0",
     "mapbox-gl": "^3.12.0",
     "nodemon": "^3.1.9",

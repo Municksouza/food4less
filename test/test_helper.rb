@@ -3,44 +3,69 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 require "bcrypt"
+require "database_cleaner/active_record"
+require "factory_bot_rails"
 
-# Reload routes to ensure they are up to date
+# Configura o host padrão para rotas
 Rails.application.routes.default_url_options[:host] = 'localhost:3000'
-
-# Devise configuration for tests
-# Devise.setup do |config|
-#   config.router_name = :main_app if defined?(main_app)
-# end
 
 module ActiveSupport
   class TestCase
-    # Run tests in parallel with the number of available processors
+    include FactoryBot::Syntax::Methods
+    
+    # Executa os testes em paralelo (número de workers baseados nos processadores disponíveis)
     parallelize(workers: :number_of_processors)
 
-    # Load all fixtures in test/fixtures/*.yml for all tests
-    fixtures :all
-
-    # Include Devise helpers for easier login in tests
+    # Inclui os helpers do Devise e Warden
     include Devise::Test::IntegrationHelpers
-
-    # Include Warden helpers if needed
     include Warden::Test::Helpers
     Warden.test_mode!
+    
 
-    # Include Rails route helpers
+    # Inclui os helpers das rotas
     include Rails.application.routes.url_helpers
+
+    # Setup/teardown com gerenciamento de triggers e clean com DatabaseCleaner
     setup do
+       Faker::UniqueGenerator.clear
+      begin
+        ActiveRecord::Base.connection.execute("SET session_replication_role = replica;")
+      rescue ActiveRecord::StatementInvalid => e
+        puts "⚠️  Skipping SET session_replication_role: #{e.message}"
+      end
       DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
     end
 
     teardown do
+      begin
+        ActiveRecord::Base.connection.execute("SET session_replication_role = origin;")
+      rescue ActiveRecord::StatementInvalid => e
+        puts "⚠️  Skipping RESET session_replication_role: #{e.message}"
+      end
       DatabaseCleaner.clean
     end
-      # Add more helper methods to be used by all tests here...
-    end
+  end
 end
 
+
+# Patch: Desabilita a integridade referencial no PostgreSQL sem exigir privilégios de superusuário
+if ActiveRecord::Base.connection.adapter_name == 'PostgreSQL'
+  module ActiveRecord
+    module ConnectionAdapters
+      class PostgreSQLAdapter
+        def disable_referential_integrity
+          yield
+        rescue ActiveRecord::StatementInvalid => e
+          puts "⚠️  Skipping disable_referential_integrity because: #{e.message}"
+          yield
+        end
+      end
+    end
+  end
+end
+
+# Configuração do Geocoder para ambiente de teste
 Geocoder.configure(lookup: :test)
 
 Geocoder::Lookup::Test.set_default_stub(

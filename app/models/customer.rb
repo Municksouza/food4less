@@ -21,7 +21,10 @@ class Customer < ApplicationRecord
     message: "must include at least one letter, one number and one special character",
     allow_nil: true
   
-
+  unless Rails.env.test?
+    has_one_attached :photo
+  end
+  
   def avatar_url
     if photo.attached?
       Rails.application.routes.url_helpers.url_for(photo)

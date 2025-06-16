@@ -6,7 +6,7 @@ class CreateStores < ActiveRecord::Migration[8.0]
       t.string :phone
       t.string :zip_code
       t.string :logo
-      t.references :business, null: false, foreign_key: true
+      t.references :business_admin, null: false, foreign_key: true
       t.string :manager_email
 
       t.timestamps
