@@ -28,4 +28,7 @@ yarn build || {
 echo "🗄️ Preparing database"
 bundle exec rails db:migrate
 
+echo "🚀 Starting Rails server..."
+bundle exec rails server -b 0.0.0.0 -p "${PORT:-3000}"
+
 echo "✅ Build completed successfully"

@@ -1,26 +1,18 @@
-# test/controllers/stores/products_controller_test.rb
+# test/controllers/store_managers_area/products_controller_test.rb
 require "test_helper"
 
 module StoreManagersArea
   class ProductsControllerTest < ActionDispatch::IntegrationTest
     include Devise::Test::IntegrationHelpers
-    fixtures :store_managers, :stores, :categories, :products
 
     def setup
-     
-      @store_manager = store_managers(:one)
-      sign_in @store_manager
-      @store = @store_manager.store
-      @category = categories(:one)
+      Faker::UniqueGenerator.clear
+      @store = create(:store, receive_notifications: false)  
+      @store_manager = create(:store_manager, store: @store, password: "Senha123!") 
+      sign_in @store_manager, scope: :store_manager
 
-      @product = @store.products.create!(
-        name: "Existing Product",
-        description: "Test product",
-        price: 10.0,
-        old_price: 15.0,
-        stock: 5,
-        category: @category
-      )
+      @category = create(:category)
+      @product = create(:product, store: @store, category: @category)
     end
 
     test "should get index" do
