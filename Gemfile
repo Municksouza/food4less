@@ -59,7 +59,7 @@ group :development, :test do
 
   # Ruby style guide enforcement
   gem "rubocop-rails-omakase", require: false
-  gem "dotenv-rails", "~> 2.7"
+  gem "dotenv-rails", "~> 3.1"
 end
 
 group :development do
