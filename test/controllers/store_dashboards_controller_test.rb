@@ -7,7 +7,7 @@ class StoreDashboardsControllerTest < ActionDispatch::IntegrationTest
     @store = FactoryBot.create(:store)
     @store_manager = FactoryBot.create(:store_manager, store: @store)
     
-    sign_in @store_manager
+    sign_in @store_manager, scope: :store_manager
   end
 
   test "should get show" do

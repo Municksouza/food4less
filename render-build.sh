@@ -28,6 +28,10 @@ yarn build || {
 echo "🗄️ Preparing database"
 bundle exec rails db:migrate
 
+echo "🛠️ Installing Solid Queue migrations"
+bundle exec rails solid_queue:install
+bundle exec rails db:migrate
+
 echo "🌱 Seeding database"
 bundle exec rails db:seed
 
