@@ -6,7 +6,7 @@ class Customers::CartsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @customer = FactoryBot.create(:customer)
-    sign_in @customer
+    sign_in @customer, scope: :customer
   end
 
   test "should show cart" do
