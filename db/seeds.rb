@@ -71,7 +71,8 @@ saskatoon_streets = ["20th St W", "Broad St", "3rd Ave N", "8th St E", "Attridge
     store: store,
     receive_notifications: true,
     password: "Manager123!",
-    password_confirmation: "Manager123!"
+    password_confirmation: "Manager123!",
+    business_admin: admin
   )
 
   5.times do
@@ -138,6 +139,7 @@ Customer.find_each do |customer|
       transaction_id: SecureRandom.hex(10),
       payment_date:   Time.current
     )
+    puts "💳 Payment saved: Order ##{order.id} => Payment ID ##{payment.id}" if order.payment.present?
 
     receipt = Receipt.create!(
       order:        order,
@@ -158,6 +160,7 @@ Customer.find_each do |customer|
       rescue => e
         puts "⚠️ Email error: #{e.message}"
       end
+      puts "📧 Sent receipt emails for Order ##{order.id}"
     end
 
     if [true, false].sample
@@ -178,6 +181,7 @@ puts "🌱 Adding reviews..."
 Product.find_each do |product|
   rand(1..3).times do
     Review.create!(
+      title:    Faker::Lorem.sentence(word_count: 3),
       product:  product,
       store:    product.store,
       customer: Customer.order("RANDOM()").first,

@@ -105,4 +105,20 @@ Rails.application.configure do
       Rails.logger.debug "[CACHE WRITE] #{event.payload[:key]}"
     end
   end
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              "smtp.sendgrid.net",
+    port:                 587,
+    domain:               "food4less.onrender.com",
+    user_name:            "apikey",
+    password:             ENV["SENDGRID_API_KEY"],
+    authentication:       :plain,
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_url_options = {
+    host: "food4less.onrender.com", 
+    protocol: "https"
+  }
 end

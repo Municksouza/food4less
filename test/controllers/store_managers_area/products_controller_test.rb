@@ -8,11 +8,11 @@ module StoreManagersArea
     def setup
       Faker::UniqueGenerator.clear
       @store = create(:store, receive_notifications: false)  
-      @store_manager = create(:store_manager, store: @store, password: "Senha123!") 
+      @store_manager = create(:store_manager, store: @store, password: "Senha123!")
       sign_in @store_manager, scope: :store_manager
 
       @category = create(:category)
-      @product = create(:product, store: @store, category: @category)
+      @product = create(:product, store: @store)
     end
 
     test "should get index" do
