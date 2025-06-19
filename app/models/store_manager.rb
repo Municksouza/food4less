@@ -3,7 +3,8 @@ class StoreManager < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-
+         
+  belongs_to :business_admin
   belongs_to :store
 
   before_validation :cast_receive_notifications

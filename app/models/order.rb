@@ -10,15 +10,16 @@ class Order < ApplicationRecord
 
   belongs_to :store
   belongs_to :customer
+  belongs_to :business_admin, optional: true
 
-  has_one :receipt
-  
+  has_many :products, through: :order_items
   has_many :order_items, dependent: :destroy
+  has_one :payment, dependent: :destroy
+  has_one :receipt  
   has_many :order_histories, dependent: :destroy
   has_many :order_statuses, dependent: :destroy
   has_many :refunds, dependent: :destroy
   has_many :receipts, dependent: :destroy
-  has_many :payments, dependent: :destroy
   has_many :reviews, dependent: :destroy
 
   TAX_RATE = 0.1

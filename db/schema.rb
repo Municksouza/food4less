@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_16_212642) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_17_201508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -263,6 +263,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_212642) do
     t.datetime "updated_at", null: false
     t.bigint "store_id"
     t.boolean "receive_notifications"
+    t.bigint "business_admin_id", null: false
+    t.index ["business_admin_id"], name: "index_store_managers_on_business_admin_id"
     t.index ["email"], name: "index_store_managers_on_email", unique: true
     t.index ["reset_password_token"], name: "index_store_managers_on_reset_password_token", unique: true
     t.index ["store_id"], name: "index_store_managers_on_store_id"
@@ -348,6 +350,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_212642) do
   add_foreign_key "reviews", "orders"
   add_foreign_key "reviews", "products"
   add_foreign_key "reviews", "stores"
+  add_foreign_key "store_managers", "business_admins"
   add_foreign_key "store_managers", "stores"
   add_foreign_key "stores", "business_admins"
   add_foreign_key "stores", "cuisines"

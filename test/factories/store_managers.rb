@@ -3,9 +3,10 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { "Test@1234" }
     receive_notifications { true }
-    
+    association :business_admin
+    association :store
+
     after(:create) do |manager|
-      # Cria a store com atributos obrigatórios
       create(:store, 
         name: "Test Store",
         address: "123 Main St",
