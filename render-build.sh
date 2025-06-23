@@ -28,8 +28,11 @@ yarn build || {
 echo "⚙️ Installing Solid Queue config (no migrations needed)"
 bundle exec rails solid_queue:install
 
-echo "🗄️ Preparing database and applying queue schema..."
-bundle exec rails db:prepare
+echo "🗄️ Running Rails migrations..."
+bundle exec rails db:migrate
+
+echo "📦 Creating SolidQueue tables manually (via schema load)"
+bundle exec rails runner "SolidQueue::Schema.migrate"
 
 echo "🌱 Running seeds to populate the database..."
 bundle exec rails db:seed
