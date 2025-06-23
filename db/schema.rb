@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_17_201508) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_223240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -251,6 +251,23 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_17_201508) do
     t.index ["order_id"], name: "index_reviews_on_order_id"
     t.index ["product_id"], name: "index_reviews_on_product_id"
     t.index ["store_id"], name: "index_reviews_on_store_id"
+  end
+
+  create_table "solid_queue_jobs", force: :cascade do |t|
+    t.string "queue_name", null: false
+    t.string "job_class", null: false
+    t.text "arguments"
+    t.datetime "scheduled_at", precision: nil
+    t.datetime "finished_at", precision: nil
+    t.datetime "started_at", precision: nil
+    t.string "status", default: "enqueued", null: false
+    t.text "error"
+    t.integer "attempts", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["queue_name"], name: "index_solid_queue_jobs_on_queue_name"
+    t.index ["scheduled_at"], name: "index_solid_queue_jobs_on_scheduled_at"
+    t.index ["status"], name: "index_solid_queue_jobs_on_status"
   end
 
   create_table "store_managers", force: :cascade do |t|
