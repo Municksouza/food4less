@@ -10,6 +10,7 @@ class CreateSolidQueueJobs < ActiveRecord::Migration[7.1]
       t.string     :status, null: false, default: "enqueued"
       t.text       :error
       t.integer    :attempts, default: 0, null: false
+      t.uuid       :active_job_id, index: true
       t.timestamps
     end
 
