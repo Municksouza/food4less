@@ -5,7 +5,7 @@ class Customers::DashboardsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @customer = FactoryBot.create(:customer)
-    sign_in @customer
+    sign_in @customer, scope: :customer
   end
 
   test "should get dashboard" do
