@@ -25,16 +25,13 @@ yarn build || {
   exit 1
 }
 
-echo "🛠️ Installing Solid Queue migrations"
+echo "⚙️ Installing Solid Queue config (no migrations needed)"
 bundle exec rails solid_queue:install
 
-echo "🗄️ Preparing database"
-bundle exec rails db:migrate
+echo "🗄️ Preparing database and applying queue schema..."
+bundle exec rails db:prepare
 
-echo "🌱 Seeding database"
+echo "🌱 Running seeds to populate the database..."
 bundle exec rails db:seed
 
-echo "✅ Build completed successfullyo9k
-,
-h           
-ÇÀà
+echo "✅ Build completed successfully!"
