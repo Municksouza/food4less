@@ -24,11 +24,11 @@ yarn build || {
   exit 1
 }
 
-echo "⚙️ Installing Solid Queue base config..."
-bundle exec rails solid_queue:install
-
 echo "🗄️ Running database migrations..."
 bundle exec rails db:migrate
+
+echo "📦 Loading SolidQueue schema into queue database..."
+bundle exec rails runner "ActiveRecord::Base.establish_connection(:queue); load Rails.root.join('db/queue_schema.rb')"
 
 echo "🌱 Seeding production database..."
 bundle exec rails db:seed
