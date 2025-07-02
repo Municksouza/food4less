@@ -18,6 +18,10 @@ test:
   username: <%= ENV.fetch("TEST_DB_USERNAME", "railsadmin") %>
   password: <%= ENV.fetch("TEST_DB_PASSWORD", "rails123") %>
 
+  queue:
+    <<: *default
+    database: food4less_test_queue
+
 production:
   primary:
     <<: *default
