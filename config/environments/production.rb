@@ -1,14 +1,14 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  config.action_mailer.default_url_options =  {
-  host: "getfood4less.ca",
-  protocol: "https"
-}
+  config.action_mailer.default_url_options = {
+    host: "getfood4less.ca",
+    protocol: "https"
+  }
 
-config.action_mailer.default_options = {
-  from: "admin@getfood4less.ca"
-}
+  config.action_mailer.default_options = {
+    from: "admin@getfood4less.ca"
+  }
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -121,10 +121,5 @@ config.action_mailer.default_options = {
     password:             ENV["SENDGRID_API_KEY"],
     authentication:       :plain,
     enable_starttls_auto: true
-  }
-
-  config.action_mailer.default_url_options = {
-    host: "food4less.onrender.com", 
-    protocol: "https"
   }
 end
