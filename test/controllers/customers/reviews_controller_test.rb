@@ -5,7 +5,7 @@ class Customers::ReviewsControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @customer = FactoryBot.create(:customer)
-    sign_in @customer
+    sign_in @customer, scope: :customer
     @review = FactoryBot.create(:review, customer: @customer)
   end
 
