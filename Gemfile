@@ -81,7 +81,7 @@ end
 gem "geocoder"
 gem "jsbundling-rails", "~> 1.3"
 gem "cssbundling-rails", "~> 1.3"
-gem "chartkick", "~> 5.1"
+gem "chartkick", "~> 5.2"
 gem "groupdate", "~> 6.5"
 gem "minitest", "~> 5.25"
 gem "open-uri-cached"
