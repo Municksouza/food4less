@@ -2,7 +2,7 @@ class ReceiptMailer < ApplicationMailer
   require 'prawn'
   require 'prawn/table'
 
-  default from: "no-reply@food4less.com"
+  default from: "admin@getfood4less.ca"
 
   # ✅ Send receipt to Customer
   def send_receipt_to_customer(receipt)
