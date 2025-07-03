@@ -75,7 +75,11 @@ Rails.application.routes.draw do
 
       resources :sales, only: [:index, :show]
 
-      resources :receipts, only: [:index, :show, :new, :create]
+      resources :receipts, only: [:index, :show, :new, :create] do
+        member do
+          get :download
+        end
+      end
       resources :refunds, only: [:index, :show, :new, :create]
       resources :payments, only: [:index, :show, :new, :create]
       resources :reports, only: [:index, :show]
@@ -139,10 +143,14 @@ Rails.application.routes.draw do
 
     resources :financials, only: [:index] do
       collection do
-        get :receipts
         get :refunds
         get :payments
         get :reports
+      end
+      resources :receipts, only: [:index, :show, :new, :create] do
+        member do
+          get :download
+        end
       end
     end
 

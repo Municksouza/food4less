@@ -4,6 +4,7 @@ require Rails.root.join("app/services/pdf_receipt_generator")
 class BusinessAdmins::ReceiptsController < ApplicationController
   before_action :authenticate_business_admin!
   before_action :set_store
+  before_action :set_receipt
 
   def index
     @receipts = @store.receipts
@@ -49,6 +50,14 @@ class BusinessAdmins::ReceiptsController < ApplicationController
     end
   end
 
+  def download
+    if @receipt.pdf_file.attached?
+      redirect_to rails_blob_url(@receipt.pdf_file, disposition: "attachment", host: "https://getfood4less.ca")
+    else
+      redirect_to stores_receipts_path, alert: "PDF not available."
+    end
+  end
+
   private
 
   def set_store
@@ -56,5 +65,9 @@ class BusinessAdmins::ReceiptsController < ApplicationController
     unless @store
       redirect_to business_admins_stores_path, alert: "Store not found." and return
     end
+  end
+
+  def set_receipt
+    @receipt = current_store.receipts.find(params[:id])
   end
 end

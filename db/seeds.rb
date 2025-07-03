@@ -151,9 +151,8 @@ Customer.find_each do |customer|
     )
 
     [
-      -> { ReceiptMailer.send_receipt_to_customer(receipt).deliver_now },
-      -> { ReceiptMailer.send_receipt_to_store(receipt).deliver_now },
-      -> { ReceiptMailer.send_receipt_to_business(receipt).deliver_now }
+      -> { ReceiptMailer.send_receipt_to_customer(receipt).deliver_later },
+      
     ].each do |mail|
       begin
         mail.call

@@ -8,7 +8,7 @@ class ReceiptsController < ApplicationController
   end
   
   def show
-    @receipt = @order.receipts.find(params[:id]) # Corrigido
+    @receipt = @order.receipts.find(params[:id]) 
     if @receipt.nil?
       flash[:alert] = "Receipt not available yet."
       redirect_to order_path(@order) and return
@@ -48,7 +48,7 @@ class ReceiptsController < ApplicationController
     tax_amount = order.total_price * tax_rate
     total_with_tax = order.total_price + tax_amount
   
-    # Gerando o PDF
+
     pdf = Prawn::Document.new
     pdf.text "Receipt ##{receipt.id}", size: 22, style: :bold, align: :center
     pdf.move_down 10

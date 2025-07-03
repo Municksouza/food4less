@@ -8,7 +8,7 @@ class Customers::OrdersControllerTest < ActionDispatch::IntegrationTest
     @customer = FactoryBot.create(:customer)
     @store = FactoryBot.create(:store)
     @product = FactoryBot.create(:product, store: @store)
-    sign_in @customer
+    sign_in @customer, scope: :customer
   end
 
   test "should get index" do

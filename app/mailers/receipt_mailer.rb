@@ -17,7 +17,7 @@ class ReceiptMailer < ApplicationMailer
     pdf = generate_receipt_pdf(@receipt)
     attachments["Receipt_#{receipt.id}.pdf"] = { mime_type: 'application/pdf', content: pdf }
 
-    mail(to: @customer.email, subject: "Your Food4Less Receipt ##{receipt.id}") do |format|
+    mail(to: @customer.email, subject: "Your GetFood4Less Receipt ##{receipt.id}") do |format|
       format.text { render plain: "Receipt attached." }
     end
   end
