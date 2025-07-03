@@ -1,0 +1,29 @@
+// app/assets/stylesheets/layout/_static_pages.scss
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease-out;
+}
+
+.fade-in-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+section {
+  padding-bottom: 60px;
+
+  @media (max-width: 768px) {
+    padding-bottom: 40px; // Adjust padding for smaller screens
+  }
+}
+
+form .form-control {
+  border-radius: 8px;
+  padding: 10px 15px;
+
+  @media (max-width: 768px) {
+    padding: 8px 12px; // Adjust padding for smaller screens
+  }
+}

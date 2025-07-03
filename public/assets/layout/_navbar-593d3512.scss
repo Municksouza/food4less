@@ -1,0 +1,139 @@
+.custom-navbar {
+  background-color: #111; // Dark background for the navbar
+  // background-color: var(--burnt-red-5);
+  padding: 0.8rem 1.5rem;
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    // color: #e63946;
+    color: #FE043C;
+  }
+
+  .nav-item-custom {
+    color: #fff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+
+    &:hover {
+      // color: #e63946;
+      color: var(--vibrant-orange-2);
+    }
+  }
+
+  .btn-explore {
+    // background-color: #e63946;
+    background-color: #FE043C;
+    color: #fff;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    border: none;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      // background-color: #c82333;
+      background-color: var(--vibrant-orange-2);
+    }
+  }
+
+  .search-inline-form {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    input {
+      border: none;
+      padding: 0.5rem 1rem;
+      outline: none;
+      width: 150px;
+    }
+
+    button {
+      background: transparent;
+      border: none;
+      color: #e63946;
+      font-size: 1.2rem;
+    }
+  }
+
+  .menu-btn {
+    background: none;
+    border: 2px solid #fff;
+    border-radius: 5px;
+    padding: 0.2rem 0.6rem;
+    color: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #e63946;
+      color: #fff;
+      border-color: #e63946;
+    }
+  }
+
+  // Styling the Dropdown Account
+  .dropdown-menu {
+    background-color: #222;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+
+    .dropdown-item {
+      color: #fff;
+      font-weight: 500;
+      padding: 0.6rem 1rem;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background-color: #e63946;
+        color: #fff;
+      }
+    }
+
+    .text-danger {
+      color: #ff4d4d;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 991px) {
+  .custom-navbar {
+    .nav-item {
+      margin-bottom: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .search-inline-form input {
+    width: 100px;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-navbar {
+    padding: 0.5rem 1rem;
+
+    .navbar-brand {
+      font-size: 1.2rem;
+    }
+
+    .btn-explore {
+      padding: 0.3rem 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .search-inline-form input {
+      width: 80px;
+      padding: 0.4rem 0.8rem;
+    }
+
+    .menu-btn {
+      padding: 0.2rem 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+}

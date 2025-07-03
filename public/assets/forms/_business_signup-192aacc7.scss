@@ -1,0 +1,113 @@
+.business-signup-page {
+  background: url('big-burger.png') center/cover no-repeat;
+  position: relative;
+  min-height: 100vh;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    z-index: 0;
+  }
+
+  .business-signup-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+
+    .card-header {
+      background: linear-gradient(135deg, #FE043C 0%, #FF7A00 100%);
+      padding: 2rem 1.5rem;
+
+      h2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+
+      p {
+        font-size: 0.95rem;
+        opacity: 0.9;
+      }
+    }
+
+    .card-body {
+      padding: 2rem 2rem 3rem;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .business-signup-page {
+    .business-signup-card {
+      max-width: 80%;
+      .card-header {
+        padding: 1.75rem 1.25rem;
+        h2 { font-size: 1.5rem; }
+        p { font-size: 0.9rem; }
+      }
+      .card-body {
+        padding: 1.75rem 1.25rem 2.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .business-signup-page {
+    .business-signup-card {
+      max-width: 90%;
+      .card-header {
+        padding: 1.5rem 1rem;
+        h2 { font-size: 1.3rem; }
+        p { font-size: 0.85rem; }
+      }
+      .card-body {
+        padding: 1.5rem 1rem 2rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .business-signup-page {
+    padding: 1rem 0;
+    .business-signup-card {
+      max-width: 98%;
+      border-radius: 0.75rem;
+      .card-header {
+        padding: 1rem 0.75rem;
+        h2 { font-size: 1.1rem; }
+        p { font-size: 0.8rem; }
+      }
+      .card-body {
+        padding: 1rem 0.75rem 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .business-signup-page {
+    padding: 0.5rem 0;
+    .business-signup-card {
+      border-radius: 0.5rem;
+      max-width: 100%;
+      .card-header {
+        padding: 0.75rem 0.25rem;
+        h2 { font-size: 1rem; }
+        p { font-size: 0.75rem; }
+      }
+      .card-body {
+        padding: 0.75rem 0.25rem 1rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+// app/assets/stylesheets/application.scss
+
+// Bootstrap (usando as * para ativar variáveis e mixins no escopo global)
+@use "bootstrap/scss/bootstrap" as *;
+
+// Layout
+@use "layout/body" as *;
+@use "layout/header" as *;
+@use "layout/footer" as *;
+@use "layout/static_pages" as *;
+@use "layout/navbar" as *;
+@use "layout/offcanvas" as *;
+@use "layout/marketplace" as *;
+@use "layout/products_block" as *;
+@use "layout/discover_order_enjoy" as *;
+@use "layout/sidebar" as *;
+@use "layout/hero_and_cards" as *;
+@use "layout/cuisine" as *;
+@use "layout/map" as *;
+@use "layout/flash-banner" as *;
+// @use "layout/variables" as *;
+@use "layout/testimonials" as *;
+
+// Components
+@use "components/product_card" as *;
+@use "components/avatar" as *;
+@use "components/new_order_card" as *;
+@use "components/store_card" as *;
+@use "components/store_flip_card" as *;
+@use "components/product_poster" as *;
+@use "components/category" as *;
+@use "components/buttons" as *;
+@use "components/ticker" as *;
+@use "components/disclaimer" as *;
+@use "components/shimmer" as *;
+
+// Pages
+@use "pages/home" as *;
+@use "pages/store_dashboard" as *;
+@use "pages/customer_dashboard" as *;
+@use "pages/business_admin_dashboard" as *;
+@use "pages/store_profile" as *;
+@use "pages/admin_stores" as *;
+
+// Forms
+@use "forms/simple_form" as *;
+@use "forms/signup_modal" as *;
+@use "forms/signup_customer" as *;
+@use "forms/login_page" as *;
+@use "forms/business_signup" as *;
+@use "forms/admin_store_form" as *;
+@use "forms/edit-store-form" as *;
+@use "forms/edit-credentials-form" as *;
+
+// Partials
+@use "partials/print" as *;
+
+// Bootstrap Icons (continua com @import porque é CSS puro)
+@import "bootstrap-icons/font/bootstrap-icons.css";
