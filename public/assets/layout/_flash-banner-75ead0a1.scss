@@ -1,0 +1,66 @@
+.flash-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  width: 100%;
+  text-align: center;
+  background: #fff5f5;
+  color: #333;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ffc0c0;
+
+  // Extra small devices (portrait phones, less than 576px)
+  @media (max-width: 575.98px) {
+    font-size: 0.9rem;
+    padding: 0.5rem 0.5rem;
+  }
+
+  // Small devices (landscape phones, 576px and up)
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    font-size: 0.95rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  // Medium devices (tablets, 768px and up)
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  // Large devices (desktops, 992px and up)
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    font-size: 1.05rem;
+    padding: 0.85rem 1.5rem;
+  }
+
+  // Extra large devices (large desktops, 1200px and up)
+  @media (min-width: 1200px) {
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+  }
+}
+
+.flash-banner + .navbar,
+.flash-banner + main,
+.flash-banner + .container-fluid {
+  margin-top: 3rem;
+
+  @media (max-width: 575.98px) {
+    margin-top: 3.5rem;
+  }
+
+  @media (min-width: 576px) and (max-width: 991.98px) {
+    margin-top: 3.25rem;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    margin-top: 3.75rem;
+  }
+
+  @media (min-width: 1200px) {
+    margin-top: 4rem;
+  }
+}

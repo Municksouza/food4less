@@ -1,0 +1,64 @@
+.main-content {
+  flex-grow: 1;
+  padding: 2rem 1rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  transition: margin-left 0.3s ease;
+  margin-top: 3rem;
+
+  // Responsive padding for tablets
+  @media (max-width: 1024px) {
+    padding: 1.5rem 1rem;
+    max-width: 1000px;
+  }
+
+  // Responsive padding for small tablets and large phones
+  @media (max-width: 768px) {
+    padding: 1rem;
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+
+  // Responsive padding for mobile devices
+  @media (max-width: 480px) {
+    padding: 0.5rem;
+    margin-top: 1rem;
+  }
+}
+
+// Sidebar expanded
+body.with-sidebar.sidebar-expanded .main-content {
+  margin-left: 250px;
+
+  @media (max-width: 1024px) {
+    margin-left: 200px;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// Sidebar closed
+body.with-sidebar.sidebar-closed .main-content {
+  margin-left: 60px;
+
+  @media (max-width: 1024px) {
+    margin-left: 40px;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+}
+
+// No sidebar
+body.no-sidebar .main-content {
+  margin-left: 0 !important;
+}
+
+// Special case for stores-show page
+body.stores-show .main-content {
+  padding-top: 0 !important;
+}

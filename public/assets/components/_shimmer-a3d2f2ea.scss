@@ -1,0 +1,96 @@
+// Shimmer effect
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer-card {
+  background-color: #f6f7f8;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    max-width: 90%;
+    border-radius: 6px;
+  }
+
+  @media (max-width: 600px) {
+    max-width: 100%;
+    border-radius: 4px;
+  }
+}
+
+.shimmer-image {
+  height: 200px;
+  background: linear-gradient(
+    90deg,
+    #f6f7f8 25%,
+    #edeef1 50%,
+    #f6f7f8 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    height: 150px;
+  }
+
+  @media (max-width: 600px) {
+    height: 120px;
+  }
+
+  @media (max-width: 400px) {
+    height: 80px;
+  }
+}
+
+.shimmer-line {
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    #f6f7f8 25%,
+    #edeef1 50%,
+    #f6f7f8 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    height: 14px;
+    margin-bottom: 7px;
+  }
+
+  @media (max-width: 600px) {
+    height: 12px;
+    margin-bottom: 6px;
+  }
+
+  @media (max-width: 400px) {
+    height: 10px;
+    margin-bottom: 5px;
+  }
+}
+
+// Fade-in animation
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
