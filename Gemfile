@@ -40,7 +40,8 @@ gem "thruster", require: false
 
 # Use Active Storage variants for image processing
 gem "image_processing", "~> 1.2"
-
+gem "cloudinary", "~> 1.26"
+gem "activestorage-cloudinary-service"
 gem "devise"             # User authentication
 gem "pundit"             # Permission control
 gem "simple_form"        # Easier forms
