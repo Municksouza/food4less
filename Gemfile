@@ -89,4 +89,4 @@ gem 'friendly_id', '~> 5.4.0'
 gem "whenever", require: false
 gem "mini_magick"
 gem 'validates_zipcode'
-gem 'redis', '~> 4.0' # Use Redis for caching and Action Cable
+gem 'redis', '~> 5.4' # Use Redis for caching and Action Cable
