@@ -476,7 +476,7 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.3)
     useragent (0.16.11)
-    validates_zipcode (0.5.3)
+    validates_zipcode (0.5.4)
       activemodel (>= 4.2.0)
     warden (1.2.9)
       rack (>= 2.0.9)
