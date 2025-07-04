@@ -24,6 +24,12 @@ yarn build || {
   exit 1
 }
 
+echo "🎨 Precompiling Rails assets..."
+bundle exec rails assets:precompile || {
+  echo "❌ Rails asset precompilation failed"
+  exit 1
+}
+
 echo "🗄️ Running database migrations..."
 bundle exec rails db:migrate
 
