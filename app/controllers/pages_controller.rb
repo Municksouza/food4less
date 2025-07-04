@@ -7,8 +7,9 @@ class PagesController < ApplicationController
                        .order(created_at: :desc)
                        .limit(6)
     @stores = Store
-                .where(latitude: 49.0..60.0, longitude: -110.0..-101.0)
-                .where.not(latitude: nil, longitude: nil)
+          .includes(:logo_attachment)
+          .where(latitude: 49.0..60.0, longitude: -110.0..-101.0)
+          .where.not(latitude: nil, longitude: nil)
 
     @mini_carousel_items = [
       { image: "cuisine-burgers.webp", label: "Burgers",   category: "burgers" },
