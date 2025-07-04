@@ -36,7 +36,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         
   </head>
-
+    <% if @stores.present? %>
+      <script id="store-data" type="application/json">
+        <%= raw @stores.map { |store| {
+          name: store.name,
+          logo_url: store.logo.attached? ? url_for(store.logo) : asset_path("default_store_logo.png"),
+          link: store_path(store)
+        } }.to_json %>
+      </script>
+    <% end %>
   <body class="<%= "#{controller.controller_name}-#{controller.action_name} " + 
     (current_customer || current_store_manager || current_business_admin ? 'with-sidebar sidebar-closed' : 'no-sidebar') %> d-flex flex-column min-vh-100"
     data-controller="sidebar"

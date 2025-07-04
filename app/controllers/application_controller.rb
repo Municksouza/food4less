@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_active_storage_url_options
+  before_action :load_stores_for_sidebar
+
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -103,5 +105,13 @@ class ApplicationController < ActionController::Base
       host: request.host,
       port: request.optional_port
     }
+  end
+
+  def load_stores_for_sidebar
+    return unless current_store_manager || current_business_admin || current_customer
+    @stores = Store
+      .includes(:logo_attachment)
+      .where(latitude: 49.0..60.0, longitude: -110.0..-101.0)
+      .where.not(latitude: nil, longitude: nil)
   end
 end
